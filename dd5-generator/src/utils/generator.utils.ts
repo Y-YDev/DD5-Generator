@@ -36,4 +36,19 @@ export class GeneratorUtils {
     const roll = Math.floor(Math.random() * diceFace) + 1;
     return roll;
   }
+
+  removeAverageInfo(inputString: string): string {
+    const infoRegex: RegExp = /\(([^)]+)\)/g;
+
+    let match: RegExpExecArray;
+    let resString = inputString;
+    while ((match = infoRegex.exec(resString)) != null) {
+      const position = match.index;
+
+      resString =
+        resString.substring(0, position) +
+        resString.substring(position + 1 + match[0].length); // +1 for remove space
+    }
+    return resString;
+  }
 }

@@ -54,7 +54,12 @@ export class ExcelUtils {
   isInDiceRange(diceRoll: number, diceRange: string) {
     const rangeElmt = diceRange.split('-').filter(Boolean);
 
-    if (rangeElmt.length != 2) {
+    if (rangeElmt.length !== 2) {
+      if (rangeElmt.length === 1) {
+        //No range, exact value
+        const rangeValue = Number(rangeElmt[0]);
+        return rangeValue === diceRoll;
+      }
       console.error('Dice range string not in right format');
       return undefined;
     }
