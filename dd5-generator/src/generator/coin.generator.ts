@@ -1,13 +1,13 @@
 import { GeneratorUtils } from '../utils/generator.utils';
 import { ExcelUtils } from './../utils/excel.utils';
 import { Row } from 'read-excel-file/node';
-import { COIN_FILE_PATH } from '../utils/fileConst';
+import { COIN_FILE_PATH } from '../utils/file.const';
 
 export class CoinGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  async generateCoinRoll(encounterLvl: number): Promise<string> {
+  async generateCoinRoll(encounterLvl: number): Promise<string[]> {
     const coinTable: Row[] = await this.excelUtils.readExcelFile(
       COIN_FILE_PATH,
     );
@@ -25,11 +25,30 @@ export class CoinGenerator {
     return this.computeCoinGenerationString(coinTable[line][column].toString());
   }
 
-  computeCoinGenerationString(inputString: string): string {
-    let res = inputString;
-    res = this.utils.replaceDiceValue(res);
-    res = this.removeAverageInfo(res);
-    res = this.computeProduct(res);
+  computeCoinGenerationString(inputString: string): string[] {
+    let formatedString = inputString;
+    formatedString = this.utils.replaceDiceValue(formatedString);
+    formatedString = this.utils.removeAverageInfo(formatedString);
+    formatedString = this.computeProduct(formatedString);
+
+    return this.convertCoinStringToList(formatedString);
+  }
+
+  convertCoinStringToList(inputString: string): string[] {
+    const coinElement = inputString.split(' ').filter(Boolean);
+
+    if (coinElement.length % 2 !== 0) {
+      console.error(
+        'Error in coin string must be value/coin couple :' + inputString,
+      );
+    }
+
+    const res: string[] = [];
+    for (let index = 0; index < coinElement.length; index += 2) {
+      const value = coinElement[index];
+      const coin = coinElement[index + 1];
+      res.push(value + ' ' + coin);
+    }
     return res;
   }
 
@@ -61,20 +80,5 @@ export class CoinGenerator {
       }
     }
     return resArray.join(' ');
-  }
-
-  removeAverageInfo(inputString: string): string {
-    const infoRegex: RegExp = /\(([^)]+)\)/g;
-
-    let match: RegExpExecArray;
-    let resString = inputString;
-    while ((match = infoRegex.exec(resString)) != null) {
-      const position = match.index;
-
-      resString =
-        resString.substring(0, position) +
-        resString.substring(position + 1 + match[0].length); // +1 for remove space
-    }
-    return resString;
   }
 }
