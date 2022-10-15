@@ -1,9 +1,24 @@
 import readXlsxFile, { Row } from 'read-excel-file/node';
 import { Cell } from 'read-excel-file/types';
+import { GeneratorUtils } from './generator.utils';
 
 export class ExcelUtils {
-  async readExcelFile(path: string): Promise<Row[]> {
-    return await readXlsxFile(path);
+  utils = new GeneratorUtils();
+
+  async readExcelFile(path: string, sheetPage: number = 1): Promise<Row[]> {
+    return await readXlsxFile(path, { sheet: sheetPage });
+  }
+
+  getGenerationLineAndColumn(
+    encounterLvl: number,
+    table: Row[],
+  ): { line: number; column: number } {
+    const diceRoll = this.utils.rollDice(20);
+
+    const column = this.getEncounterLevelColumn(encounterLvl, table);
+    const line = this.getDiceRangeLine(diceRoll, table);
+
+    return { line, column };
   }
 
   getEncounterLevelColumn(encounterLvl: number, table: Row[]) {

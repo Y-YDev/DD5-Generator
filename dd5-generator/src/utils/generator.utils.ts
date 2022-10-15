@@ -38,7 +38,7 @@ export class GeneratorUtils {
   }
 
   removeAverageInfo(inputString: string): string {
-    const infoRegex: RegExp = /\(([^)]+)\)/g;
+    const infoRegex: RegExp = /\(\d+\)/g;
 
     let match: RegExpExecArray;
     let resString = inputString;

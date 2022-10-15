@@ -10,22 +10,20 @@ export class TreasureGenerator {
   excelUtils = new ExcelUtils();
 
   async generateTreasure(encounterLvl: number): Promise<string[]> {
-    const rareObjectTable: Row[] = await this.excelUtils.readExcelFile(
+    const treasureTable: Row[] = await this.excelUtils.readExcelFile(
       TREASURE_FILE_PATH,
     );
 
-    const diceRoll = this.utils.rollDice(20);
-
-    const column = this.excelUtils.getEncounterLevelColumn(
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
       encounterLvl,
-      rareObjectTable,
+      treasureTable,
     );
-    const line = this.excelUtils.getDiceRangeLine(diceRoll, rareObjectTable);
+
     console.debug(
       `Get treasure generation for line ${line} and columns ${column}.`,
     );
     return this.computeTreasureGenString(
-      rareObjectTable[line][column].toString(),
+      treasureTable[line][column].toString(),
     );
   }
 

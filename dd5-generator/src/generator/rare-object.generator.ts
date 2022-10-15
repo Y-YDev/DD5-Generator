@@ -24,20 +24,17 @@ export class RareObjectGenerator {
   }
 
   async generateFullRareObjects(encounterLvl: number) {
-    const rareObjectTable: Row[] = await this.excelUtils.readExcelFile(
+    const rareObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
       RARE_OBJECT_NB_FILE_PATH,
     );
 
-    const diceRoll = this.utils.rollDice(20);
-
-    const column = this.excelUtils.getEncounterLevelColumn(
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
       encounterLvl,
-      rareObjectTable,
+      rareObjectDropTable,
     );
-    const line = this.excelUtils.getDiceRangeLine(diceRoll, rareObjectTable);
 
     const objectNumber = this.computeRareObjectNbGenString(
-      rareObjectTable[line][column].toString(),
+      rareObjectDropTable[line][column].toString(),
     );
     console.debug('Generate ' + objectNumber + ' rare objects');
 
