@@ -11,13 +11,11 @@ export class CoinGenerator {
     const coinTable: Row[] = await this.excelUtils.readExcelFile(
       COIN_FILE_PATH,
     );
-    const diceRoll = this.utils.rollDice(20);
 
-    const column = this.excelUtils.getEncounterLevelColumn(
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
       encounterLvl,
       coinTable,
     );
-    const line = this.excelUtils.getDiceRangeLine(diceRoll, coinTable);
 
     console.debug(
       `Get coin generation for line ${line} and columns ${column}.`,
