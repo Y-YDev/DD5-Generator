@@ -38,11 +38,10 @@ export class MagicObjectGenerator {
     magicObjsToGenerate: EMagicRank[],
   ): Promise<string[]> {
     const res: string[] = [];
-    
+
     for (let index = 0; index < magicObjsToGenerate.length; index++) {
       const magicRank = magicObjsToGenerate[index];
       switch (magicRank) {
-        
         case EMagicRank.OM1:
           res.push(await this.generateMagicObjectByRank(1));
           break;
@@ -65,7 +64,7 @@ export class MagicObjectGenerator {
     return res;
   }
 
-  async generateMagicObjectByRank(magicRank: number): Promise<string> {    
+  async generateMagicObjectByRank(magicRank: number): Promise<string> {
     const magicObjectTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_PATH.replace('$', magicRank.toString()),
     );
@@ -90,7 +89,7 @@ export class MagicObjectGenerator {
     inputString: string,
     magicRank: number,
   ): Promise<string> {
-    if(inputString.includes(RETHROW)){
+    if (inputString.includes(RETHROW)) {
       const newRank = this.getRethrowInfo(inputString);
       return await this.generateMagicObjectByRank(newRank);
     }
@@ -147,8 +146,7 @@ export class MagicObjectGenerator {
       if (inputString.includes(POTION)) return 2;
       if (inputString.includes(SCROLL)) return 3;
       if (inputString.includes(AMMO)) return 4;
-    }
-    else if (magicRank === 2) {
+    } else if (magicRank === 2) {
       if (inputString.includes(POTION)) return 2;
       if (inputString.includes(SCROLL)) return 3;
       if (inputString.includes(WEAPON)) return 4;
@@ -157,12 +155,12 @@ export class MagicObjectGenerator {
     return -1;
   }
 
-  getRethrowInfo(inputString: string){
+  getRethrowInfo(inputString: string) {
     const numberRegex: RegExp = /\d/g;
     const matchNumber = inputString.match(numberRegex);
 
     const rethrowRank = Number(matchNumber[0]);
-    console.log("--------------------------------------------------Rethrow with magic rank "+rethrowRank);
+    console.log('Rethrow with magic rank ' + rethrowRank);
     return rethrowRank;
   }
 
