@@ -13,8 +13,6 @@ export class AppController {
 
   @Get()
   async getHello() {
-    console.log('call');
-
     const generatorUtils = new GeneratorUtils();
     const coinGenerator = new CoinGenerator();
     const rareObjectGenerator = new RareObjectGenerator();
@@ -22,7 +20,7 @@ export class AppController {
     const magicObjectGenerator = new MagicObjectGenerator();
     const excelUtils = new ExcelUtils();
 
-    const lvl = generatorUtils.rollDice(20);
+    const lvl = generatorUtils.rollDice(21) - 1;
     console.log(lvl);
 
     /*
