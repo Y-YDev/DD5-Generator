@@ -7,6 +7,8 @@ import { GeneratorUtils } from '../utils/generator.utils';
 const POTION = 'Potion';
 const AMMO = 'Munition';
 const SCROLL = 'Parchemin';
+const WEAPON = 'Arme';
+const WAND = 'Baguette';
 const RETHROW = 'Relancer';
 
 export class MagicObjectGenerator {
@@ -36,14 +38,17 @@ export class MagicObjectGenerator {
     magicObjsToGenerate: EMagicRank[],
   ): Promise<string[]> {
     const res: string[] = [];
-
+    
     for (let index = 0; index < magicObjsToGenerate.length; index++) {
       const magicRank = magicObjsToGenerate[index];
       switch (magicRank) {
+        
         case EMagicRank.OM1:
           res.push(await this.generateMagicObjectByRank(1));
           break;
         case EMagicRank.OM2:
+          res.push(await this.generateMagicObjectByRank(2));
+          break;
         case EMagicRank.OM3:
         case EMagicRank.OM4:
         case EMagicRank.OM5:
@@ -60,7 +65,7 @@ export class MagicObjectGenerator {
     return res;
   }
 
-  async generateMagicObjectByRank(magicRank: number): Promise<string> {
+  async generateMagicObjectByRank(magicRank: number): Promise<string> {    
     const magicObjectTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_PATH.replace('$', magicRank.toString()),
     );
@@ -85,8 +90,12 @@ export class MagicObjectGenerator {
     inputString: string,
     magicRank: number,
   ): Promise<string> {
-    const subGenInfo = this.getSubGenerationInfo(inputString, magicRank);
+    if(inputString.includes(RETHROW)){
+      const newRank = this.getRethrowInfo(inputString);
+      return await this.generateMagicObjectByRank(newRank);
+    }
 
+    const subGenInfo = this.getSubGenerationInfo(inputString, magicRank);
     if (subGenInfo.sheetPage !== -1) {
       return await this.generateSubMagicObject(magicRank, subGenInfo);
     }
@@ -139,7 +148,22 @@ export class MagicObjectGenerator {
       if (inputString.includes(SCROLL)) return 3;
       if (inputString.includes(AMMO)) return 4;
     }
+    else if (magicRank === 2) {
+      if (inputString.includes(POTION)) return 2;
+      if (inputString.includes(SCROLL)) return 3;
+      if (inputString.includes(WEAPON)) return 4;
+      if (inputString.includes(WAND)) return 5;
+    }
     return -1;
+  }
+
+  getRethrowInfo(inputString: string){
+    const numberRegex: RegExp = /\d/g;
+    const matchNumber = inputString.match(numberRegex);
+
+    const rethrowRank = Number(matchNumber[0]);
+    console.log("--------------------------------------------------Rethrow with magic rank "+rethrowRank);
+    return rethrowRank;
   }
 
   computeMagicObjectDropString(inputString: string): EMagicRank[] {
