@@ -16,25 +16,25 @@ export class CoinGenerator {
       encounterLvl,
       coinTable,
     );
-
+    const generationString = coinTable[line][column].toString();
     console.debug(
-      `Get coin generation for line ${line} and columns ${column}.`,
+      `Get coin generation for line ${line} and columns ${column}: ${generationString}.`,
     );
-    return this.computeCoinGenerationString(coinTable[line][column].toString());
+    return this.computeCoinGenerationString(generationString);
   }
 
   computeCoinGenerationString(inputString: string): string[] {
-    let formatedString = inputString;
-    formatedString = this.utils.replaceDiceValue(formatedString);
-    formatedString = this.utils.removeAverageInfo(formatedString);
-    formatedString = this.computeProduct(formatedString);
+    let formatedString = inputString; // Can be for example: '1d6 × 100 (350) pe 1d6 × 100 (350) po'
+    formatedString = this.utils.replaceDiceValue(formatedString); // After: '5 × 100 (350) pe 5 × 100 (350) po'
+    formatedString = this.utils.removeAverageInfo(formatedString); // After: '5 × 100 pe 5 × 100 po'
+    formatedString = this.computeProduct(formatedString); // After: '500 pe 500 po'
 
     return this.convertCoinStringToList(formatedString);
   }
 
   convertCoinStringToList(inputString: string): string[] {
     const coinElement = inputString.split(' ').filter(Boolean);
-
+    // Should contain pair (value, coin)
     if (coinElement.length % 2 !== 0) {
       console.error(
         'Error in coin string must be value/coin couple :' + inputString,
@@ -45,7 +45,7 @@ export class CoinGenerator {
     for (let index = 0; index < coinElement.length; index += 2) {
       const value = coinElement[index];
       const coin = coinElement[index + 1];
-      res.push(value + ' ' + coin);
+      res.push(value + ' ' + coin); // Stringify the values
     }
     return res;
   }
@@ -59,8 +59,9 @@ export class CoinGenerator {
       const element = splitString[index];
 
       let operator: string;
+      // word by triplet (Value x coef), so need to check under length -2
       if (index < splitString.length - 2) {
-        operator = splitString[index + 1];
+        operator = splitString[index + 1]; // operator at second place of triplet
       }
 
       //Can get two next element and we have a product
@@ -68,11 +69,12 @@ export class CoinGenerator {
         const leftNumber = Number(element);
         const rightNumber = Number(splitString[index + 2]);
 
-        if (leftNumber !== NaN && rightNumber !== NaN) {
+        if (!Number.isNaN(leftNumber) && !Number.isNaN(rightNumber)) {
           resArray.push((leftNumber * rightNumber).toString());
-          index += 3;
+          index += 3; // Go to next triplet
         }
       } else {
+        // No multiplication, just push result
         resArray.push(element);
         index++;
       }

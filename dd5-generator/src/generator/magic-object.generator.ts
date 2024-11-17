@@ -24,13 +24,14 @@ export class MagicObjectGenerator {
       encounterLvl,
       magicObjectDropTable,
     );
-
+    const magicObjectString = magicObjectDropTable[line][column].toString();
     console.debug(
-      `Get magic object drop generation for line ${line} and columns ${column}.`,
+      `Get magic object base table generation for line ${line} and columns ${column}: ${magicObjectString}.`,
     );
-    const magicObjToGenerate: EMagicRank[] = this.computeMagicObjectDropString(
-      magicObjectDropTable[line][column].toString(),
-    );
+    // Return magic object Rank array [OMX...]
+    const magicObjToGenerate: EMagicRank[] =
+      this.computeMagicObjectDropString(magicObjectString);
+
     return await this.computeMagicObjectsRank(magicObjToGenerate);
   }
 
@@ -54,6 +55,7 @@ export class MagicObjectGenerator {
         case EMagicRank.OM6:
         case EMagicRank.OM7:
         case EMagicRank.OM8:
+          console.debug(`Magic Rank not implement: ${magicRank}`);
           break;
         default:
           console.error('Wrong magic rank :' + magicRank);
@@ -66,20 +68,23 @@ export class MagicObjectGenerator {
 
   async generateMagicObjectByRank(magicRank: number): Promise<string> {
     const magicObjectTable: Row[] = await this.excelUtils.readExcelFile(
-      MAGIC_OBJECT_PATH.replace('$', magicRank.toString()),
+      MAGIC_OBJECT_PATH.replace('$', magicRank.toString()), // Get file MOX
     );
 
     const diceRoll = this.utils.rollDice(100);
     const line = this.excelUtils.getDiceRangeLine(diceRoll, magicObjectTable);
-    console.log(
-      'Generate rank ' + magicRank + ' magic object for line ' + line,
+
+    const magicObjectString = magicObjectTable[line][1].toString();
+    console.debug(
+      `Generate rank ${magicRank} magic object for line ${line}: ${magicObjectString}`,
     );
 
+    // Generate magic object categories if needed
     let generatedString = await this.computeMagicObjItemString(
-      magicObjectTable[line][1].toString(),
+      magicObjectString,
       magicRank,
     );
-
+    // Clean string
     generatedString = this.utils.replaceDiceValue(generatedString);
     generatedString = this.utils.removeAverageInfo(generatedString);
     return generatedString;
@@ -89,19 +94,31 @@ export class MagicObjectGenerator {
     inputString: string,
     magicRank: number,
   ): Promise<string> {
+    // We need to re-throw on new magic rank
     if (inputString.includes(RETHROW)) {
-      const newRank = this.getRethrowInfo(inputString);
-      return await this.generateMagicObjectByRank(newRank);
+      const newRankNb = this.getRethrowInfo(inputString);
+      if (newRankNb >= 3) {
+        console.debug(`Magic Rank not implement: OM${newRankNb}`);
+        return;
+      }
+      return await this.generateMagicObjectByRank(newRankNb);
     }
 
-    const subGenInfo = this.getSubGenerationInfo(inputString, magicRank);
-    if (subGenInfo.sheetPage !== -1) {
-      return await this.generateSubMagicObject(magicRank, subGenInfo);
+    const magicObjectCategoryInfo = this.getMagicItemCategoryInfo(
+      inputString,
+      magicRank,
+    );
+    // If we need to generate a magic item category (like scroll or potions, ect...)
+    if (magicObjectCategoryInfo.sheetPage !== -1) {
+      return await this.generateMagicObjectCategory(
+        magicRank,
+        magicObjectCategoryInfo,
+      );
     }
     return inputString;
   }
 
-  async generateSubMagicObject(
+  async generateMagicObjectCategory(
     magicRank: number,
     subGenInfo: {
       diceFace: number;
@@ -109,30 +126,33 @@ export class MagicObjectGenerator {
     },
   ): Promise<string> {
     const subGenerationTable: Row[] = await this.excelUtils.readExcelFile(
-      MAGIC_OBJECT_PATH.replace('$', magicRank.toString()),
-      subGenInfo.sheetPage,
+      MAGIC_OBJECT_PATH.replace('$', magicRank.toString()), // Get file MOX
+      subGenInfo.sheetPage, // Get the right page of category
     );
 
     const diceRoll = this.utils.rollDice(subGenInfo.diceFace);
     const line = this.excelUtils.getDiceRangeLine(diceRoll, subGenerationTable);
-
-    console.log('Sub generate magic object for line ' + line);
-    return subGenerationTable[line][1].toString();
+    const magicItemCategoryString = subGenerationTable[line][1].toString();
+    console.log(
+      `Generate magic object category for line ${line}: ${magicItemCategoryString}`,
+    );
+    return magicItemCategoryString;
   }
 
-  getSubGenerationInfo(
+  getMagicItemCategoryInfo(
     inputString: string,
     magicRank: number,
   ): {
     diceFace: number;
     sheetPage: number;
   } {
+    // If "lancer" is in string, it mean magic item category
     if (inputString.includes('(lancer')) {
-      const diceRegex = /\dd\d\d?/g; // Can be 1d20 or 1d10...
+      const diceRegex = /\dd\d\d?/g; // match 1d20 or 1d10...
       const diceMatch = inputString.match(diceRegex);
 
-      const diceFace = Number(diceMatch[0].split('d')[1]); // Right member X of 1dX
-      const sheetPage = this.getSheetPageOfSubGen(inputString, magicRank);
+      const diceFace = Number(diceMatch[0].split('d')[1]); // Right member X of 1dX (always 1d)
+      const sheetPage = this.getSheetPageOfCategory(inputString, magicRank);
 
       return { diceFace, sheetPage };
     } else {
@@ -141,7 +161,7 @@ export class MagicObjectGenerator {
     }
   }
 
-  getSheetPageOfSubGen(inputString: string, magicRank: number) {
+  getSheetPageOfCategory(inputString: string, magicRank: number) {
     if (magicRank === 1) {
       if (inputString.includes(POTION)) return 2;
       if (inputString.includes(SCROLL)) return 3;
@@ -160,7 +180,7 @@ export class MagicObjectGenerator {
     const matchNumber = inputString.match(numberRegex);
 
     const rethrowRank = Number(matchNumber[0]);
-    console.log('Rethrow with magic rank ' + rethrowRank);
+    console.log('Rethrow with magic rank: ' + rethrowRank);
     return rethrowRank;
   }
 
@@ -169,12 +189,13 @@ export class MagicObjectGenerator {
 
     const formatedString = this.utils.replaceDiceValue(inputString);
 
-    const numberRegex: RegExp = /(?<!OM)\d/g;
-    const magicRankRegex: RegExp = /OM\d/g;
+    const numberRegex: RegExp = /(?<!OM)\d/g; // Catch X (on X fois sur OMY)
+    const magicRankRegex: RegExp = /OM\d/g; // Catch OMY
 
     const matchNumber = formatedString.match(numberRegex);
     const matchMagicRank = formatedString.match(magicRankRegex);
 
+    // Work by pair (X/OMY)
     if (matchNumber.length != matchMagicRank.length) {
       console.error('Error missing number or magic rank in: ' + formatedString);
     }
@@ -188,7 +209,7 @@ export class MagicObjectGenerator {
         res.push(magicRank as unknown as EMagicRank);
       }
     }
-    console.debug('Generate magic object ' + res);
+    console.debug(`Generate magic object rank: ${res}`);
     return res;
   }
 }
