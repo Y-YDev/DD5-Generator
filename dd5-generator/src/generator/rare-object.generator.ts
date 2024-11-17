@@ -18,12 +18,15 @@ export class RareObjectGenerator {
     const diceRoll = this.utils.rollDice(100);
     const line = this.excelUtils.getDiceRangeLine(diceRoll, rareObjectTable);
 
-    console.debug(`Get object generation for line ${line}.`);
-
-    return this.computeRareObjectGenString(rareObjectTable[line][1].toString());
+    const rareObjectString = rareObjectTable[line][1].toString();
+    console.debug(
+      `Get rare object generation for line ${line}: ${rareObjectString}.`,
+    );
+    return this.computeRareObjectGenString(rareObjectString);
   }
 
-  async generateFullRareObjects(encounterLvl: number) {
+  // Generation in the rare object base table (which give number of rare item)
+  async generateCompleteRareObjects(encounterLvl: number) {
     const rareObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
       RARE_OBJECT_NB_FILE_PATH,
     );
@@ -36,9 +39,11 @@ export class RareObjectGenerator {
     const objectNumber = this.computeRareObjectNbGenString(
       rareObjectDropTable[line][column].toString(),
     );
-    console.debug('Generate ' + objectNumber + ' rare objects');
-
+    console.debug(
+      `Get rare object base table generation for line ${line} and columns ${column}: ${objectNumber} rare object.`,
+    );
     const res: string[] = [];
+    // Generate X rare object
     for (let i = 0; i < objectNumber; i++) {
       res.push(await this.generateRareObject());
     }
@@ -58,7 +63,7 @@ export class RareObjectGenerator {
 
   getRareObjectNumber(inputString: string): number {
     const numberRegex: RegExp = /\d/g;
-
+    // String like X objet(s) just get X
     const match = inputString.match(numberRegex);
     if (match === null) return 0;
 

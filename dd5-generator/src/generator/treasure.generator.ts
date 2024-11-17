@@ -18,13 +18,11 @@ export class TreasureGenerator {
       encounterLvl,
       treasureTable,
     );
-
+    const treasureString = treasureTable[line][column].toString();
     console.debug(
-      `Get treasure generation for line ${line} and columns ${column}.`,
+      `Get treasure generation for line ${line} and columns ${column}: ${treasureString}.`,
     );
-    return this.computeTreasureGenString(
-      treasureTable[line][column].toString(),
-    );
+    return this.computeTreasureGenString(treasureString);
   }
 
   computeTreasureGenString(inputString: string): string[] {
@@ -35,11 +33,13 @@ export class TreasureGenerator {
     }
     formatedString = this.utils.replaceDiceValue(formatedString);
     formatedString = this.utils.removeAverageInfo(formatedString);
-
+    // get treasure value to fetch
     const treasureValue: string = this.getTreasureCoinValue(formatedString);
+    // Get the treasure number
     const treasureNumber: number = this.getTreasureNumber(formatedString);
+    // Get the treasure type : gems or objects
     const treasureType: ETreasureType = this.getTreasureType(formatedString);
-
+    // Get treasure rewards possible
     const treasurePoolString: string = TREASURE[treasureType][treasureValue];
 
     const res: string[] = [];
@@ -51,7 +51,7 @@ export class TreasureGenerator {
   }
 
   getTreasureCoinValue(inputString: string): string {
-    const numberRegex: RegExp = /\d+.po/g;
+    const numberRegex: RegExp = /\d+.po/g; // Get XXXXpo
 
     const match = inputString.match(numberRegex);
     if (match === null) return 'Error';
@@ -60,7 +60,7 @@ export class TreasureGenerator {
   }
 
   getTreasureNumber(inputString: string): number {
-    const numberRegex: RegExp = /^\d+/g;
+    const numberRegex: RegExp = /^\d+/g; // Get XXXX
 
     const match = inputString.match(numberRegex);
     if (match === null) return -1;
@@ -78,7 +78,7 @@ export class TreasureGenerator {
 
   generateTreasureObject(treasurePool: string): string {
     const treasures: string[] = treasurePool.split(',').filter(Boolean);
-    const randomIndex = this.utils.rollDice(treasures.length) - 1; //== RandInt
+    const randomIndex = this.utils.rollDice(treasures.length) - 1; //== RandInt in pool
     return treasures[randomIndex];
   }
 }
