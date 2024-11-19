@@ -13,9 +13,19 @@ The file folder contains the generation tables used by the app (taken from the s
 
 ## How to run
 
-Go to "dd5-geneator" (`cd .\dd5-generator\`)  
-run `npm run start`  
-open `http://localhost:3000/`, refresh to rethrow treasures generation.
+Follow these steps to set up and run the application locally.
+
+### Prerequisites (tested on 19 November 2024)
+
+- Node.js v23.2.0
+- npm v10.9.0
+
+### Run
+
+- Go to `dd5-generator` directory (`cd .\dd5-generator\`)
+- Install the dependencies : `npm install`
+- Run the application `npm run start`
+- Open `http://localhost:3000/`, refresh to rethrow treasures generation.
 
 ## Screenshots
 
