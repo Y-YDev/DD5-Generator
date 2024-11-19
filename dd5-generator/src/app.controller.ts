@@ -44,6 +44,9 @@ export class AppController {
     res.push(...magicObj);
     console.debug(`Magic object generation: ${magicObj}`);
 
+    // const magicObj = await magicObjectGenerator.generateMagicObject(12);
+    // res.push(...magicObj);
+
     return res;
   }
 }
