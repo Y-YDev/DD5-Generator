@@ -8,6 +8,7 @@ const POTION = 'Potion';
 const AMMO = 'Munition';
 const SCROLL = 'Parchemin';
 const WEAPON = 'Arme';
+const ARMOR = 'Armure';
 const WAND = 'Baguette';
 const RETHROW = 'Relancer';
 
@@ -50,7 +51,11 @@ export class MagicObjectGenerator {
           res.push(await this.generateMagicObjectByRank(2));
           break;
         case EMagicRank.OM3:
+          res.push(await this.generateMagicObjectByRank(3));
+          break;
         case EMagicRank.OM4:
+          res.push(await this.generateMagicObjectByRank(4));
+          break;
         case EMagicRank.OM5:
         case EMagicRank.OM6:
         case EMagicRank.OM7:
@@ -90,6 +95,11 @@ export class MagicObjectGenerator {
     return generatedString;
   }
 
+  numberToMagicRank(x: number): EMagicRank | null {
+    const key = `OM${x}` as keyof typeof EMagicRank; // Construct the key dynamically
+    return EMagicRank[key] || null; // Return the enum value or null if invalid
+  }
+
   async computeMagicObjItemString(
     inputString: string,
     magicRank: number,
@@ -97,11 +107,13 @@ export class MagicObjectGenerator {
     // We need to re-throw on new magic rank
     if (inputString.includes(RETHROW)) {
       const newRankNb = this.getRethrowInfo(inputString);
-      if (newRankNb >= 3) {
-        console.debug(`Magic Rank not implement: OM${newRankNb}`);
+      const newMagicRank = this.numberToMagicRank(newRankNb);
+
+      if (newMagicRank === null) {
+        console.error(`Magic Rank doesn't exist:${newMagicRank}`);
         return;
       }
-      return await this.generateMagicObjectByRank(newRankNb);
+      return (await this.computeMagicObjectsRank([newMagicRank]))[0];
     }
 
     const magicObjectCategoryInfo = this.getMagicItemCategoryInfo(
@@ -171,6 +183,15 @@ export class MagicObjectGenerator {
       if (inputString.includes(SCROLL)) return 3;
       if (inputString.includes(WEAPON)) return 4;
       if (inputString.includes(WAND)) return 5;
+    } else if (magicRank === 3) {
+      if (inputString.includes(POTION)) return 2;
+      if (inputString.includes(ARMOR)) return 3;
+    } else if (magicRank === 4) {
+      if (inputString.includes(POTION)) return 2;
+      if (inputString.includes(SCROLL)) return 3;
+      if (inputString.includes(WEAPON)) return 4;
+      if (inputString.includes(ARMOR)) return 5;
+      if (inputString.includes(WAND)) return 6;
     }
     return -1;
   }
