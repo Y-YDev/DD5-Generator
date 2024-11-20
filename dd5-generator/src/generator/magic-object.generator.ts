@@ -16,6 +16,8 @@ const WAND = 'Baguette';
 const STAFF = 'Baton';
 const RETHROW = 'Relancer';
 const THROW = '(lancer';
+const MANUAL = 'Manuel';
+const ROD = 'Sceptre';
 
 export class MagicObjectGenerator {
   utils = new GeneratorUtils();
@@ -68,6 +70,8 @@ export class MagicObjectGenerator {
           res.push(await this.generateMagicObjectByRank(6));
           break;
         case EMagicRank.OM7:
+          res.push(await this.generateMagicObjectByRank(7));
+          break;
         case EMagicRank.OM8:
           console.debug(`Magic Rank not implement: ${magicRank}`);
           break;
@@ -212,6 +216,11 @@ export class MagicObjectGenerator {
       if (inputString.includes(WEAPON)) return 4;
       if (inputString.includes(ARMOR)) return 5;
       if (inputString.includes(IOUN)) return 6;
+    } else if (magicRank === 7) {
+      if (inputString.includes(RING)) return 2;
+      if (inputString.includes(STAFF)) return 3;
+      if (inputString.includes(MANUAL)) return 4;
+      if (inputString.includes(ROD)) return 5;
     }
     return -1;
   }
