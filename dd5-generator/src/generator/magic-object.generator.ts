@@ -65,6 +65,8 @@ export class MagicObjectGenerator {
           res.push(await this.generateMagicObjectByRank(5));
           break;
         case EMagicRank.OM6:
+          res.push(await this.generateMagicObjectByRank(6));
+          break;
         case EMagicRank.OM7:
         case EMagicRank.OM8:
           console.debug(`Magic Rank not implement: ${magicRank}`);
@@ -204,6 +206,12 @@ export class MagicObjectGenerator {
       if (inputString.includes(STAFF)) return 3;
       if (inputString.includes(FIGURINE)) return 4;
       if (inputString.includes(IOUN)) return 5;
+    } else if (magicRank === 6) {
+      if (inputString.includes(POTION)) return 2;
+      if (inputString.includes(SCROLL)) return 3;
+      if (inputString.includes(WEAPON)) return 4;
+      if (inputString.includes(ARMOR)) return 5;
+      if (inputString.includes(IOUN)) return 6;
     }
     return -1;
   }
