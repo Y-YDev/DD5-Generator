@@ -5,12 +5,17 @@ import { MAGIC_OBJECT_DROP_PATH, MAGIC_OBJECT_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../utils/generator.utils';
 
 const POTION = 'Potion';
+const RING = 'Anneau';
 const AMMO = 'Munition';
 const SCROLL = 'Parchemin';
 const WEAPON = 'Arme';
+const IOUN = 'ioun';
+const FIGURINE = 'Figurine';
 const ARMOR = 'Armure';
 const WAND = 'Baguette';
+const STAFF = 'Baton';
 const RETHROW = 'Relancer';
+const THROW = '(lancer';
 
 export class MagicObjectGenerator {
   utils = new GeneratorUtils();
@@ -57,6 +62,8 @@ export class MagicObjectGenerator {
           res.push(await this.generateMagicObjectByRank(4));
           break;
         case EMagicRank.OM5:
+          res.push(await this.generateMagicObjectByRank(5));
+          break;
         case EMagicRank.OM6:
         case EMagicRank.OM7:
         case EMagicRank.OM8:
@@ -159,7 +166,7 @@ export class MagicObjectGenerator {
     sheetPage: number;
   } {
     // If "lancer" is in string, it mean magic item category
-    if (inputString.includes('(lancer')) {
+    if (inputString.includes(THROW)) {
       const diceRegex = /\dd\d\d?/g; // match 1d20 or 1d10...
       const diceMatch = inputString.match(diceRegex);
 
@@ -192,6 +199,11 @@ export class MagicObjectGenerator {
       if (inputString.includes(WEAPON)) return 4;
       if (inputString.includes(ARMOR)) return 5;
       if (inputString.includes(WAND)) return 6;
+    } else if (magicRank === 5) {
+      if (inputString.includes(RING)) return 2;
+      if (inputString.includes(STAFF)) return 3;
+      if (inputString.includes(FIGURINE)) return 4;
+      if (inputString.includes(IOUN)) return 5;
     }
     return -1;
   }
@@ -208,17 +220,19 @@ export class MagicObjectGenerator {
   computeMagicObjectDropString(inputString: string): EMagicRank[] {
     if (inputString === '-') return [];
 
-    const formatedString = this.utils.replaceDiceValue(inputString);
+    const formattedString = this.utils.replaceDiceValue(inputString);
 
     const numberRegex: RegExp = /(?<!OM)\d/g; // Catch X (on X fois sur OMY)
     const magicRankRegex: RegExp = /OM\d/g; // Catch OMY
 
-    const matchNumber = formatedString.match(numberRegex);
-    const matchMagicRank = formatedString.match(magicRankRegex);
+    const matchNumber = formattedString.match(numberRegex);
+    const matchMagicRank = formattedString.match(magicRankRegex);
 
     // Work by pair (X/OMY)
     if (matchNumber.length != matchMagicRank.length) {
-      console.error('Error missing number or magic rank in: ' + formatedString);
+      console.error(
+        'Error missing number or magic rank in: ' + formattedString,
+      );
     }
 
     const res: EMagicRank[] = [];
