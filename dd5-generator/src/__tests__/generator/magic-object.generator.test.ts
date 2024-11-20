@@ -16,4 +16,11 @@ describe('MagicObjectGenerator', () => {
     expect(magicObject).toBeDefined();
     expect(magicObject.length).toBeGreaterThan(0);
   });
+
+  it('should generate a "Baguette de métamorphose" from rank 6 when rolled a 87', async () => {
+    jest.spyOn(magicObjectGenerator.utils, 'rollDice').mockReturnValue(87);
+    const magicObject = await magicObjectGenerator.generateMagicObjectByRank(6);
+    expect(magicObject).toBeDefined();
+    expect(magicObject).toBe('Baguette de métamorphose');
+  });
 });
