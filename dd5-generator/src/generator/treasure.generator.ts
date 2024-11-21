@@ -25,7 +25,7 @@ export class TreasureGenerator {
     return this.computeTreasureGenString(treasureString);
   }
 
-  computeTreasureGenString(inputString: string): string[] {
+  private computeTreasureGenString(inputString: string): string[] {
     let formatedString = inputString;
 
     if (inputString === '-') {
@@ -39,18 +39,19 @@ export class TreasureGenerator {
     const treasureNumber: number = this.getTreasureNumber(formatedString);
     // Get the treasure type : gems or objects
     const treasureType: ETreasureType = this.getTreasureType(formatedString);
-    // Get treasure rewards possible
-    const treasurePoolString: string = TREASURE[treasureType][treasureValue];
 
     const res: string[] = [];
     for (let index = 0; index < treasureNumber; index++) {
-      const treasureObject = this.generateTreasureObject(treasurePoolString);
+      const treasureObject = this.generateTreasureObject(
+        treasureType,
+        treasureValue,
+      );
       res.push(treasureObject);
     }
     return res;
   }
 
-  getTreasureCoinValue(inputString: string): string {
+  private getTreasureCoinValue(inputString: string): string {
     const numberRegex: RegExp = /\d+.po/g; // Get XXXXpo
 
     const match = inputString.match(numberRegex);
@@ -59,7 +60,7 @@ export class TreasureGenerator {
     return match[0].toString();
   }
 
-  getTreasureNumber(inputString: string): number {
+  private getTreasureNumber(inputString: string): number {
     const numberRegex: RegExp = /^\d+/g; // Get XXXX
 
     const match = inputString.match(numberRegex);
@@ -68,7 +69,7 @@ export class TreasureGenerator {
     return Number(match[0].toString());
   }
 
-  getTreasureType(inputString: string): ETreasureType {
+  private getTreasureType(inputString: string): ETreasureType {
     if (inputString.includes(ETreasureType.GEMS)) return ETreasureType.GEMS;
     if (inputString.includes(ETreasureType.ART_OBJECT))
       return ETreasureType.ART_OBJECT;
@@ -76,8 +77,14 @@ export class TreasureGenerator {
     return ETreasureType.UNKNOW;
   }
 
-  generateTreasureObject(treasurePool: string): string {
-    const treasures: string[] = treasurePool.split(',').filter(Boolean);
+  public generateTreasureObject(
+    treasureType: ETreasureType,
+    treasureValue: string,
+  ): string {
+    // Get treasure rewards possible
+    const treasurePoolString: string = TREASURE[treasureType][treasureValue];
+
+    const treasures: string[] = treasurePoolString.split(',').filter(Boolean);
     const randomIndex = this.utils.rollDice(treasures.length) - 1; //== RandInt in pool
     return treasures[randomIndex];
   }

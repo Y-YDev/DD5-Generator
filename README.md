@@ -7,8 +7,6 @@ It sets up a nestJs server that generates treasures on port 3000.
 
 Treasure generation is based on the following website: https://5e-drs.fr/les-tresors/
 
-The general drop table has not yet been implemented.
-
 The file folder contains the generation tables used by the app (taken from the site and formatted)
 
 ## How to run
@@ -31,3 +29,8 @@ Follow these steps to set up and run the application locally.
 
 ![alt text](image.png)
 ![alt text](image-2.png)
+
+## TODO :
+
+- Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
+- Handle individual generation by monsters for treasure A https://5e-drs.fr/les-tresors/#determiner-un-tresor
