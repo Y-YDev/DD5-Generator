@@ -58,7 +58,7 @@ export class CoinGenerator {
     while (index < splitString.length) {
       const element = splitString[index];
 
-      let operator: string;
+      let operator: string = '';
       // word by triplet (Value x coef), so need to check under length -2
       if (index < splitString.length - 2) {
         operator = splitString[index + 1]; // operator at second place of triplet

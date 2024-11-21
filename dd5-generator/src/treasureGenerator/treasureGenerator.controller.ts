@@ -1,8 +1,10 @@
 import {
+  ArgumentMetadata,
   BadRequestException,
   Controller,
   Get,
   ParseIntPipe,
+  PipeTransform,
   Query,
 } from '@nestjs/common';
 import { BaseTreasureGenerator } from './generator/base-treasure.generator';
@@ -12,6 +14,25 @@ import { RareObjectGenerator } from './generator/rare-object.generator';
 import { TreasureGenerator } from './generator/treasure.generator';
 import { GeneratorUtils } from './utils/generator.utils';
 
+class EncounterLevelParser implements PipeTransform {
+  generatorUtils: GeneratorUtils;
+
+  constructor() {
+    this.generatorUtils = new GeneratorUtils();
+  }
+  transform(value: any) {
+    let level: number;
+    if (value) {
+      level = parseInt(value, 10);
+      if (isNaN(level)) {
+        throw new BadRequestException('encounterLevel must be a valid number');
+      }
+    } else {
+      level = this.generatorUtils.rollDice(21) - 1; // Default logic
+    }
+    return level;
+  }
+}
 @Controller('/treasure')
 export class TreasureGeneratorController {
   generatorUtils: GeneratorUtils;
@@ -45,9 +66,8 @@ export class TreasureGeneratorController {
 
   @Get()
   async getBaseTreasureGeneration(
-    @Query('encounterLevel') encounterLevel?: string,
+    @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
-    const level = this.getEncounterLevel(encounterLevel);
     console.debug(`---------------------------------`);
     const treasure = await this.baseTreasureGenerator.generateWholeTreasure(
       level,
@@ -58,9 +78,8 @@ export class TreasureGeneratorController {
 
   @Get('/coin')
   async getCoinGeneration(
-    @Query('encounterLevel') encounterLevel?: string,
+    @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
-    const level = this.getEncounterLevel(encounterLevel);
     console.debug(`---------------------------------`);
     const coin = await this.coinGenerator.generateCoin(level);
     console.debug(`Coin generation for level ${level}: ${coin}`);
@@ -69,9 +88,8 @@ export class TreasureGeneratorController {
 
   @Get('/rare-object')
   async getRareObjGeneration(
-    @Query('encounterLevel') encounterLevel?: string,
+    @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
-    const level = this.getEncounterLevel(encounterLevel);
     console.debug(`---------------------------------`);
     const rareObj = await this.rareObjectGenerator.generateCompleteRareObjects(
       level,
@@ -90,9 +108,8 @@ export class TreasureGeneratorController {
 
   @Get('/individual-treasure')
   async getTreasureGeneration(
-    @Query('encounterLevel') encounterLevel?: string,
+    @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
-    const level = this.getEncounterLevel(encounterLevel);
     console.debug(`---------------------------------`);
     const individualTreasure = await this.treasureGenerator.generateTreasure(
       level,
@@ -105,9 +122,8 @@ export class TreasureGeneratorController {
 
   @Get('/magic-object')
   async getMagicObjectGeneration(
-    @Query('encounterLevel') encounterLevel?: string,
+    @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
-    const level = this.getEncounterLevel(encounterLevel);
     console.debug(`---------------------------------`);
     const magicObj = await this.magicObjectGenerator.generateMagicObject(level);
     console.debug(`Magic object generation for level ${level}: ${magicObj}`);
