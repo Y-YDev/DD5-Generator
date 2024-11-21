@@ -2,7 +2,7 @@ export class GeneratorUtils {
   replaceDiceValue(inputString: string): string {
     const diceRegex: RegExp = /\dd\d/g; // Regex to detect "XdY"
 
-    let match: RegExpExecArray;
+    let match: RegExpExecArray | null;
     let resString = inputString;
     while ((match = diceRegex.exec(resString)) != null) {
       const position = match.index;
@@ -15,7 +15,7 @@ export class GeneratorUtils {
     return resString;
   }
 
-  generateDiceValue(inputDiceString: string): number {
+  generateDiceValue(inputDiceString: string): number | undefined {
     // String must be XDY
     if (inputDiceString.length != 3) {
       console.error('Input dice string not in right format');
@@ -43,7 +43,7 @@ export class GeneratorUtils {
     // Detect "(XXX)" (at least one X)
     const infoRegex: RegExp = /\(\d+\)/g;
 
-    let match: RegExpExecArray;
+    let match: RegExpExecArray | null;
     let resString = inputString;
     while ((match = infoRegex.exec(resString)) != null) {
       const position = match.index;
