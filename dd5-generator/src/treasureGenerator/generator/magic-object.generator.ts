@@ -180,7 +180,7 @@ export class MagicObjectGenerator {
 
       if (newMagicRank === null) {
         console.error(`Magic Rank doesn't exist:${newMagicRank}`);
-        return;
+        return '';
       }
       return (await this.computeMagicObjectsRank([newMagicRank]))[0];
     }
@@ -230,9 +230,9 @@ export class MagicObjectGenerator {
     // If "lancer" is in string, it mean magic item category
     if (inputString.includes(THROW)) {
       const diceRegex = /\dd\d\d?/g; // match 1d20 or 1d10...
-      const diceMatch = inputString.match(diceRegex);
+      const diceMatch = inputString.match(diceRegex) ?? [];
 
-      const diceFace = Number(diceMatch[0].split('d')[1]); // Right member X of 1dX (always 1d)
+      const diceFace = Number(diceMatch[0]?.split('d')[1]); // Right member X of 1dX (always 1d)
       const sheetPage = this.getSheetPageOfCategory(inputString, magicRank);
 
       return { diceFace, sheetPage };
@@ -259,7 +259,7 @@ export class MagicObjectGenerator {
 
   private getRethrowInfo(inputString: string) {
     const numberRegex: RegExp = /\d/g;
-    const matchNumber = inputString.match(numberRegex);
+    const matchNumber = inputString.match(numberRegex) ?? [];
 
     const rethrowRank = Number(matchNumber[0]);
     console.log('Rethrow with magic rank: ' + rethrowRank);
@@ -277,15 +277,19 @@ export class MagicObjectGenerator {
     const matchNumber = formattedString.match(numberRegex);
     const matchMagicRank = formattedString.match(magicRankRegex);
 
+    if (matchNumber === null || matchMagicRank === null) {
+      return [];
+    }
+
     // Work by pair (X/OMY)
-    if (matchNumber.length != matchMagicRank.length) {
+    if (matchNumber?.length != matchMagicRank?.length) {
       console.error(
         'Error missing number or magic rank in: ' + formattedString,
       );
     }
 
     const res: EMagicRank[] = [];
-    for (let index = 0; index < matchNumber.length; index++) {
+    for (let index = 0; index < matchNumber?.length; index++) {
       const generationNumber = Number(matchNumber[index]);
       const magicRank = matchMagicRank[index];
 
