@@ -17,7 +17,7 @@ export class GeneratorUtils {
 
   generateDiceValue(inputDiceString: string): number | undefined {
     // String must be XDY
-    if (inputDiceString.length != 3) {
+    if (inputDiceString.length !== 3) {
       console.error('Input dice string not in right format');
       return undefined;
     }
