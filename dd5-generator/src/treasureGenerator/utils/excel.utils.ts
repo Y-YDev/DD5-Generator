@@ -1,5 +1,4 @@
-import readXlsxFile, { Row } from 'read-excel-file/node';
-import { Cell } from 'read-excel-file/types';
+import readXlsxFile, { CellValue, Row } from 'read-excel-file/node';
 import { GeneratorUtils } from './generator.utils';
 
 export class ExcelUtils {
@@ -27,7 +26,7 @@ export class ExcelUtils {
     // Start at 1 (ignore first column)
     for (let index = 1; index < encounterLevelsRange.length; index++) {
       // encounterRange string : "X à Y"
-      const encounterRange: Cell = encounterLevelsRange[index];
+      const encounterRange: CellValue = encounterLevelsRange[index];
       if (this.isInEncounterLevel(encounterLvl, encounterRange.toString())) {
         return index;
       }
@@ -41,7 +40,7 @@ export class ExcelUtils {
   getDiceRangeLine(diceRoll: number, table: Row[]) {
     // Ignore first line (info line)
     for (let index = 1; index < table.length; index++) {
-      const diceRange: Cell = table[index][0]; //First column
+      const diceRange: CellValue = table[index][0]; //First column
       // diceRange string : "X-Y"
       if (this.isInDiceRange(diceRoll, diceRange.toString())) {
         return index;

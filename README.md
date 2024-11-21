@@ -2,7 +2,6 @@
 
 ![output (1)](https://github.com/user-attachments/assets/87af1121-07fb-4930-b787-66b3271c9211)
 
-
 /!\ _This application is currently under development._
 
 This application is a treasure generation tool for Dungeon and Dragon 5th edition.  
@@ -26,10 +25,13 @@ Follow these steps to set up and run the application locally.
 - Go to `dd5-generator` directory (`cd .\dd5-generator\`)
 - Install the dependencies : `npm install`
 - Run the application `npm run start`
-- Open `http://localhost:3000/`, go to `http://localhost:3000/treasure` for treasure generation and refresh to rethrow generation.
+- Open `http://localhost:3000/`
 
-### Available options
-_WIP_ See swagger documentation  
+### Documentation
+
+Go to `http://localhost:3000/docs` to consult swagger documentation
+
+![alt text](image-1.png)
 
 ## Screenshots
 
@@ -40,5 +42,4 @@ _WIP_ See swagger documentation
 
 - Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
 - Handle individual generation by monsters for treasure A https://5e-drs.fr/les-tresors/#determiner-un-tresor
-- Add swagger for backend
 - Transform string result into object with meta-data (type, link to description, ...)

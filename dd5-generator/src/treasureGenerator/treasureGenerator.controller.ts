@@ -1,5 +1,4 @@
 import {
-  ArgumentMetadata,
   BadRequestException,
   Controller,
   Get,
@@ -13,6 +12,7 @@ import { MagicObjectGenerator } from './generator/magic-object.generator';
 import { RareObjectGenerator } from './generator/rare-object.generator';
 import { TreasureGenerator } from './generator/treasure.generator';
 import { GeneratorUtils } from './utils/generator.utils';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 class EncounterLevelParser implements PipeTransform {
   generatorUtils: GeneratorUtils;
@@ -33,6 +33,8 @@ class EncounterLevelParser implements PipeTransform {
     return level;
   }
 }
+
+@ApiTags('Treasure Generator')
 @Controller('/treasure')
 export class TreasureGeneratorController {
   generatorUtils: GeneratorUtils;
@@ -51,20 +53,17 @@ export class TreasureGeneratorController {
     this.baseTreasureGenerator = new BaseTreasureGenerator();
   }
 
-  private getEncounterLevel(levelString: string): number {
-    let level: number;
-    if (levelString) {
-      level = parseInt(levelString, 10);
-      if (isNaN(level)) {
-        throw new BadRequestException('encounterLevel must be a valid number');
-      }
-    } else {
-      level = this.generatorUtils.rollDice(21) - 1; // Default logic
-    }
-    return level;
-  }
-
   @Get()
+  @ApiOperation({
+    summary: 'General treasure generation',
+    description:
+      'This generates a whole treasure with all sorts of treasure objects.',
+  })
+  @ApiQuery({
+    name: 'encounterLevel',
+    type: Number,
+    description: 'The level of the encounter to compute the treasure item',
+  })
   async getBaseTreasureGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
@@ -77,6 +76,15 @@ export class TreasureGeneratorController {
   }
 
   @Get('/coin')
+  @ApiOperation({
+    summary: 'Coins treasure generation',
+    description: 'This generates coin treasure.',
+  })
+  @ApiQuery({
+    name: 'encounterLevel',
+    type: Number,
+    description: 'The level of the encounter to compute the treasure item',
+  })
   async getCoinGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
@@ -87,6 +95,15 @@ export class TreasureGeneratorController {
   }
 
   @Get('/rare-object')
+  @ApiOperation({
+    summary: 'Rares objects treasure generation',
+    description: 'This generates rares objects treasure.',
+  })
+  @ApiQuery({
+    name: 'encounterLevel',
+    type: Number,
+    description: 'The level of the encounter to compute the treasure item',
+  })
   async getRareObjGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
@@ -99,6 +116,10 @@ export class TreasureGeneratorController {
   }
 
   @Get('/rare-object/one')
+  @ApiOperation({
+    summary: 'Single rare object treasure generation',
+    description: 'This generates one rare object treasure.',
+  })
   async getOneRareObjGeneration(): Promise<string> {
     console.debug(`---------------------------------`);
     const rareObj = await this.rareObjectGenerator.generateRareObject();
@@ -107,6 +128,15 @@ export class TreasureGeneratorController {
   }
 
   @Get('/individual-treasure')
+  @ApiOperation({
+    summary: 'Individual treasures generation',
+    description: 'This generates individual treasure like gems or art rewards.',
+  })
+  @ApiQuery({
+    name: 'encounterLevel',
+    type: Number,
+    description: 'The level of the encounter to compute the treasure item',
+  })
   async getTreasureGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
@@ -121,6 +151,15 @@ export class TreasureGeneratorController {
   }
 
   @Get('/magic-object')
+  @ApiOperation({
+    summary: 'Magics objects treasure generation',
+    description: 'This generates magics objects.',
+  })
+  @ApiQuery({
+    name: 'encounterLevel',
+    type: Number,
+    description: 'The level of the encounter to compute the treasure item',
+  })
   async getMagicObjectGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<string[]> {
@@ -131,6 +170,15 @@ export class TreasureGeneratorController {
   }
 
   @Get('/magic-object/rank')
+  @ApiOperation({
+    summary: 'Magic object treasure generation by rank',
+    description: 'This generates a magic object of the given rank.',
+  })
+  @ApiQuery({
+    name: 'rank',
+    type: Number,
+    description: 'The magic rank for the magic object generation',
+  })
   async getRareObjGenerationByRank(
     @Query('rank', ParseIntPipe) rank: number,
   ): Promise<string> {
