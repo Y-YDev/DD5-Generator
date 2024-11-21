@@ -4,6 +4,9 @@ import { ExcelUtils } from '../utils/excel.utils';
 import { MAGIC_OBJECT_DROP_PATH, MAGIC_OBJECT_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../utils/generator.utils';
 
+const RETHROW = 'Relancer';
+const THROW = '(lancer';
+
 const POTION = 'Potion';
 const RING = 'Anneau';
 const AMMO = 'Munition';
@@ -14,18 +17,69 @@ const FIGURINE = 'Figurine';
 const ARMOR = 'Armure';
 const WAND = 'Baguette';
 const STAFF = 'Baton';
-const RETHROW = 'Relancer';
-const THROW = '(lancer';
 const MANUAL = 'Manuel';
 const ROD = 'Sceptre';
 const BALL = 'Boule';
 const TALISMAN = 'Talisman';
 
+const categoryPageByRank: { [key: number]: { [key: string]: number } } = {
+  1: {
+    [POTION]: 2,
+    [SCROLL]: 3,
+    [AMMO]: 4,
+  },
+  2: {
+    [POTION]: 2,
+    [SCROLL]: 3,
+    [WEAPON]: 4,
+    [WAND]: 5,
+  },
+  3: {
+    [POTION]: 2,
+    [ARMOR]: 3,
+  },
+  4: {
+    [POTION]: 2,
+    [SCROLL]: 3,
+    [WEAPON]: 4,
+    [ARMOR]: 5,
+    [WAND]: 6,
+  },
+  5: {
+    [RING]: 2,
+    [STAFF]: 3,
+    [FIGURINE]: 4,
+    [IOUN]: 5,
+  },
+  6: {
+    [POTION]: 2,
+    [SCROLL]: 3,
+    [WEAPON]: 4,
+    [ARMOR]: 5,
+    [IOUN]: 6,
+  },
+  7: {
+    [RING]: 2,
+    [STAFF]: 3,
+    [MANUAL]: 4,
+    [ROD]: 5,
+  },
+  8: {
+    [SCROLL]: 2,
+    [WEAPON]: 3,
+    [ARMOR]: 4,
+    [RING]: 5,
+    [BALL]: 6,
+    [IOUN]: 7,
+    [TALISMAN]: 8,
+  },
+};
+
 export class MagicObjectGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  async generateMagicObject(encounterLvl: number): Promise<string[]> {
+  public async generateMagicObject(encounterLvl: number): Promise<string[]> {
     const magicObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_DROP_PATH,
     );
@@ -45,7 +99,7 @@ export class MagicObjectGenerator {
     return await this.computeMagicObjectsRank(magicObjToGenerate);
   }
 
-  async computeMagicObjectsRank(
+  private async computeMagicObjectsRank(
     magicObjsToGenerate: EMagicRank[],
   ): Promise<string[]> {
     const res: string[] = [];
@@ -86,7 +140,7 @@ export class MagicObjectGenerator {
     return res;
   }
 
-  async generateMagicObjectByRank(magicRank: number): Promise<string> {
+  public async generateMagicObjectByRank(magicRank: number): Promise<string> {
     const magicObjectTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_PATH.replace('$', magicRank.toString()), // Get file MOX
     );
@@ -110,12 +164,12 @@ export class MagicObjectGenerator {
     return generatedString;
   }
 
-  numberToMagicRank(x: number): EMagicRank | null {
+  private numberToMagicRank(x: number): EMagicRank | null {
     const key = `OM${x}` as keyof typeof EMagicRank; // Construct the key dynamically
     return EMagicRank[key] || null; // Return the enum value or null if invalid
   }
 
-  async computeMagicObjItemString(
+  private async computeMagicObjItemString(
     inputString: string,
     magicRank: number,
   ): Promise<string> {
@@ -145,7 +199,7 @@ export class MagicObjectGenerator {
     return inputString;
   }
 
-  async generateMagicObjectCategory(
+  private async generateMagicObjectCategory(
     magicRank: number,
     subGenInfo: {
       diceFace: number;
@@ -166,7 +220,7 @@ export class MagicObjectGenerator {
     return magicItemCategoryString;
   }
 
-  getMagicItemCategoryInfo(
+  private getMagicItemCategoryInfo(
     inputString: string,
     magicRank: number,
   ): {
@@ -188,54 +242,22 @@ export class MagicObjectGenerator {
     }
   }
 
-  getSheetPageOfCategory(inputString: string, magicRank: number) {
-    if (magicRank === 1) {
-      if (inputString.includes(POTION)) return 2;
-      if (inputString.includes(SCROLL)) return 3;
-      if (inputString.includes(AMMO)) return 4;
-    } else if (magicRank === 2) {
-      if (inputString.includes(POTION)) return 2;
-      if (inputString.includes(SCROLL)) return 3;
-      if (inputString.includes(WEAPON)) return 4;
-      if (inputString.includes(WAND)) return 5;
-    } else if (magicRank === 3) {
-      if (inputString.includes(POTION)) return 2;
-      if (inputString.includes(ARMOR)) return 3;
-    } else if (magicRank === 4) {
-      if (inputString.includes(POTION)) return 2;
-      if (inputString.includes(SCROLL)) return 3;
-      if (inputString.includes(WEAPON)) return 4;
-      if (inputString.includes(ARMOR)) return 5;
-      if (inputString.includes(WAND)) return 6;
-    } else if (magicRank === 5) {
-      if (inputString.includes(RING)) return 2;
-      if (inputString.includes(STAFF)) return 3;
-      if (inputString.includes(FIGURINE)) return 4;
-      if (inputString.includes(IOUN)) return 5;
-    } else if (magicRank === 6) {
-      if (inputString.includes(POTION)) return 2;
-      if (inputString.includes(SCROLL)) return 3;
-      if (inputString.includes(WEAPON)) return 4;
-      if (inputString.includes(ARMOR)) return 5;
-      if (inputString.includes(IOUN)) return 6;
-    } else if (magicRank === 7) {
-      if (inputString.includes(RING)) return 2;
-      if (inputString.includes(STAFF)) return 3;
-      if (inputString.includes(MANUAL)) return 4;
-      if (inputString.includes(ROD)) return 5;
-    } else if (magicRank === 8) {
-      if (inputString.includes(SCROLL)) return 2;
-      if (inputString.includes(WEAPON)) return 3;
-      if (inputString.includes(ARMOR)) return 4;
-      if (inputString.includes(RING)) return 5;
-      if (inputString.includes(BALL)) return 6;
-      if (inputString.includes(IOUN)) return 7;
-      if (inputString.includes(TALISMAN)) return 8;
+  private getSheetPageOfCategory(
+    inputString: string,
+    magicRank: number,
+  ): number {
+    const pageByCategory = categoryPageByRank[magicRank];
+    if (pageByCategory) {
+      for (const categoryKey in pageByCategory) {
+        if (inputString.includes(categoryKey)) {
+          return pageByCategory[categoryKey];
+        }
+      }
     }
     return -1;
   }
 
-  getRethrowInfo(inputString: string) {
+  private getRethrowInfo(inputString: string) {
     const numberRegex: RegExp = /\d/g;
     const matchNumber = inputString.match(numberRegex);
 
@@ -244,7 +266,7 @@ export class MagicObjectGenerator {
     return rethrowRank;
   }
 
-  computeMagicObjectDropString(inputString: string): EMagicRank[] {
+  private computeMagicObjectDropString(inputString: string): EMagicRank[] {
     if (inputString === '-') return [];
 
     const formattedString = this.utils.replaceDiceValue(inputString);

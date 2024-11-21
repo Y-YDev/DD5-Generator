@@ -5,12 +5,12 @@ import { MagicObjectGenerator } from './generator/magic-object.generator';
 import { RareObjectGenerator } from './generator/rare-object.generator';
 import { TreasureGenerator } from './generator/treasure.generator';
 import { GeneratorUtils } from './utils/generator.utils';
+import { BaseTreasureGenerator } from './generator/base-treasure.generator';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  // WIP: base drop table has not been implemented.
   @Get()
   async getHello() {
     const generatorUtils = new GeneratorUtils();
@@ -18,6 +18,7 @@ export class AppController {
     const rareObjectGenerator = new RareObjectGenerator();
     const treasureGenerator = new TreasureGenerator();
     const magicObjectGenerator = new MagicObjectGenerator();
+    const baseTreasureGenerator = new BaseTreasureGenerator();
 
     // 21 -1 for a range between 0 and 20
     const lvl = generatorUtils.rollDice(21) - 1;
@@ -25,7 +26,7 @@ export class AppController {
 
     console.debug(`\nDraw level: ${lvl}`);
     console.debug('-------');
-    const coin = await coinGenerator.generateCoinRoll(lvl);
+    const coin = await coinGenerator.generateCoin(lvl);
     res.push(...coin);
     console.debug(`Coin generation: ${coin}`);
 
@@ -35,15 +36,19 @@ export class AppController {
     console.debug(`Rare object generation: ${rareObj}`);
 
     console.debug('-------');
-    const treasure = await treasureGenerator.generateTreasure(lvl);
-    res.push(...treasure);
-    console.debug(`Treasure generation: ${treasure}`);
+    const individualTreasure = await treasureGenerator.generateTreasure(lvl);
+    res.push(...individualTreasure);
+    console.debug(`Individual treasure generation: ${individualTreasure}`);
 
     console.debug('-------');
     const magicObj = await magicObjectGenerator.generateMagicObject(lvl);
     res.push(...magicObj);
     console.debug(`Magic object generation: ${magicObj}`);
 
-    return res;
+    console.debug('-------');
+    const treasure = await baseTreasureGenerator.generateWholeTreasure(lvl);
+    console.debug(`Treasure generation: ${treasure}`);
+
+    return treasure;
   }
 }

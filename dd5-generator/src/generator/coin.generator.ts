@@ -7,7 +7,7 @@ export class CoinGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  async generateCoinRoll(encounterLvl: number): Promise<string[]> {
+  public async generateCoin(encounterLvl: number): Promise<string[]> {
     const coinTable: Row[] = await this.excelUtils.readExcelFile(
       COIN_FILE_PATH,
     );
@@ -23,7 +23,7 @@ export class CoinGenerator {
     return this.computeCoinGenerationString(generationString);
   }
 
-  computeCoinGenerationString(inputString: string): string[] {
+  private computeCoinGenerationString(inputString: string): string[] {
     let formatedString = inputString; // Can be for example: '1d6 × 100 (350) pe 1d6 × 100 (350) po'
     formatedString = this.utils.replaceDiceValue(formatedString); // After: '5 × 100 (350) pe 5 × 100 (350) po'
     formatedString = this.utils.removeAverageInfo(formatedString); // After: '5 × 100 pe 5 × 100 po'
@@ -32,7 +32,7 @@ export class CoinGenerator {
     return this.convertCoinStringToList(formatedString);
   }
 
-  convertCoinStringToList(inputString: string): string[] {
+  private convertCoinStringToList(inputString: string): string[] {
     const coinElement = inputString.split(' ').filter(Boolean);
     // Should contain pair (value, coin)
     if (coinElement.length % 2 !== 0) {
@@ -50,7 +50,7 @@ export class CoinGenerator {
     return res;
   }
 
-  computeProduct(inputString: string): string {
+  private computeProduct(inputString: string): string {
     const splitString = inputString.split(' ').filter(Boolean);
     const resArray: string[] = [];
 

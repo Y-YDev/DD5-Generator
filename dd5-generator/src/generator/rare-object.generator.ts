@@ -10,7 +10,7 @@ export class RareObjectGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  async generateRareObject() {
+  public async generateRareObject() {
     const rareObjectTable: Row[] = await this.excelUtils.readExcelFile(
       RARE_OBJECT_FILE_PATH,
     );
@@ -26,7 +26,7 @@ export class RareObjectGenerator {
   }
 
   // Generation in the rare object base table (which give number of rare item)
-  async generateCompleteRareObjects(encounterLvl: number) {
+  public async generateCompleteRareObjects(encounterLvl: number) {
     const rareObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
       RARE_OBJECT_NB_FILE_PATH,
     );
@@ -50,18 +50,18 @@ export class RareObjectGenerator {
     return res;
   }
 
-  computeRareObjectGenString(inputString: string): string {
+  private computeRareObjectGenString(inputString: string): string {
     let res = inputString;
     res = this.utils.replaceDiceValue(res);
     return res;
   }
 
-  computeRareObjectNbGenString(inputString: string): number {
+  private computeRareObjectNbGenString(inputString: string): number {
     const computeString = this.utils.replaceDiceValue(inputString);
     return this.getRareObjectNumber(computeString);
   }
 
-  getRareObjectNumber(inputString: string): number {
+  private getRareObjectNumber(inputString: string): number {
     const numberRegex: RegExp = /\d/g;
     // String like X objet(s) just get X
     const match = inputString.match(numberRegex);
