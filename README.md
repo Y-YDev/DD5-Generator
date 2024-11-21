@@ -7,7 +7,7 @@ It sets up a nestJs server that generates treasures on port 3000.
 
 Treasure generation is based on the following website: https://5e-drs.fr/les-tresors/
 
-The general drop table has not yet been implemented and some ranks magic objects are missing.
+The general drop table has not yet been implemented.
 
 The file folder contains the generation tables used by the app (taken from the site and formatted)
 
