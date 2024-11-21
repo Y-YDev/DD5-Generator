@@ -23,7 +23,7 @@ Follow these steps to set up and run the application locally.
 - Go to `dd5-generator` directory (`cd .\dd5-generator\`)
 - Install the dependencies : `npm install`
 - Run the application `npm run start`
-- Open `http://localhost:3000/`, refresh to rethrow treasures generation.
+- Open `http://localhost:3000/`, go to `http://localhost:3000/treasure` for treasure generation and refresh to rethrow generation.
 
 ## Screenshots
 
