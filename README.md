@@ -28,6 +28,9 @@ Follow these steps to set up and run the application locally.
 - Run the application `npm run start`
 - Open `http://localhost:3000/`, go to `http://localhost:3000/treasure` for treasure generation and refresh to rethrow generation.
 
+### Available options
+_WIP_ See swagger documentation  
+
 ## Screenshots
 
 ![alt text](image.png)
@@ -37,3 +40,4 @@ Follow these steps to set up and run the application locally.
 
 - Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
 - Handle individual generation by monsters for treasure A https://5e-drs.fr/les-tresors/#determiner-un-tresor
+- Add swagger for backend
