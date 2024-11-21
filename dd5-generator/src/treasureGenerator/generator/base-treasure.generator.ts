@@ -1,11 +1,11 @@
 import { Row } from 'read-excel-file/node';
 import { ExcelUtils } from '../utils/excel.utils';
 import { BASE_TREASURE_FILE_PATH } from '../utils/file.const';
-import { GeneratorUtils } from '../utils/generator.utils';
 import { CoinGenerator } from './coin.generator';
 import { MagicObjectGenerator } from './magic-object.generator';
 import { RareObjectGenerator } from './rare-object.generator';
 import { TreasureGenerator } from './treasure.generator';
+import { GeneratorUtils } from '../utils/generator.utils';
 
 export class BaseTreasureGenerator {
   utils = new GeneratorUtils();
