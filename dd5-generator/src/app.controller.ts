@@ -10,7 +10,7 @@ import { GeneratorUtils } from './utils/generator.utils';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  // WIP: base drop table has not been implement as others magic object rank tables.
+  // WIP: base drop table has not been implemented.
   @Get()
   async getHello() {
     const generatorUtils = new GeneratorUtils();
@@ -43,9 +43,6 @@ export class AppController {
     const magicObj = await magicObjectGenerator.generateMagicObject(lvl);
     res.push(...magicObj);
     console.debug(`Magic object generation: ${magicObj}`);
-
-    // const magicObj = await magicObjectGenerator.generateMagicObject(12);
-    // res.push(...magicObj);
 
     return res;
   }
