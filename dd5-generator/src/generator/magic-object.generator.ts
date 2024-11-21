@@ -9,7 +9,7 @@ const RING = 'Anneau';
 const AMMO = 'Munition';
 const SCROLL = 'Parchemin';
 const WEAPON = 'Arme';
-const IOUN = 'ioun';
+const IOUN = 'Ioun';
 const FIGURINE = 'Figurine';
 const ARMOR = 'Armure';
 const WAND = 'Baguette';
@@ -18,6 +18,8 @@ const RETHROW = 'Relancer';
 const THROW = '(lancer';
 const MANUAL = 'Manuel';
 const ROD = 'Sceptre';
+const BALL = 'Boule';
+const TALISMAN = 'Talisman';
 
 export class MagicObjectGenerator {
   utils = new GeneratorUtils();
@@ -73,7 +75,7 @@ export class MagicObjectGenerator {
           res.push(await this.generateMagicObjectByRank(7));
           break;
         case EMagicRank.OM8:
-          console.debug(`Magic Rank not implement: ${magicRank}`);
+          res.push(await this.generateMagicObjectByRank(8));
           break;
         default:
           console.error('Wrong magic rank :' + magicRank);
@@ -221,6 +223,14 @@ export class MagicObjectGenerator {
       if (inputString.includes(STAFF)) return 3;
       if (inputString.includes(MANUAL)) return 4;
       if (inputString.includes(ROD)) return 5;
+    } else if (magicRank === 8) {
+      if (inputString.includes(SCROLL)) return 2;
+      if (inputString.includes(WEAPON)) return 3;
+      if (inputString.includes(ARMOR)) return 4;
+      if (inputString.includes(RING)) return 5;
+      if (inputString.includes(BALL)) return 6;
+      if (inputString.includes(IOUN)) return 7;
+      if (inputString.includes(TALISMAN)) return 8;
     }
     return -1;
   }
