@@ -55,7 +55,7 @@ export class ExcelUtils {
     const encounterElmt = encounterTitle.split(' ').filter(Boolean);
 
     // 3 elements should be X,à,Y
-    if (encounterElmt.length != 3) {
+    if (encounterElmt.length !== 3) {
       console.error('Encounter title string not in right format');
       return undefined;
     }

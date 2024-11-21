@@ -282,7 +282,7 @@ export class MagicObjectGenerator {
     }
 
     // Work by pair (X/OMY)
-    if (matchNumber?.length != matchMagicRank?.length) {
+    if (matchNumber.length !== matchMagicRank.length) {
       console.error(
         'Error missing number or magic rank in: ' + formattedString,
       );

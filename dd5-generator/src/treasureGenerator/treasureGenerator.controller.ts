@@ -20,7 +20,7 @@ class EncounterLevelParser implements PipeTransform {
   constructor() {
     this.generatorUtils = new GeneratorUtils();
   }
-  transform(value: any, metadata: ArgumentMetadata) {
+  transform(value: any) {
     let level: number;
     if (value) {
       level = parseInt(value, 10);
