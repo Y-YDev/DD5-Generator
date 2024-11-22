@@ -3,7 +3,7 @@ import { ExcelUtils } from '../utils/excel.utils';
 import { Row } from 'read-excel-file/node';
 import { COIN_FILE_PATH } from '../utils/file.const';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
-import { ETreasureType } from '../utils/enum';
+import { ECoinType, ETreasureType } from '../utils/enum';
 
 export class CoinGenerator {
   utils = new GeneratorUtils();
@@ -25,8 +25,23 @@ export class CoinGenerator {
     return this.computeCoinGenerationString(generationString).map((name) => ({
       name,
       type: ETreasureType.COIN,
+      metaData: { coinType: this.extractCoinType(name) },
     }));
   }
+
+  private extractCoinType = (input: string): ECoinType => {
+    const regex = /p[a-zA-Z]+/;
+    const match = input.match(regex);
+
+    if (match) {
+      // Get the matched coin type prefix (e.g., "po", "pa", etc.)
+      const coinType = match[0].toUpperCase(); // Convert to uppercase to match enum values
+      if (coinType in ECoinType) {
+        return ECoinType[coinType as keyof typeof ECoinType]; // Return the corresponding enum value
+      }
+    }
+    return ECoinType.PO; // Return PO if no match is found or if it's not a valid coin type
+  };
 
   private computeCoinGenerationString(inputString: string): string[] {
     let formattedString = inputString; // Can be for example: '1d6 × 100 (350) pe 1d6 × 100 (350) po'

@@ -29,3 +29,11 @@ export enum EMagicRank {
   OM7 = 'OM7',
   OM8 = 'OM8',
 }
+
+export enum ECoinType {
+  PC = 'PC',
+  PA = 'PA',
+  PE = 'PE',
+  PO = 'PO',
+  PP = 'PP',
+}

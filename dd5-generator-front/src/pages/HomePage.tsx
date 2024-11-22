@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import FlexBox from '../components/FlexBox';
-import MyButton from '../components/MyButton';
+import FlexBox from '../components/base-components/FlexBox';
+import MyButton from '../components/base-components/MyButton';
 
 export function HomePage() {
   const navigate = useNavigate();

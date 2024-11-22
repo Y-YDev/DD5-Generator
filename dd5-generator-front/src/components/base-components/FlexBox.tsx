@@ -1,5 +1,5 @@
 import { Box, BoxProps } from '@mui/material';
-import { ESize } from '../styles/size.enum';
+import { ESize } from '../../styles/size.enum';
 
 export default function FlexBox(props: BoxProps) {
   const { flexDirection, gap, padding, ...othersProps } = props;

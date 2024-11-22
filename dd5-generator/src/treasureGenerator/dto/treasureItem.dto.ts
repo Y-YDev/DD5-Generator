@@ -1,5 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ETreasureType } from '../utils/enum';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ECoinType, ETreasureType } from '../utils/enum';
+
+export class TreasureItemMetadataDto {
+  @ApiPropertyOptional({
+    description: 'price of the treasure item',
+    enum: ECoinType,
+    example: ECoinType.PO,
+  })
+  coinType?: ECoinType;
+}
 
 export class TreasureItemDto {
   @ApiProperty({
@@ -15,4 +24,17 @@ export class TreasureItemDto {
     example: ETreasureType.MAGIC_OBJECT,
   })
   type: ETreasureType;
+
+  @ApiPropertyOptional({
+    description: 'price of the treasure item',
+    type: String,
+    example: '500 po',
+  })
+  price?: string;
+
+  @ApiPropertyOptional({
+    description: 'metadata of the treasure item',
+    type: TreasureItemMetadataDto,
+  })
+  metaData?: TreasureItemMetadataDto;
 }

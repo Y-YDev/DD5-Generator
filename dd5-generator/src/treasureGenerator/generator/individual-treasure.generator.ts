@@ -6,27 +6,26 @@ import { GeneratorUtils } from '../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
 
 const TREASURE = {
-  //Gems
   gemme: {
-    '10 po': 'azurite,hématite,malachite,quartz bleu,turquoise',
-    '50 po': 'calcédoine,héliotrope,jaspe,onyx,zircon',
-    '100 po': 'ambre,améthyste,grenat,jade,perle,tourmaline',
-    '500 po': 'chrysobéryl,péridot,perle noire,spinelle,topaze',
-    '1000 po': 'émeraude,opale noire,opale de feu,rubis avec astérisme,saphir',
-    '5000 po': 'diamant,rubis,saphir noir',
+    '10 po': 'Azurite, Hématite, Malachite, Quartz bleu, Turquoise',
+    '50 po': 'Calcédoine, Héliotrope, Jaspe, Onyx, Zircon',
+    '100 po': 'Ambre, Améthyste, Grenat, Jade, Perle, Tourmaline',
+    '500 po': 'Chrysobéryl, Péridot, Perle noire, Spinelle, Topaze',
+    '1000 po':
+      'Émeraude, Opale noire, Opale de feu, Rubis avec astérisme, Saphir',
+    '5000 po': 'Diamant, Rubis, Saphir noir',
   },
-  //Art objects
   objet: {
     '25 po':
-      "statuette en os ou en bois rare,bracelet en or,calice en or,petit miroir d'argent,pendentif en électrum,portrait d'un noble",
+      "Statuette en os ou en bois rare, Bracelet en or, Calice en or, Petit miroir d'argent, Pendentif en électrum, Portrait d'un noble",
     '250 po':
-      "anneau en platine serti de jaspes,figurines en ivoire,couronne d'or et d'argent,statuette en jade,tapisserie brodée de fil d'or",
+      "Anneau en platine serti de jaspes, Figurines en ivoire, Couronne d'or et d'argent, Statuette en jade, Tapisserie brodée de fil d'or",
     '750 po':
-      "masque cérémoniel en or serti d'ambre,dague sacrificielle damasquinée de platine,idole en or aux yeux de perle",
+      "Masque cérémoniel en or serti d'ambre, Dague sacrificielle damasquinée de platine, Idole en or aux yeux de perle",
     '2500 po':
-      "pectoral en platine serti d'opales,gantelet ouvragé en or et argent,calice en or serti de perles,sculpture en marbre d'un grand maître",
+      "Pectoral en platine serti d'opales, Gantelet ouvragé en or et argent, Calice en or serti de perles, Sculpture en marbre d'un grand maître",
     '7500 po':
-      "couronne d'un empereur en platine sertie d'opales noires,cor de chasse en ivoire relevé d'or et de platine,dague sacrificielle dont la lame est une dent de dragon",
+      "Couronne d'un empereur en platine sertie d'opales noires, Cor de chasse en ivoire relevé d'or et de platine, Dague sacrificielle dont la lame est une dent de dragon",
   },
 };
 
@@ -49,13 +48,10 @@ export class IndividualTreasureGenerator {
     console.debug(
       `Get individual treasure generation for line ${line} and columns ${column}: ${indTreasureString}.`,
     );
-    return this.computeIndTreasureGenString(indTreasureString).map((name) => ({
-      name,
-      type: ETreasureType.INDIVIDUAL_TREASURE,
-    }));
+    return this.computeIndTreasureGenString(indTreasureString);
   }
 
-  private computeIndTreasureGenString(inputString: string): string[] {
+  private computeIndTreasureGenString(inputString: string): TreasureItemDto[] {
     let formattedString = inputString;
 
     if (inputString === '-') {
@@ -71,13 +67,9 @@ export class IndividualTreasureGenerator {
     const treasureType: EIndividualTreasureType =
       this.getIndTreasureType(formattedString);
 
-    const res: string[] = [];
+    const res: TreasureItemDto[] = [];
     for (let index = 0; index < treasureNumber; index++) {
-      const treasureObject = this.generateIndTreasureObject(
-        treasureType,
-        treasureValue,
-      );
-      res.push(treasureObject);
+      res.push(this.generateIndTreasureObject(treasureType, treasureValue));
     }
     return res;
   }
@@ -112,12 +104,20 @@ export class IndividualTreasureGenerator {
   public generateIndTreasureObject(
     treasureType: EIndividualTreasureType,
     treasureValue: string,
-  ): string {
+  ): TreasureItemDto {
     // Get treasure rewards possible
     const treasurePoolString: string = TREASURE[treasureType][treasureValue];
 
-    const treasures: string[] = treasurePoolString.split(',').filter(Boolean);
-    const randomIndex = this.utils.rollDice(treasures.length) - 1; //== RandInt in pool
-    return treasures[randomIndex];
+    const treasurePool: string[] = treasurePoolString
+      .split(',')
+      .filter(Boolean);
+    const randomIndex = this.utils.rollDice(treasurePool.length) - 1; //== RandInt in pool
+    const treasureName = treasurePool[randomIndex];
+
+    return {
+      name: treasureName,
+      type: ETreasureType.INDIVIDUAL_TREASURE,
+      price: treasureValue,
+    };
   }
 }

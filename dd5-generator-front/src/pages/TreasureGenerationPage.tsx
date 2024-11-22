@@ -2,9 +2,12 @@ import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import FlexBox from '../components/FlexBox';
-import MyButton from '../components/MyButton';
+import FlexBox from '../components/base-components/FlexBox';
+import MyButton from '../components/base-components/MyButton';
 import { ITreasureItem } from '../interfaces/treasureItem.interface';
+import SwordIcon from '../styles/icons/SwordIcon';
+import TreasureItemCard from '../components/treasure-generation/TreasureItemCard';
+import { ESize } from '../styles/size.enum';
 
 export function TreasureGenerationPage() {
   const navigate = useNavigate();
@@ -36,12 +39,14 @@ export function TreasureGenerationPage() {
       <Typography>TreasureGenerationPage</Typography>
       <MyButton onClick={handleGenerateClick}>Generate treasure</MyButton>
       {error && <Typography color="red">{error}</Typography>}
-      <Typography>
-        Data:
-        {loading
-          ? 'Loading...'
-          : generationData.map((item) => item.name).join(', ')}
-      </Typography>
+
+      <Typography>Data:</Typography>
+      {loading && <Typography>Loading...</Typography>}
+      <FlexBox gap={0}>
+        {generationData.map((item) => (
+          <TreasureItemCard treasureItem={item} />
+        ))}
+      </FlexBox>
     </FlexBox>
   );
 }
