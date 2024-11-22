@@ -7,6 +7,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Enable CORS
+  app.enableCors({
+    origin: 'http://localhost:4000', // React frontend's URL
+    methods: 'GET,POST,PUT,DELETE',
+  });
+
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('DD5 Generator Documentation')
