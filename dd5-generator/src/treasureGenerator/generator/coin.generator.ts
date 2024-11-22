@@ -2,12 +2,14 @@ import { GeneratorUtils } from '../utils/generator.utils';
 import { ExcelUtils } from '../utils/excel.utils';
 import { Row } from 'read-excel-file/node';
 import { COIN_FILE_PATH } from '../utils/file.const';
+import { TreasureItemDto } from '../dto/treasureItem.dto';
+import { ETreasureType } from '../utils/enum';
 
 export class CoinGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  public async generateCoin(encounterLvl: number): Promise<string[]> {
+  public async generateCoin(encounterLvl: number): Promise<TreasureItemDto[]> {
     const coinTable: Row[] = await this.excelUtils.readExcelFile(
       COIN_FILE_PATH,
     );
@@ -20,16 +22,19 @@ export class CoinGenerator {
     console.debug(
       `Get coin generation for line ${line} and columns ${column}: ${generationString}.`,
     );
-    return this.computeCoinGenerationString(generationString);
+    return this.computeCoinGenerationString(generationString).map((name) => ({
+      name,
+      type: ETreasureType.COIN,
+    }));
   }
 
   private computeCoinGenerationString(inputString: string): string[] {
-    let formatedString = inputString; // Can be for example: '1d6 × 100 (350) pe 1d6 × 100 (350) po'
-    formatedString = this.utils.replaceDiceValue(formatedString); // After: '5 × 100 (350) pe 5 × 100 (350) po'
-    formatedString = this.utils.removeAverageInfo(formatedString); // After: '5 × 100 pe 5 × 100 po'
-    formatedString = this.computeProduct(formatedString); // After: '500 pe 500 po'
+    let formattedString = inputString; // Can be for example: '1d6 × 100 (350) pe 1d6 × 100 (350) po'
+    formattedString = this.utils.replaceDiceValue(formattedString); // After: '5 × 100 (350) pe 5 × 100 (350) po'
+    formattedString = this.utils.removeAverageInfo(formattedString); // After: '5 × 100 pe 5 × 100 po'
+    formattedString = this.computeProduct(formattedString); // After: '500 pe 500 po'
 
-    return this.convertCoinStringToList(formatedString);
+    return this.convertCoinStringToList(formattedString);
   }
 
   private convertCoinStringToList(inputString: string): string[] {

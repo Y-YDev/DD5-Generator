@@ -5,12 +5,14 @@ import {
   RARE_OBJECT_NB_FILE_PATH,
 } from '../utils/file.const';
 import { GeneratorUtils } from '../utils/generator.utils';
+import { TreasureItemDto } from '../dto/treasureItem.dto';
+import { ETreasureType } from '../utils/enum';
 
 export class RareObjectGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  public async generateRareObject() {
+  public async generateRareObject(): Promise<TreasureItemDto> {
     const rareObjectTable: Row[] = await this.excelUtils.readExcelFile(
       RARE_OBJECT_FILE_PATH,
     );
@@ -22,11 +24,16 @@ export class RareObjectGenerator {
     console.debug(
       `Get rare object generation for line ${line}: ${rareObjectString}.`,
     );
-    return this.computeRareObjectGenString(rareObjectString);
+    return {
+      name: this.computeRareObjectGenString(rareObjectString),
+      type: ETreasureType.RARE_OBJECT,
+    };
   }
 
   // Generation in the rare object base table (which give number of rare item)
-  public async generateCompleteRareObjects(encounterLvl: number) {
+  public async generateCompleteRareObjects(
+    encounterLvl: number,
+  ): Promise<TreasureItemDto[]> {
     const rareObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
       RARE_OBJECT_NB_FILE_PATH,
     );
@@ -42,7 +49,7 @@ export class RareObjectGenerator {
     console.debug(
       `Get rare object base table generation for line ${line} and columns ${column}: ${objectNumber} rare object.`,
     );
-    const res: string[] = [];
+    const res: TreasureItemDto[] = [];
     // Generate X rare object
     for (let i = 0; i < objectNumber; i++) {
       res.push(await this.generateRareObject());

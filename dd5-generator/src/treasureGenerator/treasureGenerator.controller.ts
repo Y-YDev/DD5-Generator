@@ -6,13 +6,19 @@ import {
   PipeTransform,
   Query,
 } from '@nestjs/common';
-import { BaseTreasureGenerator } from './generator/base-treasure.generator';
+import { TreasureGenerator } from './generator/treasure.generator';
 import { CoinGenerator } from './generator/coin.generator';
 import { MagicObjectGenerator } from './generator/magic-object.generator';
 import { RareObjectGenerator } from './generator/rare-object.generator';
-import { TreasureGenerator } from './generator/treasure.generator';
+import { IndividualTreasureGenerator } from './generator/individual-treasure.generator';
 import { GeneratorUtils } from './utils/generator.utils';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { TreasureItemDto } from './dto/treasureItem.dto';
 
 class EncounterLevelParser implements PipeTransform {
   generatorUtils: GeneratorUtils;
@@ -40,17 +46,17 @@ export class TreasureGeneratorController {
   generatorUtils: GeneratorUtils;
   coinGenerator: CoinGenerator;
   rareObjectGenerator: RareObjectGenerator;
-  treasureGenerator: TreasureGenerator;
+  indTreasureGenerator: IndividualTreasureGenerator;
   magicObjectGenerator: MagicObjectGenerator;
-  baseTreasureGenerator: BaseTreasureGenerator;
+  treasureGenerator: TreasureGenerator;
 
   constructor() {
     this.generatorUtils = new GeneratorUtils();
     this.coinGenerator = new CoinGenerator();
     this.rareObjectGenerator = new RareObjectGenerator();
-    this.treasureGenerator = new TreasureGenerator();
+    this.indTreasureGenerator = new IndividualTreasureGenerator();
     this.magicObjectGenerator = new MagicObjectGenerator();
-    this.baseTreasureGenerator = new BaseTreasureGenerator();
+    this.treasureGenerator = new TreasureGenerator();
   }
 
   @Get()
@@ -64,14 +70,19 @@ export class TreasureGeneratorController {
     type: Number,
     description: 'The level of the encounter to compute the treasure item',
   })
-  async getBaseTreasureGeneration(
+  @ApiOkResponse({
+    description: 'The generated treasure item array',
+    type: TreasureItemDto,
+    isArray: true,
+  })
+  async getTreasureGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<string[]> {
+  ): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
-    const treasure = await this.baseTreasureGenerator.generateWholeTreasure(
-      level,
+    const treasure = await this.treasureGenerator.generateTreasure(level);
+    console.debug(
+      `Treasure generation for level ${level}: ${JSON.stringify(treasure)}`,
     );
-    console.debug(`Treasure generation for level ${level}: ${treasure}`);
     return treasure;
   }
 
@@ -85,12 +96,19 @@ export class TreasureGeneratorController {
     type: Number,
     description: 'The level of the encounter to compute the treasure item',
   })
+  @ApiOkResponse({
+    description: 'The generated treasure item array',
+    type: TreasureItemDto,
+    isArray: true,
+  })
   async getCoinGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<string[]> {
+  ): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
     const coin = await this.coinGenerator.generateCoin(level);
-    console.debug(`Coin generation for level ${level}: ${coin}`);
+    console.debug(
+      `Coin generation for level ${level}: ${JSON.stringify(coin)}`,
+    );
     return coin;
   }
 
@@ -104,14 +122,21 @@ export class TreasureGeneratorController {
     type: Number,
     description: 'The level of the encounter to compute the treasure item',
   })
+  @ApiOkResponse({
+    description: 'The generated treasure item array',
+    type: TreasureItemDto,
+    isArray: true,
+  })
   async getRareObjGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<string[]> {
+  ): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
     const rareObj = await this.rareObjectGenerator.generateCompleteRareObjects(
       level,
     );
-    console.debug(`Rare object generation for level ${level}: ${rareObj}`);
+    console.debug(
+      `Rare object generation for level ${level}: ${JSON.stringify(rareObj)}`,
+    );
     return rareObj;
   }
 
@@ -120,10 +145,16 @@ export class TreasureGeneratorController {
     summary: 'Single rare object treasure generation',
     description: 'This generates one rare object treasure.',
   })
-  async getOneRareObjGeneration(): Promise<string> {
+  @ApiOkResponse({
+    description: 'The generated treasure item',
+    type: TreasureItemDto,
+  })
+  async getOneRareObjGeneration(): Promise<TreasureItemDto> {
     console.debug(`---------------------------------`);
     const rareObj = await this.rareObjectGenerator.generateRareObject();
-    console.debug(`One rare object generation for level: ${rareObj}`);
+    console.debug(
+      `One rare object generation for level: ${JSON.stringify(rareObj)}`,
+    );
     return rareObj;
   }
 
@@ -137,15 +168,21 @@ export class TreasureGeneratorController {
     type: Number,
     description: 'The level of the encounter to compute the treasure item',
   })
-  async getTreasureGeneration(
+  @ApiOkResponse({
+    description: 'The generated treasure item array',
+    type: TreasureItemDto,
+    isArray: true,
+  })
+  async getIndividualTreasureGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<string[]> {
+  ): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
-    const individualTreasure = await this.treasureGenerator.generateTreasure(
-      level,
-    );
+    const individualTreasure =
+      await this.indTreasureGenerator.generateIndividualTreasure(level);
     console.debug(
-      `Individual treasure generation for level ${level}: ${individualTreasure}`,
+      `Individual treasure generation for level ${level}: ${JSON.stringify(
+        individualTreasure,
+      )}`,
     );
     return individualTreasure;
   }
@@ -160,12 +197,19 @@ export class TreasureGeneratorController {
     type: Number,
     description: 'The level of the encounter to compute the treasure item',
   })
+  @ApiOkResponse({
+    description: 'The generated treasure item array',
+    type: TreasureItemDto,
+    isArray: true,
+  })
   async getMagicObjectGeneration(
     @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<string[]> {
+  ): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
     const magicObj = await this.magicObjectGenerator.generateMagicObject(level);
-    console.debug(`Magic object generation for level ${level}: ${magicObj}`);
+    console.debug(
+      `Magic object generation for level ${level}: ${JSON.stringify(magicObj)}`,
+    );
     return magicObj;
   }
 
@@ -179,9 +223,13 @@ export class TreasureGeneratorController {
     type: Number,
     description: 'The magic rank for the magic object generation',
   })
+  @ApiOkResponse({
+    description: 'The generated treasure item',
+    type: TreasureItemDto,
+  })
   async getRareObjGenerationByRank(
     @Query('rank', ParseIntPipe) rank: number,
-  ): Promise<string> {
+  ): Promise<TreasureItemDto> {
     if (rank <= 0 || rank >= 9) {
       throw new BadRequestException('Magic rank must be between 0 and 9');
     }
@@ -189,7 +237,9 @@ export class TreasureGeneratorController {
     const magicObj = await this.magicObjectGenerator.generateMagicObjectByRank(
       rank,
     );
-    console.debug(`Magic object generation of rank ${rank}: ${magicObj}`);
+    console.debug(
+      `Magic object generation of rank ${rank}: ${JSON.stringify(magicObj)}`,
+    );
     return magicObj;
   }
 }

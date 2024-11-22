@@ -42,4 +42,3 @@ Go to `http://localhost:3000/docs` to consult swagger documentation
 
 - Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
 - Handle individual generation by monsters for treasure A https://5e-drs.fr/les-tresors/#determiner-un-tresor
-- Transform string result into object with meta-data (type, link to description, ...)

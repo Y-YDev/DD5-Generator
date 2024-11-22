@@ -7,9 +7,16 @@ export enum ECoin {
 }
 
 export enum ETreasureType {
+  COIN = 'COIN',
+  INDIVIDUAL_TREASURE = 'INDIVIDUAL_TREASURE',
+  RARE_OBJECT = 'RARE_OBJECT',
+  MAGIC_OBJECT = 'MAGIC_OBJECT',
+}
+
+export enum EIndividualTreasureType {
   GEMS = 'gemme',
   ART_OBJECT = 'objet',
-  UNKNOW = 'unknow',
+  UNKNOWN = 'unknown',
 }
 
 export enum EMagicRank {

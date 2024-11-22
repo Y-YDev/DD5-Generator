@@ -1,8 +1,9 @@
 import { Row } from 'read-excel-file/node';
-import { EMagicRank } from '../utils/enum';
+import { EMagicRank, ETreasureType } from '../utils/enum';
 import { ExcelUtils } from '../utils/excel.utils';
 import { MAGIC_OBJECT_DROP_PATH, MAGIC_OBJECT_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../utils/generator.utils';
+import { TreasureItemDto } from '../dto/treasureItem.dto';
 
 const RETHROW = 'Relancer';
 const THROW = '(lancer';
@@ -79,7 +80,9 @@ export class MagicObjectGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  public async generateMagicObject(encounterLvl: number): Promise<string[]> {
+  public async generateMagicObject(
+    encounterLvl: number,
+  ): Promise<TreasureItemDto[]> {
     const magicObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_DROP_PATH,
     );
@@ -101,46 +104,26 @@ export class MagicObjectGenerator {
 
   private async computeMagicObjectsRank(
     magicObjsToGenerate: EMagicRank[],
-  ): Promise<string[]> {
-    const res: string[] = [];
+  ): Promise<TreasureItemDto[]> {
+    const validRanks = Object.values(EMagicRank); // ['OM1', 'OM2', ..., 'OM8']
+    const res: TreasureItemDto[] = [];
 
-    for (let index = 0; index < magicObjsToGenerate.length; index++) {
-      const magicRank = magicObjsToGenerate[index];
-      switch (magicRank) {
-        case EMagicRank.OM1:
-          res.push(await this.generateMagicObjectByRank(1));
-          break;
-        case EMagicRank.OM2:
-          res.push(await this.generateMagicObjectByRank(2));
-          break;
-        case EMagicRank.OM3:
-          res.push(await this.generateMagicObjectByRank(3));
-          break;
-        case EMagicRank.OM4:
-          res.push(await this.generateMagicObjectByRank(4));
-          break;
-        case EMagicRank.OM5:
-          res.push(await this.generateMagicObjectByRank(5));
-          break;
-        case EMagicRank.OM6:
-          res.push(await this.generateMagicObjectByRank(6));
-          break;
-        case EMagicRank.OM7:
-          res.push(await this.generateMagicObjectByRank(7));
-          break;
-        case EMagicRank.OM8:
-          res.push(await this.generateMagicObjectByRank(8));
-          break;
-        default:
-          console.error('Wrong magic rank :' + magicRank);
-          res.push('-');
-          break;
+    for (const magicRank of magicObjsToGenerate) {
+      if (validRanks.includes(magicRank)) {
+        // Extract the numeric rank from the string, e.g., 'OM1' -> 1
+        const rankNumber = parseInt(magicRank.slice(2), 10);
+        res.push(await this.generateMagicObjectByRank(rankNumber));
+      } else {
+        console.error('Wrong magic rank:', magicRank);
       }
     }
+
     return res;
   }
 
-  public async generateMagicObjectByRank(magicRank: number): Promise<string> {
+  public async generateMagicObjectByRank(
+    magicRank: number,
+  ): Promise<TreasureItemDto> {
     const magicObjectTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_PATH.replace('$', magicRank.toString()), // Get file MOX
     );
@@ -161,7 +144,7 @@ export class MagicObjectGenerator {
     // Clean string
     generatedString = this.utils.replaceDiceValue(generatedString);
     generatedString = this.utils.removeAverageInfo(generatedString);
-    return generatedString;
+    return { name: generatedString, type: ETreasureType.MAGIC_OBJECT };
   }
 
   private numberToMagicRank(x: number): EMagicRank | null {
@@ -182,7 +165,7 @@ export class MagicObjectGenerator {
         console.error(`Magic Rank doesn't exist:${newMagicRank}`);
         return '';
       }
-      return (await this.computeMagicObjectsRank([newMagicRank]))[0];
+      return (await this.computeMagicObjectsRank([newMagicRank]))[0].name;
     }
 
     const magicObjectCategoryInfo = this.getMagicItemCategoryInfo(
@@ -271,7 +254,7 @@ export class MagicObjectGenerator {
 
     const formattedString = this.utils.replaceDiceValue(inputString);
 
-    const numberRegex: RegExp = /(?<!OM)\d/g; // Catch X (on X fois sur OMY)
+    const numberRegex: RegExp = /(?<!OM)\d/g; // Catch X (on X time on OMY)
     const magicRankRegex: RegExp = /OM\d/g; // Catch OMY
 
     const matchNumber = formattedString.match(numberRegex);
