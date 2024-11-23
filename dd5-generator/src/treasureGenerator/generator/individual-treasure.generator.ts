@@ -11,8 +11,7 @@ const TREASURE = {
     '50 po': 'Calcédoine, Héliotrope, Jaspe, Onyx, Zircon',
     '100 po': 'Ambre, Améthyste, Grenat, Jade, Perle, Tourmaline',
     '500 po': 'Chrysobéryl, Péridot, Perle noire, Spinelle, Topaze',
-    '1000 po':
-      'Émeraude, Opale noire, Opale de feu, Rubis avec astérisme, Saphir',
+    '1000 po': 'Émeraude, Opale noire, Opale de feu, Rubis avec astérisme, Saphir',
     '5000 po': 'Diamant, Rubis, Saphir noir',
   },
   objet: {
@@ -20,8 +19,7 @@ const TREASURE = {
       "Statuette en os ou en bois rare, Bracelet en or, Calice en or, Petit miroir d'argent, Pendentif en électrum, Portrait d'un noble",
     '250 po':
       "Anneau en platine serti de jaspes, Figurines en ivoire, Couronne d'or et d'argent, Statuette en jade, Tapisserie brodée de fil d'or",
-    '750 po':
-      "Masque cérémoniel en or serti d'ambre, Dague sacrificielle damasquinée de platine, Idole en or aux yeux de perle",
+    '750 po': "Masque cérémoniel en or serti d'ambre, Dague sacrificielle damasquinée de platine, Idole en or aux yeux de perle",
     '2500 po':
       "Pectoral en platine serti d'opales, Gantelet ouvragé en or et argent, Calice en or serti de perles, Sculpture en marbre d'un grand maître",
     '7500 po':
@@ -33,21 +31,12 @@ export class IndividualTreasureGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  async generateIndividualTreasure(
-    encounterLvl: number,
-  ): Promise<TreasureItemDto[]> {
-    const indTreasureTable: Row[] = await this.excelUtils.readExcelFile(
-      INDIVIDUAL_TREASURE_FILE_PATH,
-    );
+  async generateIndividualTreasure(encounterLvl: number): Promise<TreasureItemDto[]> {
+    const indTreasureTable: Row[] = await this.excelUtils.readExcelFile(INDIVIDUAL_TREASURE_FILE_PATH);
 
-    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
-      encounterLvl,
-      indTreasureTable,
-    );
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, indTreasureTable);
     const indTreasureString = indTreasureTable[line][column].toString();
-    console.debug(
-      `Get individual treasure generation for line ${line} and columns ${column}: ${indTreasureString}.`,
-    );
+    console.debug(`Get individual treasure generation for line ${line} and columns ${column}: ${indTreasureString}.`);
     return this.computeIndTreasureGenString(indTreasureString);
   }
 
@@ -64,8 +53,7 @@ export class IndividualTreasureGenerator {
     // Get the treasure number
     const treasureNumber: number = this.getIndTreasureNumber(formattedString);
     // Get the treasure type : gems or objects
-    const treasureType: EIndividualTreasureType =
-      this.getIndTreasureType(formattedString);
+    const treasureType: EIndividualTreasureType = this.getIndTreasureType(formattedString);
 
     const res: TreasureItemDto[] = [];
     for (let index = 0; index < treasureNumber; index++) {
@@ -93,24 +81,17 @@ export class IndividualTreasureGenerator {
   }
 
   private getIndTreasureType(inputString: string): EIndividualTreasureType {
-    if (inputString.includes(EIndividualTreasureType.GEMS))
-      return EIndividualTreasureType.GEMS;
-    if (inputString.includes(EIndividualTreasureType.ART_OBJECT))
-      return EIndividualTreasureType.ART_OBJECT;
+    if (inputString.includes(EIndividualTreasureType.GEMS)) return EIndividualTreasureType.GEMS;
+    if (inputString.includes(EIndividualTreasureType.ART_OBJECT)) return EIndividualTreasureType.ART_OBJECT;
 
     return EIndividualTreasureType.UNKNOWN;
   }
 
-  public generateIndTreasureObject(
-    treasureType: EIndividualTreasureType,
-    treasureValue: string,
-  ): TreasureItemDto {
+  public generateIndTreasureObject(treasureType: EIndividualTreasureType, treasureValue: string): TreasureItemDto {
     // Get treasure rewards possible
     const treasurePoolString: string = TREASURE[treasureType][treasureValue];
 
-    const treasurePool: string[] = treasurePoolString
-      .split(',')
-      .filter(Boolean);
+    const treasurePool: string[] = treasurePoolString.split(',').filter(Boolean);
     const randomIndex = this.utils.rollDice(treasurePool.length) - 1; //== RandInt in pool
     const treasureName = treasurePool[randomIndex];
 

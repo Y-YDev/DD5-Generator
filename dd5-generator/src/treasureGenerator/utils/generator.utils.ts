@@ -48,9 +48,7 @@ export class GeneratorUtils {
     while ((match = infoRegex.exec(resString)) != null) {
       const position = match.index;
       // Remove the (XXX) in the string
-      resString =
-        resString.substring(0, position) +
-        resString.substring(position + 1 + match[0].length); // +1 for remove space after (XX)
+      resString = resString.substring(0, position) + resString.substring(position + 1 + match[0].length); // +1 for remove space after (XX)
     }
     return resString;
   }

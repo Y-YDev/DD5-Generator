@@ -10,18 +10,11 @@ export class CoinGenerator {
   excelUtils = new ExcelUtils();
 
   public async generateCoin(encounterLvl: number): Promise<TreasureItemDto[]> {
-    const coinTable: Row[] = await this.excelUtils.readExcelFile(
-      COIN_FILE_PATH,
-    );
+    const coinTable: Row[] = await this.excelUtils.readExcelFile(COIN_FILE_PATH);
 
-    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
-      encounterLvl,
-      coinTable,
-    );
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, coinTable);
     const generationString = coinTable[line][column].toString();
-    console.debug(
-      `Get coin generation for line ${line} and columns ${column}: ${generationString}.`,
-    );
+    console.debug(`Get coin generation for line ${line} and columns ${column}: ${generationString}.`);
     return this.computeCoinGenerationString(generationString).map((name) => ({
       name,
       type: ETreasureType.COIN,
@@ -56,9 +49,7 @@ export class CoinGenerator {
     const coinElement = inputString.split(' ').filter(Boolean);
     // Should contain pair (value, coin)
     if (coinElement.length % 2 !== 0) {
-      console.error(
-        'Error in coin string must be value/coin couple :' + inputString,
-      );
+      console.error('Error in coin string must be value/coin couple :' + inputString);
     }
 
     const res: string[] = [];

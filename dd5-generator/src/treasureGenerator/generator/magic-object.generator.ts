@@ -80,31 +80,19 @@ export class MagicObjectGenerator {
   utils = new GeneratorUtils();
   excelUtils = new ExcelUtils();
 
-  public async generateMagicObject(
-    encounterLvl: number,
-  ): Promise<TreasureItemDto[]> {
-    const magicObjectDropTable: Row[] = await this.excelUtils.readExcelFile(
-      MAGIC_OBJECT_DROP_PATH,
-    );
+  public async generateMagicObject(encounterLvl: number): Promise<TreasureItemDto[]> {
+    const magicObjectDropTable: Row[] = await this.excelUtils.readExcelFile(MAGIC_OBJECT_DROP_PATH);
 
-    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
-      encounterLvl,
-      magicObjectDropTable,
-    );
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, magicObjectDropTable);
     const magicObjectString = magicObjectDropTable[line][column].toString();
-    console.debug(
-      `Get magic object base table generation for line ${line} and columns ${column}: ${magicObjectString}.`,
-    );
+    console.debug(`Get magic object base table generation for line ${line} and columns ${column}: ${magicObjectString}.`);
     // Return magic object Rank array [OMX...]
-    const magicObjToGenerate: EMagicRank[] =
-      this.computeMagicObjectDropString(magicObjectString);
+    const magicObjToGenerate: EMagicRank[] = this.computeMagicObjectDropString(magicObjectString);
 
     return await this.computeMagicObjectsRank(magicObjToGenerate);
   }
 
-  private async computeMagicObjectsRank(
-    magicObjsToGenerate: EMagicRank[],
-  ): Promise<TreasureItemDto[]> {
+  private async computeMagicObjectsRank(magicObjsToGenerate: EMagicRank[]): Promise<TreasureItemDto[]> {
     const validRanks = Object.values(EMagicRank); // ['OM1', 'OM2', ..., 'OM8']
     const res: TreasureItemDto[] = [];
 
@@ -121,9 +109,7 @@ export class MagicObjectGenerator {
     return res;
   }
 
-  public async generateMagicObjectByRank(
-    magicRank: number,
-  ): Promise<TreasureItemDto> {
+  public async generateMagicObjectByRank(magicRank: number): Promise<TreasureItemDto> {
     const magicObjectTable: Row[] = await this.excelUtils.readExcelFile(
       MAGIC_OBJECT_PATH.replace('$', magicRank.toString()), // Get file MOX
     );
@@ -132,15 +118,10 @@ export class MagicObjectGenerator {
     const line = this.excelUtils.getDiceRangeLine(diceRoll, magicObjectTable);
 
     const magicObjectString = magicObjectTable[line][1].toString();
-    console.debug(
-      `Generate rank ${magicRank} magic object for line ${line}: ${magicObjectString}`,
-    );
+    console.debug(`Generate rank ${magicRank} magic object for line ${line}: ${magicObjectString}`);
 
     // Generate magic object categories if needed
-    let generatedString = await this.computeMagicObjItemString(
-      magicObjectString,
-      magicRank,
-    );
+    let generatedString = await this.computeMagicObjItemString(magicObjectString, magicRank);
     // Clean string
     generatedString = this.utils.replaceDiceValue(generatedString);
     generatedString = this.utils.removeAverageInfo(generatedString);
@@ -152,10 +133,7 @@ export class MagicObjectGenerator {
     return EMagicRank[key] || null; // Return the enum value or null if invalid
   }
 
-  private async computeMagicObjItemString(
-    inputString: string,
-    magicRank: number,
-  ): Promise<string> {
+  private async computeMagicObjItemString(inputString: string, magicRank: number): Promise<string> {
     // We need to re-throw on new magic rank
     if (inputString.includes(RETHROW)) {
       const newRankNb = this.getRethrowInfo(inputString);
@@ -168,16 +146,10 @@ export class MagicObjectGenerator {
       return (await this.computeMagicObjectsRank([newMagicRank]))[0].name;
     }
 
-    const magicObjectCategoryInfo = this.getMagicItemCategoryInfo(
-      inputString,
-      magicRank,
-    );
+    const magicObjectCategoryInfo = this.getMagicItemCategoryInfo(inputString, magicRank);
     // If we need to generate a magic item category (like scroll or potions, ect...)
     if (magicObjectCategoryInfo.sheetPage !== -1) {
-      return await this.generateMagicObjectCategory(
-        magicRank,
-        magicObjectCategoryInfo,
-      );
+      return await this.generateMagicObjectCategory(magicRank, magicObjectCategoryInfo);
     }
     return inputString;
   }
@@ -197,9 +169,7 @@ export class MagicObjectGenerator {
     const diceRoll = this.utils.rollDice(subGenInfo.diceFace);
     const line = this.excelUtils.getDiceRangeLine(diceRoll, subGenerationTable);
     const magicItemCategoryString = subGenerationTable[line][1].toString();
-    console.log(
-      `Generate magic object category for line ${line}: ${magicItemCategoryString}`,
-    );
+    console.log(`Generate magic object category for line ${line}: ${magicItemCategoryString}`);
     return magicItemCategoryString;
   }
 
@@ -225,10 +195,7 @@ export class MagicObjectGenerator {
     }
   }
 
-  private getSheetPageOfCategory(
-    inputString: string,
-    magicRank: number,
-  ): number {
+  private getSheetPageOfCategory(inputString: string, magicRank: number): number {
     const pageByCategory = categoryPageByRank[magicRank];
     if (pageByCategory) {
       for (const categoryKey in pageByCategory) {
@@ -266,9 +233,7 @@ export class MagicObjectGenerator {
 
     // Work by pair (X/OMY)
     if (matchNumber.length !== matchMagicRank.length) {
-      console.error(
-        'Error missing number or magic rank in: ' + formattedString,
-      );
+      console.error('Error missing number or magic rank in: ' + formattedString);
     }
 
     const res: EMagicRank[] = [];
