@@ -16,9 +16,7 @@ async function bootstrap() {
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('DD5 Generator Documentation')
-    .setDescription(
-      'This application is a treasure generation tool for Dungeon and Dragon 5th edition.',
-    )
+    .setDescription('This application is a treasure generation tool for Dungeon and Dragon 5th edition.')
     .setVersion('1.0')
     .build();
 

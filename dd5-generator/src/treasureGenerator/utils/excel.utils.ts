@@ -8,10 +8,7 @@ export class ExcelUtils {
     return await readXlsxFile(path, { sheet: sheetPage });
   }
 
-  getGenerationLineAndColumn(
-    encounterLvl: number,
-    table: Row[],
-  ): { line: number; column: number } {
+  getGenerationLineAndColumn(encounterLvl: number, table: Row[]): { line: number; column: number } {
     // All dice roll are 20 faces
     const diceRoll = this.utils.rollDice(20);
 
@@ -31,9 +28,7 @@ export class ExcelUtils {
         return index;
       }
     }
-    console.error(
-      'No encounter level range was found for encounter level: ' + encounterLvl,
-    );
+    console.error('No encounter level range was found for encounter level: ' + encounterLvl);
     return -1;
   }
 

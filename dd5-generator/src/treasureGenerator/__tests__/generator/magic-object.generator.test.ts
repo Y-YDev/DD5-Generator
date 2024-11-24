@@ -33,10 +33,7 @@ describe('MagicObjectGenerator', () => {
   });
 
   it('should generate a "Anneau de régénération" from rank 7 when rolled a 11 then a 3', async () => {
-    jest
-      .spyOn(magicObjectGenerator.utils, 'rollDice')
-      .mockReturnValueOnce(11)
-      .mockReturnValueOnce(3);
+    jest.spyOn(magicObjectGenerator.utils, 'rollDice').mockReturnValueOnce(11).mockReturnValueOnce(3);
     const magicObject = await magicObjectGenerator.generateMagicObjectByRank(7);
     expect(magicObject).toBeDefined();
     expect(magicObject).toStrictEqual({
@@ -46,10 +43,7 @@ describe('MagicObjectGenerator', () => {
   });
 
   it('should generate a "Baton de givre" from rank 7 when rolled a 23 then a 6', async () => {
-    jest
-      .spyOn(magicObjectGenerator.utils, 'rollDice')
-      .mockReturnValueOnce(23)
-      .mockReturnValueOnce(6);
+    jest.spyOn(magicObjectGenerator.utils, 'rollDice').mockReturnValueOnce(23).mockReturnValueOnce(6);
     const magicObject = await magicObjectGenerator.generateMagicObjectByRank(7);
     expect(magicObject).toBeDefined();
     expect(magicObject).toStrictEqual({
@@ -59,10 +53,7 @@ describe('MagicObjectGenerator', () => {
   });
 
   it('should generate a "Traité de perspicacité" from rank 7 when rolled a 44 then a 19', async () => {
-    jest
-      .spyOn(magicObjectGenerator.utils, 'rollDice')
-      .mockReturnValueOnce(44)
-      .mockReturnValueOnce(19);
+    jest.spyOn(magicObjectGenerator.utils, 'rollDice').mockReturnValueOnce(44).mockReturnValueOnce(19);
     const magicObject = await magicObjectGenerator.generateMagicObjectByRank(7);
     expect(magicObject).toBeDefined();
     expect(magicObject).toStrictEqual({
@@ -72,10 +63,7 @@ describe('MagicObjectGenerator', () => {
   });
 
   it('should generate a "Sceptre de sécurité" from rank 7 when rolled a 58 then a 4', async () => {
-    jest
-      .spyOn(magicObjectGenerator.utils, 'rollDice')
-      .mockReturnValueOnce(58)
-      .mockReturnValueOnce(4);
+    jest.spyOn(magicObjectGenerator.utils, 'rollDice').mockReturnValueOnce(58).mockReturnValueOnce(4);
     const magicObject = await magicObjectGenerator.generateMagicObjectByRank(7);
     expect(magicObject).toBeDefined();
     expect(magicObject).toStrictEqual({

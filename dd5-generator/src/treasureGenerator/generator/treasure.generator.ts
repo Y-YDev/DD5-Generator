@@ -18,48 +18,30 @@ export class TreasureGenerator {
   magicObjectGenerator = new MagicObjectGenerator();
 
   async generateTreasure(encounterLvl: number): Promise<TreasureItemDto[]> {
-    const baseTable: Row[] = await this.excelUtils.readExcelFile(
-      TREASURE_FILE_PATH,
-    );
+    const baseTable: Row[] = await this.excelUtils.readExcelFile(TREASURE_FILE_PATH);
 
-    const { line, column } = this.excelUtils.getGenerationLineAndColumn(
-      encounterLvl,
-      baseTable,
-    );
+    const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, baseTable);
     const baseGenString = baseTable[line][column].toString();
-    console.debug(
-      `Get general generation for line ${line} and columns ${column}: ${baseGenString}.`,
-    );
+    console.debug(`Get general generation for line ${line} and columns ${column}: ${baseGenString}.`);
     return this.computeTreasureString(baseGenString, encounterLvl);
   }
 
-  async computeTreasureString(
-    inputString: string,
-    encounterLvl: number,
-  ): Promise<TreasureItemDto[]> {
+  async computeTreasureString(inputString: string, encounterLvl: number): Promise<TreasureItemDto[]> {
     const finalTreasure: TreasureItemDto[] = [];
     if (inputString.includes('A')) {
       const coinGen = await this.coinGenerator.generateCoin(encounterLvl);
       finalTreasure.push(...coinGen);
     }
     if (inputString.includes('B')) {
-      const rareObjGen =
-        await this.rareObjectGenerator.generateCompleteRareObjects(
-          encounterLvl,
-        );
+      const rareObjGen = await this.rareObjectGenerator.generateCompleteRareObjects(encounterLvl);
       finalTreasure.push(...rareObjGen);
     }
     if (inputString.includes('C')) {
-      const indTreasureGen =
-        await this.indTreasureGenerator.generateIndividualTreasure(
-          encounterLvl,
-        );
+      const indTreasureGen = await this.indTreasureGenerator.generateIndividualTreasure(encounterLvl);
       finalTreasure.push(...indTreasureGen);
     }
     if (inputString.includes('D')) {
-      const magicGen = await this.magicObjectGenerator.generateMagicObject(
-        encounterLvl,
-      );
+      const magicGen = await this.magicObjectGenerator.generateMagicObject(encounterLvl);
       finalTreasure.push(...magicGen);
     }
     return finalTreasure;

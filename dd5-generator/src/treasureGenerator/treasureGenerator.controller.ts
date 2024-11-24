@@ -1,23 +1,11 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  ParseIntPipe,
-  PipeTransform,
-  Query,
-} from '@nestjs/common';
+import { BadRequestException, Controller, Get, ParseIntPipe, PipeTransform, Query } from '@nestjs/common';
 import { TreasureGenerator } from './generator/treasure.generator';
 import { CoinGenerator } from './generator/coin.generator';
 import { MagicObjectGenerator } from './generator/magic-object.generator';
 import { RareObjectGenerator } from './generator/rare-object.generator';
 import { IndividualTreasureGenerator } from './generator/individual-treasure.generator';
 import { GeneratorUtils } from './utils/generator.utils';
-import {
-  ApiOkResponse,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TreasureItemDto } from './dto/treasureItem.dto';
 
 class EncounterLevelParser implements PipeTransform {
@@ -62,88 +50,77 @@ export class TreasureGeneratorController {
   @Get()
   @ApiOperation({
     summary: 'General treasure generation',
-    description:
-      'This generates a whole treasure with all sorts of treasure objects.',
+    description: 'Generates a whole treasure with all sorts of treasure objects.',
   })
   @ApiQuery({
     name: 'encounterLevel',
     type: Number,
-    description: 'The level of the encounter to compute the treasure item',
+    required: false,
+    description: 'Level of the encounter to compute a whole treasure (if not provided, a random level will be used)',
   })
   @ApiOkResponse({
     description: 'The generated treasure item array',
     type: TreasureItemDto,
     isArray: true,
   })
-  async getTreasureGeneration(
-    @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<TreasureItemDto[]> {
+  async getTreasureGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
     const treasure = await this.treasureGenerator.generateTreasure(level);
-    console.debug(
-      `Treasure generation for level ${level}: ${JSON.stringify(treasure)}`,
-    );
+    console.debug(`Treasure generation for level ${level}: ${JSON.stringify(treasure)}`);
     return treasure;
   }
 
   @Get('/coin')
   @ApiOperation({
     summary: 'Coins treasure generation',
-    description: 'This generates coin treasure.',
+    description: 'Generates coin treasure.',
   })
   @ApiQuery({
     name: 'encounterLevel',
     type: Number,
-    description: 'The level of the encounter to compute the treasure item',
+    required: false,
+    description: 'Level of the encounter to compute a coin treasure (if not provided, a random level will be used)',
   })
   @ApiOkResponse({
     description: 'The generated treasure item array',
     type: TreasureItemDto,
     isArray: true,
   })
-  async getCoinGeneration(
-    @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<TreasureItemDto[]> {
+  async getCoinGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
     const coin = await this.coinGenerator.generateCoin(level);
-    console.debug(
-      `Coin generation for level ${level}: ${JSON.stringify(coin)}`,
-    );
+    console.debug(`Coin generation for level ${level}: ${JSON.stringify(coin)}`);
     return coin;
   }
 
   @Get('/rare-object')
   @ApiOperation({
     summary: 'Rares objects treasure generation',
-    description: 'This generates rares objects treasure.',
+    description: 'Generates rares objects treasure.',
   })
   @ApiQuery({
     name: 'encounterLevel',
     type: Number,
-    description: 'The level of the encounter to compute the treasure item',
+    required: false,
+    description:
+      'Level of the encounter to compute a treasure made of rare objects (if not provided, a random level will be used)',
   })
   @ApiOkResponse({
     description: 'The generated treasure item array',
     type: TreasureItemDto,
     isArray: true,
   })
-  async getRareObjGeneration(
-    @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<TreasureItemDto[]> {
+  async getRareObjGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
-    const rareObj = await this.rareObjectGenerator.generateCompleteRareObjects(
-      level,
-    );
-    console.debug(
-      `Rare object generation for level ${level}: ${JSON.stringify(rareObj)}`,
-    );
+    const rareObj = await this.rareObjectGenerator.generateCompleteRareObjects(level);
+    console.debug(`Rare object generation for level ${level}: ${JSON.stringify(rareObj)}`);
     return rareObj;
   }
 
   @Get('/rare-object/one')
   @ApiOperation({
     summary: 'Single rare object treasure generation',
-    description: 'This generates one rare object treasure.',
+    description: 'Generates one single rare object',
   })
   @ApiOkResponse({
     description: 'The generated treasure item',
@@ -152,21 +129,20 @@ export class TreasureGeneratorController {
   async getOneRareObjGeneration(): Promise<TreasureItemDto> {
     console.debug(`---------------------------------`);
     const rareObj = await this.rareObjectGenerator.generateRareObject();
-    console.debug(
-      `One rare object generation for level: ${JSON.stringify(rareObj)}`,
-    );
+    console.debug(`One rare object generation for level: ${JSON.stringify(rareObj)}`);
     return rareObj;
   }
 
   @Get('/individual-treasure')
   @ApiOperation({
     summary: 'Individual treasures generation',
-    description: 'This generates individual treasure like gems or art rewards.',
+    description: 'Generates individual treasure like gems or art rewards.',
   })
   @ApiQuery({
     name: 'encounterLevel',
     type: Number,
-    description: 'The level of the encounter to compute the treasure item',
+    required: false,
+    description: 'Level of the encounter to compute individual treasures (if not provided, a random level will be used).',
   })
   @ApiOkResponse({
     description: 'The generated treasure item array',
@@ -177,46 +153,39 @@ export class TreasureGeneratorController {
     @Query('encounterLevel', EncounterLevelParser) level: number,
   ): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
-    const individualTreasure =
-      await this.indTreasureGenerator.generateIndividualTreasure(level);
-    console.debug(
-      `Individual treasure generation for level ${level}: ${JSON.stringify(
-        individualTreasure,
-      )}`,
-    );
+    const individualTreasure = await this.indTreasureGenerator.generateIndividualTreasure(level);
+    console.debug(`Individual treasure generation for level ${level}: ${JSON.stringify(individualTreasure)}`);
     return individualTreasure;
   }
 
   @Get('/magic-object')
   @ApiOperation({
     summary: 'Magics objects treasure generation',
-    description: 'This generates magics objects.',
+    description: 'Generates magics objects.',
   })
   @ApiQuery({
     name: 'encounterLevel',
     type: Number,
-    description: 'The level of the encounter to compute the treasure item',
+    required: false,
+    description:
+      'Level of the encounter to compute a treasure made of magic objects (if not provided, a random level will be used).',
   })
   @ApiOkResponse({
     description: 'The generated treasure item array',
     type: TreasureItemDto,
     isArray: true,
   })
-  async getMagicObjectGeneration(
-    @Query('encounterLevel', EncounterLevelParser) level: number,
-  ): Promise<TreasureItemDto[]> {
+  async getMagicObjectGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
     console.debug(`---------------------------------`);
     const magicObj = await this.magicObjectGenerator.generateMagicObject(level);
-    console.debug(
-      `Magic object generation for level ${level}: ${JSON.stringify(magicObj)}`,
-    );
+    console.debug(`Magic object generation for level ${level}: ${JSON.stringify(magicObj)}`);
     return magicObj;
   }
 
   @Get('/magic-object/rank')
   @ApiOperation({
     summary: 'Magic object treasure generation by rank',
-    description: 'This generates a magic object of the given rank.',
+    description: 'Generates a magic object of the given rank.',
   })
   @ApiQuery({
     name: 'rank',
@@ -227,19 +196,13 @@ export class TreasureGeneratorController {
     description: 'The generated treasure item',
     type: TreasureItemDto,
   })
-  async getRareObjGenerationByRank(
-    @Query('rank', ParseIntPipe) rank: number,
-  ): Promise<TreasureItemDto> {
+  async getRareObjGenerationByRank(@Query('rank', ParseIntPipe) rank: number): Promise<TreasureItemDto> {
     if (rank <= 0 || rank >= 9) {
       throw new BadRequestException('Magic rank must be between 0 and 9');
     }
     console.debug(`---------------------------------`);
-    const magicObj = await this.magicObjectGenerator.generateMagicObjectByRank(
-      rank,
-    );
-    console.debug(
-      `Magic object generation of rank ${rank}: ${JSON.stringify(magicObj)}`,
-    );
+    const magicObj = await this.magicObjectGenerator.generateMagicObjectByRank(rank);
+    console.debug(`Magic object generation of rank ${rank}: ${JSON.stringify(magicObj)}`);
     return magicObj;
   }
 }
