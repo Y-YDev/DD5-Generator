@@ -1,10 +1,12 @@
 import { ETreasureType } from '../../../utils/enum';
 import { TestTreasureGenerationData } from '../test-utils';
 
+const RANK = 8;
+
 export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   {
     firstRoll: 18,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: '1 sorts de 9e niveau',
       type: ETreasureType.MAGIC_OBJECT,
@@ -14,7 +16,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 33,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Marteau du tonnerre',
       type: ETreasureType.MAGIC_OBJECT,
@@ -23,7 +25,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 37,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: "Armure d'invulnérabilité",
       type: ETreasureType.MAGIC_OBJECT,
@@ -32,7 +34,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 52,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Anneau de triple souhait',
       type: ETreasureType.MAGIC_OBJECT,
@@ -41,7 +43,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 64,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Boule de cristal de télépathie',
       type: ETreasureType.MAGIC_OBJECT,
@@ -50,7 +52,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 68,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: "Pierre ioun d'absorption supérieure",
       type: ETreasureType.MAGIC_OBJECT,
@@ -59,7 +61,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 78,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Talisman du bien ultime',
       type: ETreasureType.MAGIC_OBJECT,
@@ -68,7 +70,7 @@ export const MAGIC_OBJECTS_RANK8: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 86,
-    rank: 8,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Cor du Valhalla de fer',
       type: ETreasureType.MAGIC_OBJECT,

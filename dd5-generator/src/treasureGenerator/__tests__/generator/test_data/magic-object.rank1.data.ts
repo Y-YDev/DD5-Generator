@@ -1,10 +1,12 @@
 import { ETreasureType } from '../../../utils/enum';
 import { TestTreasureGenerationData } from '../test-utils';
 
+const RANK = 1;
+
 export const MAGIC_OBJECTS_RANK1: TestTreasureGenerationData[] = [
   {
     firstRoll: 25,
-    rank: 1,
+    rank: RANK,
     expectedMagicObject: {
       name: "Potion d'escalade",
       type: ETreasureType.MAGIC_OBJECT,
@@ -13,7 +15,7 @@ export const MAGIC_OBJECTS_RANK1: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 54,
-    rank: 1,
+    rank: RANK,
     expectedMagicObject: {
       name: '2 tours de magie',
       type: ETreasureType.MAGIC_OBJECT,
@@ -23,7 +25,7 @@ export const MAGIC_OBJECTS_RANK1: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 88,
-    rank: 1,
+    rank: RANK,
     expectedMagicObject: {
       name: '6 munitions +1',
       type: ETreasureType.MAGIC_OBJECT,
@@ -33,7 +35,7 @@ export const MAGIC_OBJECTS_RANK1: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 95,
-    rank: 1,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Sac sans fond',
       type: ETreasureType.MAGIC_OBJECT,

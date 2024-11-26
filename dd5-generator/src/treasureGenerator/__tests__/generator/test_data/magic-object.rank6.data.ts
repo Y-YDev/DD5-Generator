@@ -1,10 +1,12 @@
 import { ETreasureType } from '../../../utils/enum';
 import { TestTreasureGenerationData } from '../test-utils';
 
+const RANK = 6;
+
 export const MAGIC_OBJECTS_RANK6: TestTreasureGenerationData[] = [
   {
     firstRoll: 87,
-    rank: 6,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Baguette de métamorphose',
       type: ETreasureType.MAGIC_OBJECT,
@@ -12,7 +14,7 @@ export const MAGIC_OBJECTS_RANK6: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 6,
-    rank: 6,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Potion de force de géant des nuages',
       type: ETreasureType.MAGIC_OBJECT,
@@ -21,7 +23,7 @@ export const MAGIC_OBJECTS_RANK6: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 23,
-    rank: 6,
+    rank: RANK,
     expectedMagicObject: {
       name: '3 sorts de 5e niveau',
       type: ETreasureType.MAGIC_OBJECT,
@@ -31,7 +33,7 @@ export const MAGIC_OBJECTS_RANK6: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 42,
-    rank: 6,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Cimeterre de célérité',
       type: ETreasureType.MAGIC_OBJECT,
@@ -40,7 +42,7 @@ export const MAGIC_OBJECTS_RANK6: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 68,
-    rank: 6,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Armure démoniaque',
       type: ETreasureType.MAGIC_OBJECT,
@@ -49,7 +51,7 @@ export const MAGIC_OBJECTS_RANK6: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 83,
-    rank: 6,
+    rank: RANK,
     expectedMagicObject: {
       name: "Pierre ioun d'intellect",
       type: ETreasureType.MAGIC_OBJECT,

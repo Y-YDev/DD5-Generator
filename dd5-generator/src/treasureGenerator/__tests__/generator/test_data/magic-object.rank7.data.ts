@@ -1,10 +1,12 @@
 import { ETreasureType } from '../../../utils/enum';
 import { TestTreasureGenerationData } from '../test-utils';
 
+const RANK = 7;
+
 export const MAGIC_OBJECTS_RANK7: TestTreasureGenerationData[] = [
   {
     firstRoll: 75,
-    rank: 7,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Fer gelé',
       type: ETreasureType.MAGIC_OBJECT,
@@ -12,7 +14,7 @@ export const MAGIC_OBJECTS_RANK7: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 11,
-    rank: 7,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Anneau de régénération',
       type: ETreasureType.MAGIC_OBJECT,
@@ -21,7 +23,7 @@ export const MAGIC_OBJECTS_RANK7: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 23,
-    rank: 7,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Baton de givre',
       type: ETreasureType.MAGIC_OBJECT,
@@ -30,7 +32,7 @@ export const MAGIC_OBJECTS_RANK7: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 44,
-    rank: 7,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Traité de perspicacité',
       type: ETreasureType.MAGIC_OBJECT,
@@ -39,7 +41,7 @@ export const MAGIC_OBJECTS_RANK7: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 58,
-    rank: 7,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Sceptre de sécurité',
       type: ETreasureType.MAGIC_OBJECT,

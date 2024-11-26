@@ -1,10 +1,12 @@
 import { ETreasureType } from '../../../utils/enum';
 import { TestTreasureGenerationData } from '../test-utils';
 
+const RANK = 2;
+
 export const MAGIC_OBJECTS_RANK2: TestTreasureGenerationData[] = [
   {
     firstRoll: 13,
-    rank: 2,
+    rank: RANK,
     expectedMagicObject: {
       name: "Potion d'agrandissement",
       type: ETreasureType.MAGIC_OBJECT,
@@ -13,7 +15,7 @@ export const MAGIC_OBJECTS_RANK2: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 31,
-    rank: 2,
+    rank: RANK,
     expectedMagicObject: {
       name: '4 sorts de 1er niveau',
       type: ETreasureType.MAGIC_OBJECT,
@@ -23,7 +25,7 @@ export const MAGIC_OBJECTS_RANK2: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 58,
-    rank: 2,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Bouclier +1',
       type: ETreasureType.MAGIC_OBJECT,
@@ -32,7 +34,7 @@ export const MAGIC_OBJECTS_RANK2: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 64,
-    rank: 2,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Baguette des secrets',
       type: ETreasureType.MAGIC_OBJECT,

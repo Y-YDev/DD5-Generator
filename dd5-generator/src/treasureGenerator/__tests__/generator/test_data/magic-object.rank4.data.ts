@@ -1,10 +1,12 @@
 import { ETreasureType } from '../../../utils/enum';
 import { TestTreasureGenerationData } from '../test-utils';
 
+const RANK = 4;
+
 export const MAGIC_OBJECTS_RANK4: TestTreasureGenerationData[] = [
   {
     firstRoll: 8,
-    rank: 4,
+    rank: RANK,
     expectedMagicObject: {
       name: "Potion d'héroïsme",
       type: ETreasureType.MAGIC_OBJECT,
@@ -13,7 +15,7 @@ export const MAGIC_OBJECTS_RANK4: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 39,
-    rank: 4,
+    rank: RANK,
     expectedMagicObject: {
       name: '4 sorts de 4e niveau',
       type: ETreasureType.MAGIC_OBJECT,
@@ -23,7 +25,7 @@ export const MAGIC_OBJECTS_RANK4: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 54,
-    rank: 4,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Hache de berserker',
       type: ETreasureType.MAGIC_OBJECT,
@@ -32,7 +34,7 @@ export const MAGIC_OBJECTS_RANK4: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 62,
-    rank: 4,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Chemise de mailles elfique',
       type: ETreasureType.MAGIC_OBJECT,
@@ -41,7 +43,7 @@ export const MAGIC_OBJECTS_RANK4: TestTreasureGenerationData[] = [
   },
   {
     firstRoll: 79,
-    rank: 4,
+    rank: RANK,
     expectedMagicObject: {
       name: 'Baguette entoilée',
       type: ETreasureType.MAGIC_OBJECT,
