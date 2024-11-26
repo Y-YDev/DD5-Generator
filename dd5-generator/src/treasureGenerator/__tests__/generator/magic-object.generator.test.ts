@@ -7,6 +7,7 @@ import { MAGIC_OBJECTS_RANK4 } from './test_data/magic-object.rank4.data';
 import { MAGIC_OBJECTS_RANK5 } from './test_data/magic-object.rank5.data';
 import { MAGIC_OBJECTS_RANK6 } from './test_data/magic-object.rank6.data';
 import { MAGIC_OBJECTS_RANK7 } from './test_data/magic-object.rank7.data';
+import { MAGIC_OBJECTS_RANK8 } from './test_data/magic-object.rank8.data';
 
 const SECONDS = 1000;
 jest.setTimeout(10 * SECONDS); // Allow 10 seconds timeout since we are testing all the ranks
@@ -19,6 +20,7 @@ const testCases = [
   { rankName: 'Rank 4', testData: MAGIC_OBJECTS_RANK4 },
   { rankName: 'Rank 6', testData: MAGIC_OBJECTS_RANK6 },
   { rankName: 'Rank 7', testData: MAGIC_OBJECTS_RANK7 },
+  { rankName: 'Rank 8', testData: MAGIC_OBJECTS_RANK8 },
 ];
 
 describe('MagicObjectGenerator', () => {
