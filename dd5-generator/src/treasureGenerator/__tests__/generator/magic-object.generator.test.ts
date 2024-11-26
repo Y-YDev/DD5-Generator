@@ -3,6 +3,7 @@ import { generateTestName } from './test-utils';
 import { MAGIC_OBJECTS_RANK1 } from './test_data/magic-object.rank1.data';
 import { MAGIC_OBJECTS_RANK2 } from './test_data/magic-object.rank2.data';
 import { MAGIC_OBJECTS_RANK3 } from './test_data/magic-object.rank3.data';
+import { MAGIC_OBJECTS_RANK4 } from './test_data/magic-object.rank4.data';
 import { MAGIC_OBJECTS_RANK6 } from './test_data/magic-object.rank6.data';
 import { MAGIC_OBJECTS_RANK7 } from './test_data/magic-object.rank7.data';
 
@@ -13,6 +14,7 @@ const testCases = [
   { rankName: 'Rank 1', testData: MAGIC_OBJECTS_RANK1 },
   { rankName: 'Rank 2', testData: MAGIC_OBJECTS_RANK2 },
   { rankName: 'Rank 3', testData: MAGIC_OBJECTS_RANK3 },
+  { rankName: 'Rank 4', testData: MAGIC_OBJECTS_RANK4 },
   { rankName: 'Rank 6', testData: MAGIC_OBJECTS_RANK6 },
   { rankName: 'Rank 7', testData: MAGIC_OBJECTS_RANK7 },
 ];
