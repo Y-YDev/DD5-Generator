@@ -38,6 +38,16 @@ Go to `http://localhost:3000/docs` to consult swagger documentation
 ![alt text](image.png)
 ![alt text](image-2.png)
 
+### Test
+
+- Go to `dd5-generator` directory (`cd .\dd5-generator\`)
+- Install the dependencies : `npm install`
+- Run the test `npm run test`
+- The run generates an HTML report in the folder `html-report`
+
+**Example of report:**
+![test report](./doc/images/test-report.png)
+
 ## TODO :
 
 - Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
