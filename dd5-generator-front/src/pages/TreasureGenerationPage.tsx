@@ -5,6 +5,7 @@ import FlexBox from '../components/base-components/FlexBox';
 import MyButton from '../components/base-components/MyButton';
 import TreasureItemCard from '../components/treasure-generation/TreasureItemCard';
 import { ITreasureItem } from '../interfaces/treasureItem.interface';
+import { ESize } from '../styles/size.enum';
 
 export function TreasureGenerationPage() {
   const [encounterLvl, setEncounterLvl] = useState<string>();
@@ -37,9 +38,9 @@ export function TreasureGenerationPage() {
 
   return (
     <FlexBox takeRemainingSpace>
-      <Typography variant="h5">TreasureGenerationPage</Typography>
+      <Typography variant="h5">Treasure Generation</Typography>
       <Typography variant="body2" fontStyle={'italic'}>
-        No encounter level given mean random level
+        No encounter level given mean random level between 0 and 20
       </Typography>
       <TextField
         sx={{ width: 300 }}
@@ -50,9 +51,15 @@ export function TreasureGenerationPage() {
       />
       <MyButton onClick={handleGenerateClick}>Generate treasure</MyButton>
       {error && <Typography color="red">{error}</Typography>}
-      <Typography>Data:</Typography>
+      {generationData.length > 0 && <Typography>Data:</Typography>}
       {loading && <Typography>Loading...</Typography>}
-      <FlexBox gap={0} overflow={'auto'} width={500} flex={1}>
+      <FlexBox
+        gap={ESize.x2s}
+        overflow={'auto'}
+        width={500}
+        flex={1}
+        padding={0}
+      >
         {generationData.map((item) => (
           <TreasureItemCard treasureItem={item} />
         ))}
