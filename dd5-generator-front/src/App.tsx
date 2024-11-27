@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { TreasureGenerationPage } from './pages/TreasureGenerationPage';
 import FlexBox from './components/base-components/FlexBox';
 import SideMenu from './components/navigation/SideMenu';
+import TreasureGenDocsPage from './pages/TreasureGenDocs';
 
 function App() {
   return (
@@ -11,6 +12,10 @@ function App() {
       <FlexBox takeRemainingSpace overflow={'auto'}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route
+            path="/treasure-generation/docs"
+            element={<TreasureGenDocsPage />}
+          />
           <Route
             path="/treasure-generation"
             element={<TreasureGenerationPage />}

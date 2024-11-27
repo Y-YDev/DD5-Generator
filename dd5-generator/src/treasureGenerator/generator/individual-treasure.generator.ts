@@ -5,8 +5,11 @@ import { INDIVIDUAL_TREASURE_FILE_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
 
+const OBJECT_STRING = 'objet';
+const GEM_STRING = 'gemme';
+
 const TREASURE = {
-	gemme: {
+	[EIndividualTreasureType.GEMS]: {
 		'10 po': 'Azurite, Hématite, Malachite, Quartz bleu, Turquoise',
 		'50 po': 'Calcédoine, Héliotrope, Jaspe, Onyx, Zircon',
 		'100 po': 'Ambre, Améthyste, Grenat, Jade, Perle, Tourmaline',
@@ -14,7 +17,7 @@ const TREASURE = {
 		'1000 po': 'Émeraude, Opale noire, Opale de feu, Rubis avec astérisme, Saphir',
 		'5000 po': 'Diamant, Rubis, Saphir noir',
 	},
-	objet: {
+	[EIndividualTreasureType.ART_OBJECT]: {
 		'25 po':
 			"Statuette en os ou en bois rare, Bracelet en or, Calice en or, Petit miroir d'argent, Pendentif en électrum, Portrait d'un noble",
 		'250 po':
@@ -81,8 +84,8 @@ export class IndividualTreasureGenerator {
 	}
 
 	private getIndTreasureType(inputString: string): EIndividualTreasureType {
-		if (inputString.includes(EIndividualTreasureType.GEMS)) return EIndividualTreasureType.GEMS;
-		if (inputString.includes(EIndividualTreasureType.ART_OBJECT)) return EIndividualTreasureType.ART_OBJECT;
+		if (inputString.includes(GEM_STRING)) return EIndividualTreasureType.GEMS;
+		if (inputString.includes(OBJECT_STRING)) return EIndividualTreasureType.ART_OBJECT;
 
 		return EIndividualTreasureType.UNKNOWN;
 	}
@@ -99,6 +102,7 @@ export class IndividualTreasureGenerator {
 			name: treasureName,
 			type: ETreasureType.INDIVIDUAL_TREASURE,
 			price: treasureValue,
+			subType: treasureType.toString(),
 		};
 	}
 }

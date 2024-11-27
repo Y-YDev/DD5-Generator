@@ -13,6 +13,12 @@ export enum ECoinType {
   PP = 'PP',
 }
 
+export enum EIndividualTreasureType {
+  GEMS = 'gemme',
+  ART_OBJECT = "objet d'art",
+  UNKNOWN = 'unknown',
+}
+
 export interface ITreasureItemMetadata {
   coinType?: ECoinType;
 }
@@ -22,4 +28,5 @@ export interface ITreasureItem {
   type: ETreasureType;
   price?: string;
   metaData?: ITreasureItemMetadata;
+  subType?: string;
 }

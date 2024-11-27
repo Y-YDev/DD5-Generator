@@ -15,7 +15,7 @@ export enum ETreasureType {
 
 export enum EIndividualTreasureType {
 	GEMS = 'gemme',
-	ART_OBJECT = 'objet',
+	ART_OBJECT = "objet d'art",
 	UNKNOWN = 'unknown',
 }
 

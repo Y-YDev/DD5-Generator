@@ -6,6 +6,7 @@ import MyButton from '../components/base-components/MyButton';
 import TreasureItemCard from '../components/treasure-generation/TreasureItemCard';
 import { ITreasureItem } from '../interfaces/treasureItem.interface';
 import { ESize } from '../styles/size.enum';
+import { BACKEND_URL } from '../interfaces/constants';
 
 export function TreasureGenerationPage() {
   const [encounterLvl, setEncounterLvl] = useState<string>();
@@ -19,7 +20,7 @@ export function TreasureGenerationPage() {
     setError(null); // Reset error state
     try {
       const response = await api.get<ITreasureItem[]>(
-        'http://localhost:3000/treasure',
+        BACKEND_URL + '/treasure',
         {
           params: {
             encounterLevel: encounterLvl,

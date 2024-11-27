@@ -6,11 +6,14 @@ import { Typography } from '@mui/material';
 import { useCallback } from 'react';
 import {
   ECoinType,
+  EIndividualTreasureType,
   ETreasureType,
   ITreasureItem,
 } from '../../interfaces/treasureItem.interface';
 import { ESize } from '../../styles/size.enum';
 import FlexBox from '../base-components/FlexBox';
+import ColorLensIcon from '@mui/icons-material/ColorLens';
+import { getRandomElementInArray } from '../utils/toolbox';
 
 export default function TreasureItemCard(props: {
   treasureItem: ITreasureItem;
@@ -35,6 +38,18 @@ export default function TreasureItemCard(props: {
     }
   }, []);
 
+  const getRandomGemColor = useCallback((): string => {
+    const gemColors: string[] = [
+      '#E0115F', // Rubis
+      '#0F52BA', // Saphir
+      '#50C878', // Émeraude
+      '#9966CC', // Améthyste
+      '#E4D00A', // Citrine
+      '#17202a', // Onyx
+    ];
+    return getRandomElementInArray(gemColors);
+  }, []);
+
   const getItemIcon = useCallback(
     (item: ITreasureItem) => {
       switch (item.type) {
@@ -43,7 +58,10 @@ export default function TreasureItemCard(props: {
             <PaidIcon sx={{ color: getCoinColor(item.metaData?.coinType) }} />
           );
         case ETreasureType.INDIVIDUAL_TREASURE:
-          return <DiamondIcon />;
+          if (item.subType === EIndividualTreasureType.ART_OBJECT.toString()) {
+            return <ColorLensIcon />;
+          }
+          return <DiamondIcon sx={{ color: getRandomGemColor() }} />;
         case ETreasureType.MAGIC_OBJECT:
           return <AutoFixHighIcon />;
         case ETreasureType.RARE_OBJECT:
@@ -52,7 +70,7 @@ export default function TreasureItemCard(props: {
           return <></>;
       }
     },
-    [getCoinColor]
+    [getCoinColor, getRandomGemColor]
   );
 
   return (

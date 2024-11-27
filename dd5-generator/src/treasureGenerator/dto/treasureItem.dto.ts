@@ -33,6 +33,13 @@ export class TreasureItemDto {
 	price?: string;
 
 	@ApiPropertyOptional({
+		description: 'sub type of the treasure item',
+		type: String,
+		example: 'art object',
+	})
+	subType?: string;
+
+	@ApiPropertyOptional({
 		description: 'metadata of the treasure item',
 		type: TreasureItemMetadataDto,
 	})
