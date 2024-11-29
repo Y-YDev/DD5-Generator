@@ -1,9 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import { HomePage } from './pages/HomePage';
-import { TreasureGenerationPage } from './pages/TreasureGenerationPage';
 import FlexBox from './components/base-components/FlexBox';
 import SideMenu from './components/navigation/SideMenu';
-import TreasureGenDocsPage from './pages/TreasureGenDocs';
+import { HomePage } from './pages/HomePage';
+import TreasureGenRouter from './routing/TreasureGenRouter';
 
 function App() {
   return (
@@ -12,14 +11,8 @@ function App() {
       <FlexBox takeRemainingSpace overflow={'auto'}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route
-            path="/treasure-generation/docs"
-            element={<TreasureGenDocsPage />}
-          />
-          <Route
-            path="/treasure-generation"
-            element={<TreasureGenerationPage />}
-          />
+          {/* Use call */}
+          {TreasureGenRouter()}
         </Routes>
       </FlexBox>
     </FlexBox>

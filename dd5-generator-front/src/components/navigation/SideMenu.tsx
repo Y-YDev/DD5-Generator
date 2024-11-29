@@ -65,6 +65,12 @@ export default function SideMenu() {
         </ListItem>
         <ListItem
           sx={listItemStyle}
+          onClick={() => navigate('/treasure-generation/by-type/coin')}
+        >
+          <ListItemText>Generation by type</ListItemText>
+        </ListItem>
+        <ListItem
+          sx={listItemStyle}
           onClick={() => navigate('/treasure-generation/docs')}
         >
           <ListItemText>Documentation</ListItemText>
