@@ -2,7 +2,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import PaidIcon from '@mui/icons-material/Paid';
-import { Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { useCallback } from 'react';
 import {
   ECoinType,
@@ -14,9 +14,11 @@ import { ESize } from '../../styles/size.enum';
 import FlexBox from '../base-components/FlexBox';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import { getRandomElementInArray } from '../utils/toolbox';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function TreasureItemCard(props: {
   treasureItem: ITreasureItem;
+  onRemoveItem?: () => void;
 }) {
   const treasureItem = props.treasureItem;
 
@@ -79,9 +81,19 @@ export default function TreasureItemCard(props: {
       gap={ESize.xs}
       border={1}
       padding={ESize.sm_small}
+      alignItems={'center'}
     >
       {getItemIcon(treasureItem)}
       <Typography>{`${treasureItem.name} ${treasureItem.price ? `(${treasureItem.price})` : ''}`}</Typography>
+      {props.onRemoveItem && (
+        <IconButton
+          onClick={props.onRemoveItem}
+          size="small"
+          sx={{ marginLeft: 'auto' }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      )}
     </FlexBox>
   );
 }

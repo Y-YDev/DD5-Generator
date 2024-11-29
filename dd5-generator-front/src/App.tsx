@@ -3,6 +3,7 @@ import FlexBox from './components/base-components/FlexBox';
 import SideMenu from './components/navigation/SideMenu';
 import { HomePage } from './pages/HomePage';
 import TreasureGenRouter from './routing/TreasureGenRouter';
+import DocsPage from './pages/DocsPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           {/* Use call */}
           {TreasureGenRouter()}
+          <Route path="/docs" element={<DocsPage />} />
         </Routes>
       </FlexBox>
     </FlexBox>

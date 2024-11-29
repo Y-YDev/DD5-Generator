@@ -72,12 +72,13 @@ export default function TreasureGenerationComponent(props: {
             gap={ESize.x2s}
             overflow={'auto'}
             width={500}
-            flex={1}
+            takeRemainingSpace
             padding={0}
+            paddingRight={ESize.base}
           >
             {generationData.length > 0 ? (
-              generationData.map((item) => (
-                <TreasureItemCard treasureItem={item} />
+              generationData.map((item, index) => (
+                <TreasureItemCard key={index} treasureItem={item} />
               ))
             ) : (
               <Typography variant="body1">Empty</Typography>

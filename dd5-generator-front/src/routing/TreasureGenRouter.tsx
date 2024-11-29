@@ -1,16 +1,11 @@
 import { Route } from 'react-router-dom';
-import React from 'react';
 import TreasureGenerationComponent from '../components/treasure-generation/TreasureGenerationComponent';
 import TreasureGenByTypePage from '../pages/TreasureGenByTypePage';
-import TreasureGenDocsPage from '../pages/TreasureGenDocs';
+import CustomTreasureGenPage from '../pages/CustomTreasureGenPage';
 
 export default function TreasureGenRouter() {
   return (
     <>
-      <Route
-        path="/treasure-generation/docs"
-        element={<TreasureGenDocsPage />}
-      />
       <Route
         path="/treasure-generation/by-type"
         element={<TreasureGenByTypePage />}
@@ -56,6 +51,10 @@ export default function TreasureGenRouter() {
           }
         />
       </Route>
+      <Route
+        path="/treasure-generation/custom"
+        element={<CustomTreasureGenPage />}
+      />
       <Route
         path="/treasure-generation"
         element={

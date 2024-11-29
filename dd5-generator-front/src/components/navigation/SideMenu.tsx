@@ -9,7 +9,6 @@ import {
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ESize } from '../../styles/size.enum';
-import FlexBox from '../base-components/FlexBox';
 
 export default function SideMenu() {
   const navigate = useNavigate();
@@ -71,8 +70,14 @@ export default function SideMenu() {
         </ListItem>
         <ListItem
           sx={listItemStyle}
-          onClick={() => navigate('/treasure-generation/docs')}
+          onClick={() => navigate('/treasure-generation/custom')}
         >
+          <ListItemText>Custom generation</ListItemText>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem sx={listItemStyle} onClick={() => navigate('/docs')}>
           <ListItemText>Documentation</ListItemText>
         </ListItem>
       </List>
