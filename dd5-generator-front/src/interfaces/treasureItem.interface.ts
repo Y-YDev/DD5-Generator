@@ -21,6 +21,7 @@ export enum EIndividualTreasureType {
 
 export interface ITreasureItemMetadata {
   coinType?: ECoinType;
+  repartition?: string;
 }
 
 export interface ITreasureItem {

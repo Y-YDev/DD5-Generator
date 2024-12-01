@@ -7,6 +7,7 @@ import { IndividualTreasureGenerator } from './generator/individual-treasure.gen
 import { GeneratorUtils } from './utils/generator.utils';
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TreasureItemDto } from './dto/treasureItem.dto';
+import { EIndividualTreasureType } from './utils/enum';
 
 class EncounterLevelParser implements PipeTransform {
 	generatorUtils: GeneratorUtils;
@@ -158,6 +159,37 @@ export class TreasureGeneratorController {
 		return individualTreasure;
 	}
 
+	@Get('/individual-treasure/one')
+	@ApiOperation({
+		summary: 'Individual treasures generation by type and price',
+		description: 'Generates individual treasure of the given type and price.',
+	})
+	@ApiQuery({
+		name: 'type',
+		enum: EIndividualTreasureType,
+		required: true,
+		description: 'The individual treasure type for the generation.',
+	})
+	@ApiQuery({
+		name: 'price',
+		type: Number,
+		required: true,
+		description: 'The individual treasure price for the generation.',
+	})
+	@ApiOkResponse({
+		description: 'The generated individual treasure',
+		type: TreasureItemDto,
+	})
+	async getIndTreasureByTypeGeneration(
+		@Query('type') type: EIndividualTreasureType,
+		@Query('price') price: string,
+	): Promise<TreasureItemDto | undefined> {
+		console.debug(`---------------------------------`);
+		const individualTreasure = this.indTreasureGenerator.generateIndTreasureObject(type, price);
+		console.debug(`Individual treasure generation of type ${type} and price ${price}: ${JSON.stringify(individualTreasure)}`);
+		return individualTreasure;
+	}
+
 	@Get('/magic-object')
 	@ApiOperation({
 		summary: 'Magics objects treasure generation',
@@ -198,7 +230,7 @@ export class TreasureGeneratorController {
 	})
 	async getRareObjGenerationByRank(@Query('rank', ParseIntPipe) rank: number): Promise<TreasureItemDto> {
 		if (rank <= 0 || rank >= 9) {
-			throw new BadRequestException('Magic rank must be between 0 and 9');
+			throw new BadRequestException('Magic rank must be between 1 and 8');
 		}
 		console.debug(`---------------------------------`);
 		const magicObj = await this.magicObjectGenerator.generateMagicObjectByRank(rank);

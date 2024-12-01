@@ -75,6 +75,17 @@ export default function TreasureItemCard(props: {
     [getCoinColor, getRandomGemColor]
   );
 
+  const getItemDisplayName = useCallback((item: ITreasureItem): string => {
+    let finalString = item.name;
+    if (item.price) {
+      finalString += ` (${item.price})`;
+    }
+    if (item.metaData?.repartition) {
+      finalString += ` ${item.metaData.repartition.toLowerCase()}`;
+    }
+    return finalString;
+  }, []);
+
   return (
     <FlexBox
       flexDirection={'row'}
@@ -84,7 +95,7 @@ export default function TreasureItemCard(props: {
       alignItems={'center'}
     >
       {getItemIcon(treasureItem)}
-      <Typography>{`${treasureItem.name} ${treasureItem.price ? `(${treasureItem.price})` : ''}`}</Typography>
+      <Typography>{getItemDisplayName(treasureItem)}</Typography>
       {props.onRemoveItem && (
         <IconButton
           onClick={props.onRemoveItem}

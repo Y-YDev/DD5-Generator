@@ -8,6 +8,13 @@ export class TreasureItemMetadataDto {
 		example: ECoinType.PO,
 	})
 	coinType?: ECoinType;
+
+	@ApiPropertyOptional({
+		description: 'The repartition mode of the treasure item',
+		enum: ECoinType,
+		example: 'Per monster',
+	})
+	repartition?: string;
 }
 
 export class TreasureItemDto {

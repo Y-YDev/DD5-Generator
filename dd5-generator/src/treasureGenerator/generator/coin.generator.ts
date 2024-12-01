@@ -18,7 +18,7 @@ export class CoinGenerator {
 		return this.computeCoinGenerationString(generationString).map((name) => ({
 			name,
 			type: ETreasureType.COIN,
-			metaData: { coinType: this.extractCoinType(name) },
+			metaData: { coinType: this.extractCoinType(name), repartition: 'Per monster' },
 		}));
 	}
 

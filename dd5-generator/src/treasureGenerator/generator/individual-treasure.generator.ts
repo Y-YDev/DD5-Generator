@@ -60,7 +60,8 @@ export class IndividualTreasureGenerator {
 
 		const res: TreasureItemDto[] = [];
 		for (let index = 0; index < treasureNumber; index++) {
-			res.push(this.generateIndTreasureObject(treasureType, treasureValue));
+			const indTreasure = this.generateIndTreasureObject(treasureType, treasureValue);
+			if (indTreasure) res.push(indTreasure);
 		}
 		return res;
 	}
@@ -90,9 +91,11 @@ export class IndividualTreasureGenerator {
 		return EIndividualTreasureType.UNKNOWN;
 	}
 
-	public generateIndTreasureObject(treasureType: EIndividualTreasureType, treasureValue: string): TreasureItemDto {
+	public generateIndTreasureObject(treasureType: EIndividualTreasureType, treasureValue: string): TreasureItemDto | undefined {
 		// Get treasure rewards possible
-		const treasurePoolString: string = TREASURE[treasureType][treasureValue];
+		const treasurePoolString: string = TREASURE[treasureType]?.[treasureValue];
+
+		if (!treasurePoolString) return undefined;
 
 		const treasurePool: string[] = treasurePoolString.split(',').filter(Boolean);
 		const randomIndex = this.utils.rollDice(treasurePool.length) - 1; //== RandInt in pool

@@ -11,12 +11,19 @@ import TreasureItemCard from '../components/treasure-generation/TreasureItemCard
 import _ from 'lodash';
 import { ESize } from '../styles/size.enum';
 import { extractNumberFromCoin } from '../components/utils/treasureGenUtils';
+import MyButton from '../components/base-components/MyButton';
+import api from '../api';
+import { BACKEND_URL } from '../interfaces/constants';
+import IndTreasureCustomGenerationForm from '../components/treasure-generation/custom-generation/IndTreasureCustomGenerationForm';
+import MagicObjCustomGenerationForm from '../components/treasure-generation/custom-generation/MagicObjCustomGenerationForm';
 
 export default function CustomTreasureGenPage() {
   const [itemType, setItemType] = useState<ETreasureType>(ETreasureType.COIN);
   const [itemList, setItemList] = useState<ITreasureItem[]>([]);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const onAddItemToList = useCallback((newItem: ITreasureItem) => {
+    setError(undefined);
     setItemList((oldList) => {
       const newList = _.cloneDeep(oldList);
 
@@ -47,6 +54,19 @@ export default function CustomTreasureGenPage() {
     });
   }, []);
 
+  const addRareItem = useCallback(async () => {
+    const rareObj = await api
+      .get<ITreasureItem>(`${BACKEND_URL}/treasure/rare-object/one`)
+      .catch((err) => {
+        console.log(err);
+        setError(err.response.data.message ?? err.message);
+        return undefined;
+      });
+    if (rareObj) {
+      onAddItemToList(rareObj.data);
+    }
+  }, [onAddItemToList]);
+
   return (
     <FlexBox takeRemainingSpace>
       <Typography variant="h5">{'Custom treasure generation'}</Typography>
@@ -67,6 +87,22 @@ export default function CustomTreasureGenPage() {
           {itemType === ETreasureType.COIN && (
             <CoinCustomGenerationForm onAddCoin={onAddItemToList} />
           )}
+          {itemType === ETreasureType.RARE_OBJECT && (
+            <MyButton onClick={addRareItem}>Add rare item</MyButton>
+          )}
+          {itemType === ETreasureType.INDIVIDUAL_TREASURE && (
+            <IndTreasureCustomGenerationForm
+              onAddInTreasure={onAddItemToList}
+              setError={setError}
+            />
+          )}
+          {itemType === ETreasureType.MAGIC_OBJECT && (
+            <MagicObjCustomGenerationForm
+              onAddMagicObj={onAddItemToList}
+              setError={setError}
+            />
+          )}
+          {error && <Typography color="red">{error}</Typography>}
         </FlexBox>
         <Divider orientation="vertical" />
         <FlexBox takeRemainingSpace gap={ESize.xs}>
