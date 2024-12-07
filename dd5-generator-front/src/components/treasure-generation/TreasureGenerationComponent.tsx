@@ -1,4 +1,4 @@
-import { Typography, TextField } from '@mui/material';
+import { Typography, TextField, FormControlLabel } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import api from '../../api';
 import { BACKEND_URL } from '../../interfaces/constants';
@@ -7,6 +7,7 @@ import { ESize } from '../../styles/size.enum';
 import FlexBox from '../base-components/FlexBox';
 import MyButton from '../base-components/MyButton';
 import TreasureItemCard from './TreasureItemCard';
+import Checkbox from '@mui/material/Checkbox';
 
 export default function TreasureGenerationComponent(props: {
   title: string;
@@ -15,6 +16,7 @@ export default function TreasureGenerationComponent(props: {
 }) {
   const [encounterLvl, setEncounterLvl] = useState<string>();
   const [monsterNb, setMonsterNb] = useState<string>();
+  const [addHoardBonus, setHoardBonus] = useState<boolean>(false);
 
   const [generationData, setGenerationData] = useState<
     ITreasureItem[] | undefined
@@ -24,6 +26,10 @@ export default function TreasureGenerationComponent(props: {
 
   const shouldShowMonsterNbOption = useMemo(() => {
     return !props.backendPath || props.backendPath === 'coin';
+  }, [props.backendPath]);
+
+  const shouldShowHoardOption = useMemo(() => {
+    return !props.backendPath || props.backendPath === 'hoard';
   }, [props.backendPath]);
 
   // To empty the list when changing tab
@@ -42,6 +48,7 @@ export default function TreasureGenerationComponent(props: {
           params: {
             encounterLevel: encounterLvl,
             monsterNumber: monsterNb,
+            hoardBonus: addHoardBonus,
           },
         }
       );
@@ -53,20 +60,28 @@ export default function TreasureGenerationComponent(props: {
     } finally {
       setLoading(false);
     }
-  }, [encounterLvl, monsterNb, props.backendPath]);
+  }, [addHoardBonus, encounterLvl, monsterNb, props.backendPath]);
 
   return (
     <FlexBox takeRemainingSpace>
       <Typography variant="h5">{props.title}</Typography>
-      <Typography variant="body2" fontStyle={'italic'}>
-        No encounter level given mean random level between 0 and 20
-      </Typography>
-      {shouldShowMonsterNbOption && (
+      <FlexBox gap={0} padding={0}>
         <Typography variant="body2" fontStyle={'italic'}>
-          Monster number help in coin generation. No value implies generic
-          distribution.
+          No encounter level given mean random level between 0 and 20
         </Typography>
-      )}
+        {shouldShowMonsterNbOption && (
+          <Typography variant="body2" fontStyle={'italic'}>
+            Monster number help in coin generation. No value implies generic
+            distribution.
+          </Typography>
+        )}
+        {shouldShowHoardOption && (
+          <Typography variant="body2" fontStyle={'italic'}>
+            Creatures with a reputation for amassing real fortunes (like
+            dragons) can have two or three times the value given for the bonus.
+          </Typography>
+        )}
+      </FlexBox>
       <FlexBox flexDirection={'row'} padding={0}>
         <TextField
           sx={{ width: 300 }}
@@ -82,6 +97,19 @@ export default function TreasureGenerationComponent(props: {
             value={monsterNb}
             onChange={(event) => setMonsterNb(event.target.value)}
             type="number"
+          />
+        )}
+        {shouldShowHoardOption && (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={addHoardBonus}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setHoardBonus(event.target.checked);
+                }}
+              />
+            }
+            label="Add hoard bonus"
           />
         )}
       </FlexBox>

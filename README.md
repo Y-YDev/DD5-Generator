@@ -43,6 +43,5 @@ Go to `http://localhost:3000/docs` to consult swagger documentation _(available 
 ## Screenshots
 ![alt text](image.png)
 ![alt text](image-2.png)
-## TODO :
 
-- Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
+

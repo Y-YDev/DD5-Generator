@@ -17,16 +17,21 @@ export class TreasureGenerator {
 	hoardGenerator = new HoardGenerator();
 	magicObjectGenerator = new MagicObjectGenerator();
 
-	async generateTreasure(encounterLvl: number, monsterNumber?: number): Promise<TreasureItemDto[]> {
+	async generateTreasure(encounterLvl: number, hoardBonus: boolean, monsterNumber?: number): Promise<TreasureItemDto[]> {
 		const baseTable: Row[] = await this.excelUtils.readExcelFile(TREASURE_FILE_PATH);
 
 		const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, baseTable);
 		const baseGenString = baseTable[line][column].toString();
 		console.debug(`Get general generation for line ${line} and columns ${column}: ${baseGenString}.`);
-		return this.computeTreasureString(baseGenString, encounterLvl, monsterNumber);
+		return this.computeTreasureString(baseGenString, encounterLvl, hoardBonus, monsterNumber);
 	}
 
-	async computeTreasureString(inputString: string, encounterLvl: number, monsterNumber?: number): Promise<TreasureItemDto[]> {
+	async computeTreasureString(
+		inputString: string,
+		encounterLvl: number,
+		hoardBonus: boolean,
+		monsterNumber?: number,
+	): Promise<TreasureItemDto[]> {
 		const finalTreasure: TreasureItemDto[] = [];
 		if (inputString.includes('A')) {
 			const coinGen = await this.coinGenerator.generateCoin(encounterLvl, monsterNumber);
@@ -37,7 +42,7 @@ export class TreasureGenerator {
 			finalTreasure.push(...rareObjGen);
 		}
 		if (inputString.includes('C')) {
-			const hoardGen = await this.hoardGenerator.generateHoard(encounterLvl);
+			const hoardGen = await this.hoardGenerator.generateHoard(encounterLvl, hoardBonus);
 			finalTreasure.push(...hoardGen);
 		}
 		if (inputString.includes('D')) {

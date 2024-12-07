@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, ParseIntPipe, PipeTransform, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, ParseBoolPipe, ParseIntPipe, PipeTransform, Query } from '@nestjs/common';
 import { TreasureGenerator } from './generator/treasure.generator';
 import { CoinGenerator } from './generator/coin.generator';
 import { MagicObjectGenerator } from './generator/magic-object.generator';
@@ -82,6 +82,12 @@ export class TreasureGeneratorController {
 		required: false,
 		description: 'The number of monster of the encounter (if not provided, will generate only one coin value for all monsters)',
 	})
+	@ApiQuery({
+		name: 'hoardBonus',
+		type: Boolean,
+		required: true,
+		description: 'Add coin bonus to the hoard or not.',
+	})
 	@ApiOkResponse({
 		description: 'The generated treasure item array',
 		type: TreasureItemDto,
@@ -89,14 +95,15 @@ export class TreasureGeneratorController {
 	})
 	async getTreasureGeneration(
 		@Query('encounterLevel', EncounterLevelParser) level: number,
+		@Query('hoardBonus', ParseBoolPipe) hoardBonus: boolean,
 		@Query('monsterNumber', MonsterNumberParser) monsterNumber?: number,
 	): Promise<TreasureItemDto[]> {
 		console.debug(`---------------------------------`);
-		const treasure = await this.treasureGenerator.generateTreasure(level, monsterNumber);
+		const treasure = await this.treasureGenerator.generateTreasure(level, hoardBonus, monsterNumber);
 		console.debug(
-			`Treasure generation for level ${level}${monsterNumber ? ` and ${monsterNumber} monsters` : ''}: ${JSON.stringify(
-				treasure,
-			)}`,
+			`Treasure generation for level ${level}${monsterNumber ? ` and ${monsterNumber} monsters` : ''}${
+				hoardBonus ? ' with hoard bonus' : ''
+			}: ${JSON.stringify(treasure)}`,
 		);
 		return treasure;
 	}
@@ -186,14 +193,23 @@ export class TreasureGeneratorController {
 		required: false,
 		description: 'Level of the encounter to compute the hoards (if not provided, a random level will be used).',
 	})
+	@ApiQuery({
+		name: 'hoardBonus',
+		type: Boolean,
+		required: true,
+		description: 'Add coin bonus to the hoard or not.',
+	})
 	@ApiOkResponse({
 		description: 'The generated treasure item array',
 		type: TreasureItemDto,
 		isArray: true,
 	})
-	async getHoardGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
+	async getHoardGeneration(
+		@Query('encounterLevel', EncounterLevelParser) level: number,
+		@Query('hoardBonus', ParseBoolPipe) hoardBonus: boolean,
+	): Promise<TreasureItemDto[]> {
 		console.debug(`---------------------------------`);
-		const hoard = await this.hoardGenerator.generateHoard(level);
+		const hoard = await this.hoardGenerator.generateHoard(level, hoardBonus);
 		console.debug(`Hoard generation for level ${level}: ${JSON.stringify(hoard)}`);
 		return hoard;
 	}

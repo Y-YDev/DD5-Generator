@@ -4,6 +4,7 @@ import { ExcelUtils } from '../utils/excel.utils';
 import { HOARD_FILE_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
+import { CoinGenerator } from './coin.generator';
 
 const OBJECT_STRING = 'objet';
 const GEM_STRING = 'gemme';
@@ -33,14 +34,34 @@ const HOARD = {
 export class HoardGenerator {
 	utils = new GeneratorUtils();
 	excelUtils = new ExcelUtils();
+	coinGenerator = new CoinGenerator();
 
-	async generateHoard(encounterLvl: number): Promise<TreasureItemDto[]> {
+	async generateHoard(encounterLvl: number, addBonus: boolean): Promise<TreasureItemDto[]> {
 		const hoardTable: Row[] = await this.excelUtils.readExcelFile(HOARD_FILE_PATH);
 
 		const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, hoardTable);
 		const hoardString = hoardTable[line][column].toString();
 		console.debug(`Get hoard generation for line ${line} and columns ${column}: ${hoardString}.`);
-		return this.computeHoardGenString(hoardString);
+		const hoardTreasure = this.computeHoardGenString(hoardString);
+
+		if (addBonus) {
+			const hoardBonus = await this.generateHoardBonus(encounterLvl);
+			hoardTreasure.push(...hoardBonus);
+		}
+		return hoardTreasure;
+	}
+
+	private async generateHoardBonus(encounterLvl: number): Promise<TreasureItemDto[]> {
+		const hoardBonusTable: Row[] = await this.excelUtils.readExcelFile(HOARD_FILE_PATH, 2);
+
+		const column = this.excelUtils.getEncounterLevelColumn(encounterLvl, hoardBonusTable);
+		const bonusString = hoardBonusTable[1][column].toString();
+		console.debug(`Get hoard bonus generation for column ${column}: ${bonusString}.`);
+		return this.coinGenerator.computeCoinGenerationString(bonusString).map((name) => ({
+			name,
+			type: ETreasureType.COIN,
+			metaData: { coinType: this.coinGenerator.extractCoinType(name), repartition: 'From hoard bonus' },
+		}));
 	}
 
 	private computeHoardGenString(inputString: string): TreasureItemDto[] {

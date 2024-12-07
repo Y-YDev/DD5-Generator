@@ -36,7 +36,7 @@ export class CoinGenerator {
 		return coinTreasure;
 	}
 
-	private extractCoinType = (input: string): ECoinType => {
+	public extractCoinType = (input: string): ECoinType => {
 		const regex = /p[a-zA-Z]+/;
 		const match = input.match(regex);
 
@@ -50,7 +50,7 @@ export class CoinGenerator {
 		return ECoinType.PO; // Return PO if no match is found or if it's not a valid coin type
 	};
 
-	private computeCoinGenerationString(inputString: string): string[] {
+	public computeCoinGenerationString(inputString: string): string[] {
 		let formattedString = inputString; // Can be for example: '1d6 × 100 (350) pe 1d6 × 100 (350) po'
 		formattedString = this.utils.replaceDiceValue(formattedString); // After: '5 × 100 (350) pe 5 × 100 (350) po'
 		formattedString = this.utils.removeAverageInfo(formattedString); // After: '5 × 100 pe 5 × 100 po'
