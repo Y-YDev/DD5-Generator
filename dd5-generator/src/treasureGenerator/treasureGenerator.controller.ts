@@ -29,6 +29,23 @@ class EncounterLevelParser implements PipeTransform {
 	}
 }
 
+class MonsterNumberParser implements PipeTransform {
+	transform(value: any) {
+		let monsterNumber: number | undefined;
+		if (value) {
+			monsterNumber = parseInt(value, 10);
+			if (isNaN(monsterNumber) || monsterNumber <= 0) {
+				throw new BadRequestException('If provided, monster number must be greater than 0');
+			}
+			if (monsterNumber > 50) {
+				throw new BadRequestException('Too much monsters provided');
+			}
+			return monsterNumber;
+		}
+		return undefined;
+	}
+}
+
 @ApiTags('Treasure Generator')
 @Controller('/treasure')
 export class TreasureGeneratorController {
@@ -59,15 +76,28 @@ export class TreasureGeneratorController {
 		required: false,
 		description: 'Level of the encounter to compute a whole treasure (if not provided, a random level will be used)',
 	})
+	@ApiQuery({
+		name: 'monsterNumber',
+		type: Number,
+		required: false,
+		description: 'The number of monster of the encounter (if not provided, will generate only one coin value for all monsters)',
+	})
 	@ApiOkResponse({
 		description: 'The generated treasure item array',
 		type: TreasureItemDto,
 		isArray: true,
 	})
-	async getTreasureGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
+	async getTreasureGeneration(
+		@Query('encounterLevel', EncounterLevelParser) level: number,
+		@Query('monsterNumber', MonsterNumberParser) monsterNumber?: number,
+	): Promise<TreasureItemDto[]> {
 		console.debug(`---------------------------------`);
-		const treasure = await this.treasureGenerator.generateTreasure(level);
-		console.debug(`Treasure generation for level ${level}: ${JSON.stringify(treasure)}`);
+		const treasure = await this.treasureGenerator.generateTreasure(level, monsterNumber);
+		console.debug(
+			`Treasure generation for level ${level}${monsterNumber ? ` and ${monsterNumber} monsters` : ''}: ${JSON.stringify(
+				treasure,
+			)}`,
+		);
 		return treasure;
 	}
 
@@ -82,15 +112,26 @@ export class TreasureGeneratorController {
 		required: false,
 		description: 'Level of the encounter to compute a coin treasure (if not provided, a random level will be used)',
 	})
+	@ApiQuery({
+		name: 'monsterNumber',
+		type: Number,
+		required: false,
+		description: 'The number of monster of the encounter (if not provided, will generate only one coin value for all monsters)',
+	})
 	@ApiOkResponse({
 		description: 'The generated treasure item array',
 		type: TreasureItemDto,
 		isArray: true,
 	})
-	async getCoinGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
+	async getCoinGeneration(
+		@Query('encounterLevel', EncounterLevelParser) level: number,
+		@Query('monsterNumber', MonsterNumberParser) monsterNumber?: number,
+	): Promise<TreasureItemDto[]> {
 		console.debug(`---------------------------------`);
-		const coin = await this.coinGenerator.generateCoin(level);
-		console.debug(`Coin generation for level ${level}: ${JSON.stringify(coin)}`);
+		const coin = await this.coinGenerator.generateCoin(level, monsterNumber);
+		console.debug(
+			`Coin generation for level ${level}${monsterNumber ? ` and ${monsterNumber} monsters` : ''}: ${JSON.stringify(coin)}`,
+		);
 		return coin;
 	}
 

@@ -1,5 +1,5 @@
 import { Typography, TextField } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import api from '../../api';
 import { BACKEND_URL } from '../../interfaces/constants';
 import { ITreasureItem } from '../../interfaces/treasureItem.interface';
@@ -14,12 +14,17 @@ export default function TreasureGenerationComponent(props: {
   backendPath?: string;
 }) {
   const [encounterLvl, setEncounterLvl] = useState<string>();
+  const [monsterNb, setMonsterNb] = useState<string>();
 
   const [generationData, setGenerationData] = useState<
     ITreasureItem[] | undefined
   >(undefined);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const shouldShowMonsterNbOption = useMemo(() => {
+    return !props.backendPath || props.backendPath === 'coin';
+  }, [props.backendPath]);
 
   // To empty the list when changing tab
   useEffect(() => {
@@ -36,6 +41,7 @@ export default function TreasureGenerationComponent(props: {
         {
           params: {
             encounterLevel: encounterLvl,
+            monsterNumber: monsterNb,
           },
         }
       );
@@ -47,7 +53,7 @@ export default function TreasureGenerationComponent(props: {
     } finally {
       setLoading(false);
     }
-  }, [encounterLvl, props.backendPath]);
+  }, [encounterLvl, monsterNb, props.backendPath]);
 
   return (
     <FlexBox takeRemainingSpace>
@@ -55,13 +61,30 @@ export default function TreasureGenerationComponent(props: {
       <Typography variant="body2" fontStyle={'italic'}>
         No encounter level given mean random level between 0 and 20
       </Typography>
-      <TextField
-        sx={{ width: 300 }}
-        label="Encounter level"
-        value={encounterLvl}
-        onChange={(event) => setEncounterLvl(event.target.value)}
-        type="number"
-      />
+      {shouldShowMonsterNbOption && (
+        <Typography variant="body2" fontStyle={'italic'}>
+          Monster number help in coin generation. No value implies generic
+          distribution.
+        </Typography>
+      )}
+      <FlexBox flexDirection={'row'} padding={0}>
+        <TextField
+          sx={{ width: 300 }}
+          label="Encounter level"
+          value={encounterLvl}
+          onChange={(event) => setEncounterLvl(event.target.value)}
+          type="number"
+        />
+        {shouldShowMonsterNbOption && (
+          <TextField
+            sx={{ width: 300 }}
+            label="Monster number"
+            value={monsterNb}
+            onChange={(event) => setMonsterNb(event.target.value)}
+            type="number"
+          />
+        )}
+      </FlexBox>
       <MyButton onClick={handleGenerateClick}>{props.buttonLabel}</MyButton>
       {error && <Typography color="red">{error}</Typography>}
       {loading && <Typography>Loading...</Typography>}

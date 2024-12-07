@@ -9,17 +9,31 @@ export class CoinGenerator {
 	utils = new GeneratorUtils();
 	excelUtils = new ExcelUtils();
 
-	public async generateCoin(encounterLvl: number): Promise<TreasureItemDto[]> {
+	public async generateCoin(encounterLvl: number, monsterNumber?: number): Promise<TreasureItemDto[]> {
 		const coinTable: Row[] = await this.excelUtils.readExcelFile(COIN_FILE_PATH);
 
-		const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, coinTable);
-		const generationString = coinTable[line][column].toString();
-		console.debug(`Get coin generation for line ${line} and columns ${column}: ${generationString}.`);
-		return this.computeCoinGenerationString(generationString).map((name) => ({
-			name,
-			type: ETreasureType.COIN,
-			metaData: { coinType: this.extractCoinType(name), repartition: 'Per monster' },
-		}));
+		const monsterNb = monsterNumber ?? 1;
+		const coinTreasure: TreasureItemDto[] = [];
+		// Loop generation for each monster (better random to throw for each monster)
+		for (let monsterIdx = 0; monsterIdx < monsterNb; monsterIdx++) {
+			const { line, column } = this.excelUtils.getGenerationLineAndColumn(encounterLvl, coinTable);
+			const generationString = coinTable[line][column].toString();
+			console.debug(
+				`Get coin generation for line ${line} and columns ${column} for monster ${monsterIdx + 1}: ${generationString}.`,
+			);
+
+			const coinCurrentResult = this.computeCoinGenerationString(generationString);
+			// If no monster number, put a generic repartition
+			const repartitionString = monsterNumber ? `For monster ${monsterIdx + 1}` : 'Per monster';
+			coinTreasure.push(
+				...coinCurrentResult.map((name) => ({
+					name,
+					type: ETreasureType.COIN,
+					metaData: { coinType: this.extractCoinType(name), repartition: repartitionString },
+				})),
+			);
+		}
+		return coinTreasure;
 	}
 
 	private extractCoinType = (input: string): ECoinType => {

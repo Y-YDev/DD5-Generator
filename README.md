@@ -5,7 +5,7 @@
 /!\ _This application is currently under development._
 
 This application is a treasure generation tool for Dungeon and Dragon 5th edition.  
-It sets up a nestJs server that generates treasures on port 3000.
+It sets up a nestJs server that generates treasures on port 3000 that is used and displayed by a frontend on port 4000.
 
 Treasure generation is based on the following website: https://5e-drs.fr/les-tresors/
 
@@ -22,23 +22,27 @@ Follow these steps to set up and run the application locally.
 
 ### Run
 
+The backend:  
 - Go to `dd5-generator` directory (`cd .\dd5-generator\`)
 - Install the dependencies : `npm install`
 - Run the application `npm run start`
 - Open `http://localhost:3000/`
 
+The frontend:  
+- Go to `dd5-generator-front` directory (`cd .\dd5-generator-front\`)
+- Install the dependencies : `npm install`
+- Run the application `npm start`
+- Open `http://localhost:4000/`
+
 ### Documentation
 
-Go to `http://localhost:3000/docs` to consult swagger documentation
+Go to `http://localhost:3000/docs` to consult swagger documentation _(available in the frontend in docs part)_
 
 ![alt text](image-1.png)
 
 ## Screenshots
-
 ![alt text](image.png)
 ![alt text](image-2.png)
-
 ## TODO :
 
 - Handle "bonus" part in treasure C generation: https://5e-drs.fr/les-tresors/#table-c
-- Handle individual generation by monsters for treasure A https://5e-drs.fr/les-tresors/#determiner-un-tresor
