@@ -1,6 +1,7 @@
 import { Tab, Tabs } from '@mui/material';
 import { useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import FlexBox from '../components/base-components/FlexBox';
 
 export default function TreasureGenByTypePage() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function TreasureGenByTypePage() {
   }, [location.pathname, tabPaths]);
 
   return (
-    <div>
+    <FlexBox padding={0} gap={0} takeRemainingSpace>
       <Tabs
         value={tabIndex}
         onChange={(_, newValue: number) => {
@@ -33,7 +34,9 @@ export default function TreasureGenByTypePage() {
         <Tab label="Hoard" />
         <Tab label="Magic object" />
       </Tabs>
-      <Outlet />
-    </div>
+      <FlexBox padding={0} gap={0} takeRemainingSpace>
+        <Outlet />
+      </FlexBox>
+    </FlexBox>
   );
 }

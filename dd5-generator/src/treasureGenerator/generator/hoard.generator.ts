@@ -11,23 +11,27 @@ const GEM_STRING = 'gemme';
 
 const HOARD = {
 	[EHoardType.GEMS]: {
-		'10 po': 'Azurite, Hématite, Malachite, Quartz bleu, Turquoise',
-		'50 po': 'Calcédoine, Héliotrope, Jaspe, Onyx, Zircon',
-		'100 po': 'Ambre, Améthyste, Grenat, Jade, Perle, Tourmaline',
-		'500 po': 'Chrysobéryl, Péridot, Perle noire, Spinelle, Topaze',
-		'1000 po': 'Émeraude, Opale noire, Opale de feu, Rubis avec astérisme, Saphir',
-		'5000 po': 'Diamant, Rubis, Saphir noir',
+		'10 po':
+			'Azurite, Agate enrubannée, Quartz bleu, Agate oeillée, Hématite, Lapis-lazuli, Malachite, Agate mousse, Obsidienne, Rhodochrosite, Oeil-de-trigre, Turquoise',
+		'50 po':
+			'Héliotrope, Cornaline, Calcédoine, Chrysoprase, Citrine, Jaspe, Pierre de lune, Onyx, Quartz, Sardonyx, Quartz rose étoilé, Zircon',
+		'100 po': 'Ambre, Améthyste, Chrysobéryl, Corail, Grenat, Jade, Jais, Perle, Spinelle, Tourmaline',
+		'500 po': 'Alexandrite, Chrysobéryl, Aigue-marine, Péridot, Perle noire, Spinelle bleu, Topaze',
+		'1000 po':
+			'Émeraude, Opale noire, Opale de feu, Opale, Rubis avec astérisme, Rubis étoilé, Saphir bleu, Saphir étoilé, Saphir jaune',
+		'5000 po': 'Diamant, Rubis, Saphir noir, Jacinthe',
 	},
 	[EHoardType.ART_OBJECT]: {
 		'25 po':
-			"Statuette en os ou en bois rare, Bracelet en or, Calice en or, Petit miroir d'argent, Pendentif en électrum, Portrait d'un noble",
+			"Aiguière en argent, Statuette en os ou en bois rare, Petit bracelet en or, Habits de cérémonie en drap d'or, Masque de velours noir brodé de fil d'argent, Calice en cuivre orné de filigranes d'argent, Calice en or, Paire de dés en os gravés, Petit miroir entouré d'un cadre en bois peint, Petit miroir d'argent, Mouchoir de soie brodée, Médaillon en or contenant un portrait peint, Pendentif en électrum, Portrait d'un noble",
 		'250 po':
-			"Anneau en platine serti de jaspes, Figurines en ivoire, Couronne d'or et d'argent, Statuette en jade, Tapisserie brodée de fil d'or",
-		'750 po': "Masque cérémoniel en or serti d'ambre, Dague sacrificielle damasquinée de platine, Idole en or aux yeux de perle",
+			"Anneau en or incrusté d'héliotropes, Statuette en ivoire, Gros bracelet en or, Collier en argent orné d'une pierre précieuse, Couronne en bronze, Robe de soie brodée au fil d'or, Grande tapisserie de qualité, Anneau en platine serti de jaspes, Grande tasse en laiton incrustée de jade, Boîte contenant des figurines d'animaux en turquoise, Cage à oiseaux en or avec des filigranes d'électrum, Figurines en ivoire, Couronne d'or et d'argent, Statuette en jade, Tapisserie brodée de fil d'or",
+		'750 po':
+			"Masque cérémoniel en or serti d'ambre, Dague sacrificielle damasquinée de platine, Idole en or aux yeux de perle, Calice d'argent serti de pierres-de-lune, Épée longue en acier plaqué d'argent et à la garde sertie de jais, Harpe en bois exotique incrustée d'ivoire et de zircons, Petite idole en or, Peigne d'or en forme de dragon dont les yeux sont des grenats rouges, Bouchon de carafe ornée de feuilles d'or et serti d'améthystes, Dague cérémonielle en électrum avec une perle noire incrustée dans le pommeau, Broche en argent et en or, Statuette en obsidienne incrustée d'or, Masque de guerre en or peint",
 		'2500 po':
-			"Pectoral en platine serti d'opales, Gantelet ouvragé en or et argent, Calice en or serti de perles, Sculpture en marbre d'un grand maître",
+			"Pectoral en platine serti d'opales, Gantelet ouvragé en or et argent, Calice en or serti de perles, Sculpture en marbre d'un grand maître, Chaînette en or serti d'une opale de feu, Tableau de maître ancien, Manteau de soie et de velours brodé et serti de nombreuses pierres-de-lune, Bracelet en platine serti d'un saphir, Gant brodé et serti d'éclats de pierre précieuse, Bracelet de cheville orné de pierreries, Boîte à musique en or, Tiare en or sertie de quatre aigues-marines, Cache-oeil orne d'un faux-oeil compose d'un saphir bleu et d'une pierre-de-lune, Fin collier de petites perles roses",
 		'7500 po':
-			"Couronne d'un empereur en platine sertie d'opales noires, Cor de chasse en ivoire relevé d'or et de platine, Dague sacrificielle dont la lame est une dent de dragon",
+			"Couronne en or orné de pierreries, Anneau de platine orné de pierreries, Petite statuette en or sertie de rubis, Coupe en or incrustée d'émeraudes, Boite à bijoux en or ornée de filigrares de platine, Sarcophage d'enfant en or peint, Plateau de jeu en jade avec des pièces en or massif, Corne à boire en ivoire ornée de pierreries et de filigranes d'or, Couronne d'un empereur en platine sertie d'opales noires, Cor de chasse en ivoire relevé d'or et de platine, Dague sacrificielle dont la lame est une dent de dragon",
 	},
 };
 

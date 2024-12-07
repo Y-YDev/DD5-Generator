@@ -3,7 +3,7 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import PaidIcon from '@mui/icons-material/Paid';
 import { IconButton, Typography } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   ECoinType,
   EHoardType,
@@ -40,7 +40,7 @@ export default function TreasureItemCard(props: {
     }
   }, []);
 
-  const getRandomGemColor = useCallback((): string => {
+  const getRandomGemColor = useMemo(() => {
     const gemColors: string[] = [
       '#E0115F', // Rubis
       '#0F52BA', // Saphir
@@ -63,7 +63,7 @@ export default function TreasureItemCard(props: {
           if (item.subType === EHoardType.ART_OBJECT.toString()) {
             return <ColorLensIcon />;
           }
-          return <DiamondIcon sx={{ color: getRandomGemColor() }} />;
+          return <DiamondIcon sx={{ color: getRandomGemColor }} />;
         case ETreasureType.MAGIC_OBJECT:
           return <AutoFixHighIcon />;
         case ETreasureType.RARE_OBJECT:
