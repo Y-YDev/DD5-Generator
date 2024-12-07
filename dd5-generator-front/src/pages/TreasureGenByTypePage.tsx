@@ -8,7 +8,7 @@ export default function TreasureGenByTypePage() {
 
   // Define the tab paths
   const tabPaths = useMemo(
-    () => ['coin', 'rare-object', 'individual-treasure', 'magic-object'],
+    () => ['coin', 'rare-object', 'hoard', 'magic-object'],
     []
   );
 
@@ -30,7 +30,7 @@ export default function TreasureGenByTypePage() {
       >
         <Tab label="Coin" />
         <Tab label="Rare object" />
-        <Tab label="Individual treasure" />
+        <Tab label="Hoard" />
         <Tab label="Magic object" />
       </Tabs>
       <Outlet />

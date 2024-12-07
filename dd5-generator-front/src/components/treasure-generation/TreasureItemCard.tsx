@@ -6,7 +6,7 @@ import { IconButton, Typography } from '@mui/material';
 import { useCallback } from 'react';
 import {
   ECoinType,
-  EIndividualTreasureType,
+  EHoardType,
   ETreasureType,
   ITreasureItem,
 } from '../../interfaces/treasureItem.interface';
@@ -59,8 +59,8 @@ export default function TreasureItemCard(props: {
           return (
             <PaidIcon sx={{ color: getCoinColor(item.metaData?.coinType) }} />
           );
-        case ETreasureType.INDIVIDUAL_TREASURE:
-          if (item.subType === EIndividualTreasureType.ART_OBJECT.toString()) {
+        case ETreasureType.HOARD:
+          if (item.subType === EHoardType.ART_OBJECT.toString()) {
             return <ColorLensIcon />;
           }
           return <DiamondIcon sx={{ color: getRandomGemColor() }} />;

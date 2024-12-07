@@ -4,7 +4,7 @@ import { TREASURE_FILE_PATH } from '../utils/file.const';
 import { CoinGenerator } from './coin.generator';
 import { MagicObjectGenerator } from './magic-object.generator';
 import { RareObjectGenerator } from './rare-object.generator';
-import { IndividualTreasureGenerator } from './individual-treasure.generator';
+import { HoardGenerator } from './hoard.generator';
 import { GeneratorUtils } from '../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
 
@@ -14,7 +14,7 @@ export class TreasureGenerator {
 
 	coinGenerator = new CoinGenerator();
 	rareObjectGenerator = new RareObjectGenerator();
-	indTreasureGenerator = new IndividualTreasureGenerator();
+	hoardGenerator = new HoardGenerator();
 	magicObjectGenerator = new MagicObjectGenerator();
 
 	async generateTreasure(encounterLvl: number, monsterNumber?: number): Promise<TreasureItemDto[]> {
@@ -37,8 +37,8 @@ export class TreasureGenerator {
 			finalTreasure.push(...rareObjGen);
 		}
 		if (inputString.includes('C')) {
-			const indTreasureGen = await this.indTreasureGenerator.generateIndividualTreasure(encounterLvl);
-			finalTreasure.push(...indTreasureGen);
+			const hoardGen = await this.hoardGenerator.generateHoard(encounterLvl);
+			finalTreasure.push(...hoardGen);
 		}
 		if (inputString.includes('D')) {
 			const magicGen = await this.magicObjectGenerator.generateMagicObject(encounterLvl);

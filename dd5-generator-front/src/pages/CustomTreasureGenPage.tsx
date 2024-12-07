@@ -14,7 +14,7 @@ import { extractNumberFromCoin } from '../components/utils/treasureGenUtils';
 import MyButton from '../components/base-components/MyButton';
 import api from '../api';
 import { BACKEND_URL } from '../interfaces/constants';
-import IndTreasureCustomGenerationForm from '../components/treasure-generation/custom-generation/IndTreasureCustomGenerationForm';
+import HoardCustomGenerationForm from '../components/treasure-generation/custom-generation/HoardCustomGenerationForm';
 import MagicObjCustomGenerationForm from '../components/treasure-generation/custom-generation/MagicObjCustomGenerationForm';
 
 export default function CustomTreasureGenPage() {
@@ -80,7 +80,7 @@ export default function CustomTreasureGenPage() {
             selectValues={[
               { label: 'Coin', value: ETreasureType.COIN },
               { label: 'Rare object', value: ETreasureType.RARE_OBJECT },
-              { label: 'Individual', value: ETreasureType.INDIVIDUAL_TREASURE },
+              { label: 'Hoard', value: ETreasureType.HOARD },
               { label: 'Magic object', value: ETreasureType.MAGIC_OBJECT },
             ]}
           />
@@ -90,9 +90,9 @@ export default function CustomTreasureGenPage() {
           {itemType === ETreasureType.RARE_OBJECT && (
             <MyButton onClick={addRareItem}>Add rare item</MyButton>
           )}
-          {itemType === ETreasureType.INDIVIDUAL_TREASURE && (
-            <IndTreasureCustomGenerationForm
-              onAddInTreasure={onAddItemToList}
+          {itemType === ETreasureType.HOARD && (
+            <HoardCustomGenerationForm
+              onAddHoard={onAddItemToList}
               setError={setError}
             />
           )}

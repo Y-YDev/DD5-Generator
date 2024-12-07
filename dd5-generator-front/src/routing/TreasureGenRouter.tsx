@@ -31,12 +31,12 @@ export default function TreasureGenRouter() {
           }
         />
         <Route
-          path="individual-treasure"
+          path="hoard"
           element={
             <TreasureGenerationComponent
-              title={'Individual treasure generation'}
-              buttonLabel="Generate individual treasures"
-              backendPath="individual-treasure"
+              title={'Hoard generation'}
+              buttonLabel="Generate hoard"
+              backendPath="hoard"
             />
           }
         />

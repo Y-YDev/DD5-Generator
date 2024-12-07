@@ -8,12 +8,12 @@ export enum ECoin {
 
 export enum ETreasureType {
 	COIN = 'COIN',
-	INDIVIDUAL_TREASURE = 'INDIVIDUAL_TREASURE',
+	HOARD = 'HOARD',
 	RARE_OBJECT = 'RARE_OBJECT',
 	MAGIC_OBJECT = 'MAGIC_OBJECT',
 }
 
-export enum EIndividualTreasureType {
+export enum EHoardType {
 	GEMS = 'gemme',
 	ART_OBJECT = "objet d'art",
 	UNKNOWN = 'unknown',

@@ -12,7 +12,7 @@ export default function MagicObjCustomGenerationForm(props: {
 }) {
   const [magicRank, setMagicRank] = useState<number>(1);
 
-  const onIndTreasureAdd = useCallback(async () => {
+  const onMagicObjAdd = useCallback(async () => {
     const magicObject = await api
       .get<ITreasureItem>(`${BACKEND_URL}/treasure/magic-object/rank`, {
         params: { rank: magicRank },
@@ -39,7 +39,7 @@ export default function MagicObjCustomGenerationForm(props: {
         onChange={(event) => setMagicRank(Number(event.target.value) ?? 1)}
         type="number"
       />
-      <MyButton onClick={onIndTreasureAdd}>Add magic object</MyButton>
+      <MyButton onClick={onMagicObjAdd}>Add magic object</MyButton>
     </FlexBox>
   );
 }

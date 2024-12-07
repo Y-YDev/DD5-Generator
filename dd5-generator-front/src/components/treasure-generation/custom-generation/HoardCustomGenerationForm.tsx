@@ -2,23 +2,22 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import api from '../../../api';
 import { BACKEND_URL } from '../../../interfaces/constants';
 import {
-  EIndividualTreasureType,
+  EHoardType,
   ITreasureItem,
 } from '../../../interfaces/treasureItem.interface';
 import FlexBox from '../../base-components/FlexBox';
 import MyButton from '../../base-components/MyButton';
 import MySelect from '../../base-components/MySelect';
 
-export default function IndTreasureCustomGenerationForm(props: {
-  onAddInTreasure: (indTreasureItem: ITreasureItem) => void;
+export default function HoardCustomGenerationForm(props: {
+  onAddHoard: (hoardItem: ITreasureItem) => void;
   setError: (error: string) => void;
 }) {
-  const [indTreasurePrice, setIndTreasurePrice] = useState<string>('10 po');
-  const [indTreasureType, setIndTreasureType] =
-    useState<EIndividualTreasureType>(EIndividualTreasureType.GEMS);
+  const [hoardPrice, setHoardPrice] = useState<string>('10 po');
+  const [hoardType, setHoardType] = useState<EHoardType>(EHoardType.GEMS);
 
   const pricePossibleValues = useMemo(() => {
-    if (indTreasureType === EIndividualTreasureType.GEMS) {
+    if (hoardType === EHoardType.GEMS) {
       return [
         { label: '10 po', value: '10 po' },
         { label: '50 po', value: '50 po' },
@@ -36,47 +35,47 @@ export default function IndTreasureCustomGenerationForm(props: {
         { label: '7500 po', value: '7500 po' },
       ];
     }
-  }, [indTreasureType]);
+  }, [hoardType]);
 
   useEffect(() => {
-    setIndTreasurePrice(pricePossibleValues[0].value);
+    setHoardPrice(pricePossibleValues[0].value);
   }, [pricePossibleValues]);
 
-  const onIndTreasureAdd = useCallback(async () => {
-    const indTreasure = await api
-      .get<ITreasureItem>(`${BACKEND_URL}/treasure/individual-treasure/one`, {
-        params: { type: indTreasureType, price: indTreasurePrice },
+  const onHoardAdd = useCallback(async () => {
+    const hoard = await api
+      .get<ITreasureItem>(`${BACKEND_URL}/treasure/hoard/one`, {
+        params: { type: hoardType, price: hoardPrice },
       })
       .catch((err) => {
         console.log(err);
         props.setError(err.response.data.message ?? err.message);
         return undefined;
       });
-    if (indTreasure) {
-      props.onAddInTreasure(indTreasure.data);
+    if (hoard) {
+      props.onAddHoard(hoard.data);
     }
-  }, [indTreasurePrice, indTreasureType, props]);
+  }, [hoardPrice, hoardType, props]);
 
   return (
     <FlexBox padding={0}>
       <FlexBox flexDirection={'row'} padding={0}>
-        <MySelect<EIndividualTreasureType>
-          setValue={setIndTreasureType}
-          value={indTreasureType}
-          title={'Individual treasure type'}
+        <MySelect<EHoardType>
+          setValue={setHoardType}
+          value={hoardType}
+          title={'Hoard type'}
           selectValues={[
-            { label: 'Gems', value: EIndividualTreasureType.GEMS },
-            { label: 'Art object', value: EIndividualTreasureType.ART_OBJECT },
+            { label: 'Gems', value: EHoardType.GEMS },
+            { label: 'Art object', value: EHoardType.ART_OBJECT },
           ]}
         />
         <MySelect<string>
-          setValue={setIndTreasurePrice}
-          value={indTreasurePrice}
-          title={'Individual treasure price'}
+          setValue={setHoardPrice}
+          value={hoardPrice}
+          title={'Hoard price'}
           selectValues={pricePossibleValues}
         />
       </FlexBox>
-      <MyButton onClick={onIndTreasureAdd}>Add individual treasure</MyButton>
+      <MyButton onClick={onHoardAdd}>Add hoard</MyButton>
     </FlexBox>
   );
 }

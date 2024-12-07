@@ -3,11 +3,11 @@ import { TreasureGenerator } from './generator/treasure.generator';
 import { CoinGenerator } from './generator/coin.generator';
 import { MagicObjectGenerator } from './generator/magic-object.generator';
 import { RareObjectGenerator } from './generator/rare-object.generator';
-import { IndividualTreasureGenerator } from './generator/individual-treasure.generator';
+import { HoardGenerator } from './generator/hoard.generator';
 import { GeneratorUtils } from './utils/generator.utils';
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TreasureItemDto } from './dto/treasureItem.dto';
-import { EIndividualTreasureType } from './utils/enum';
+import { EHoardType } from './utils/enum';
 
 class EncounterLevelParser implements PipeTransform {
 	generatorUtils: GeneratorUtils;
@@ -52,7 +52,7 @@ export class TreasureGeneratorController {
 	generatorUtils: GeneratorUtils;
 	coinGenerator: CoinGenerator;
 	rareObjectGenerator: RareObjectGenerator;
-	indTreasureGenerator: IndividualTreasureGenerator;
+	hoardGenerator: HoardGenerator;
 	magicObjectGenerator: MagicObjectGenerator;
 	treasureGenerator: TreasureGenerator;
 
@@ -60,7 +60,7 @@ export class TreasureGeneratorController {
 		this.generatorUtils = new GeneratorUtils();
 		this.coinGenerator = new CoinGenerator();
 		this.rareObjectGenerator = new RareObjectGenerator();
-		this.indTreasureGenerator = new IndividualTreasureGenerator();
+		this.hoardGenerator = new HoardGenerator();
 		this.magicObjectGenerator = new MagicObjectGenerator();
 		this.treasureGenerator = new TreasureGenerator();
 	}
@@ -175,60 +175,58 @@ export class TreasureGeneratorController {
 		return rareObj;
 	}
 
-	@Get('/individual-treasure')
+	@Get('/hoard')
 	@ApiOperation({
-		summary: 'Individual treasures generation',
-		description: 'Generates individual treasure like gems or art rewards.',
+		summary: 'Hoards generation',
+		description: 'Generates hoard like gems or art rewards.',
 	})
 	@ApiQuery({
 		name: 'encounterLevel',
 		type: Number,
 		required: false,
-		description: 'Level of the encounter to compute individual treasures (if not provided, a random level will be used).',
+		description: 'Level of the encounter to compute the hoards (if not provided, a random level will be used).',
 	})
 	@ApiOkResponse({
 		description: 'The generated treasure item array',
 		type: TreasureItemDto,
 		isArray: true,
 	})
-	async getIndividualTreasureGeneration(
-		@Query('encounterLevel', EncounterLevelParser) level: number,
-	): Promise<TreasureItemDto[]> {
+	async getHoardGeneration(@Query('encounterLevel', EncounterLevelParser) level: number): Promise<TreasureItemDto[]> {
 		console.debug(`---------------------------------`);
-		const individualTreasure = await this.indTreasureGenerator.generateIndividualTreasure(level);
-		console.debug(`Individual treasure generation for level ${level}: ${JSON.stringify(individualTreasure)}`);
-		return individualTreasure;
+		const hoard = await this.hoardGenerator.generateHoard(level);
+		console.debug(`Hoard generation for level ${level}: ${JSON.stringify(hoard)}`);
+		return hoard;
 	}
 
-	@Get('/individual-treasure/one')
+	@Get('/hoard/one')
 	@ApiOperation({
-		summary: 'Individual treasures generation by type and price',
-		description: 'Generates individual treasure of the given type and price.',
+		summary: 'Hoards generation by type and price',
+		description: 'Generates hoard of the given type and price.',
 	})
 	@ApiQuery({
 		name: 'type',
-		enum: EIndividualTreasureType,
+		enum: EHoardType,
 		required: true,
-		description: 'The individual treasure type for the generation.',
+		description: 'The hoard type for the generation.',
 	})
 	@ApiQuery({
 		name: 'price',
 		type: Number,
 		required: true,
-		description: 'The individual treasure price for the generation.',
+		description: 'The hoard price for the generation.',
 	})
 	@ApiOkResponse({
-		description: 'The generated individual treasure',
+		description: 'The generated hoard treasure',
 		type: TreasureItemDto,
 	})
-	async getIndTreasureByTypeGeneration(
-		@Query('type') type: EIndividualTreasureType,
+	async getHoardByTypeGeneration(
+		@Query('type') type: EHoardType,
 		@Query('price') price: string,
 	): Promise<TreasureItemDto | undefined> {
 		console.debug(`---------------------------------`);
-		const individualTreasure = this.indTreasureGenerator.generateIndTreasureObject(type, price);
-		console.debug(`Individual treasure generation of type ${type} and price ${price}: ${JSON.stringify(individualTreasure)}`);
-		return individualTreasure;
+		const hoard = this.hoardGenerator.generateHoardObject(type, price);
+		console.debug(`Hoard generation of type ${type} and price ${price}: ${JSON.stringify(hoard)}`);
+		return hoard;
 	}
 
 	@Get('/magic-object')
