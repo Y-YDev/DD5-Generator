@@ -2,7 +2,7 @@ import { Row } from 'read-excel-file/node';
 import { EMagicRank, ETreasureType } from '../utils/enum';
 import { ExcelUtils } from '../utils/excel.utils';
 import { MAGIC_OBJECT_DROP_PATH, MAGIC_OBJECT_PATH } from '../utils/file.const';
-import { GeneratorUtils } from '../utils/generator.utils';
+import { GeneratorUtils } from '../../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
 
 const RETHROW = 'Relancer';

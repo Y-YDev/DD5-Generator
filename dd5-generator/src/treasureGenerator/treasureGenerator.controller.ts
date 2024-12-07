@@ -4,7 +4,7 @@ import { CoinGenerator } from './generator/coin.generator';
 import { MagicObjectGenerator } from './generator/magic-object.generator';
 import { RareObjectGenerator } from './generator/rare-object.generator';
 import { HoardGenerator } from './generator/hoard.generator';
-import { GeneratorUtils } from './utils/generator.utils';
+import { GeneratorUtils } from '../utils/generator.utils';
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TreasureItemDto } from './dto/treasureItem.dto';
 import { EHoardType } from './utils/enum';

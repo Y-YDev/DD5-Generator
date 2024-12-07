@@ -76,6 +76,24 @@ export default function SideMenu() {
         </ListItem>
       </List>
       <Divider />
+      <Typography
+        sx={{ textDecoration: 'underline' }}
+        variant="body2"
+        paddingTop={ESize.sm}
+        paddingLeft={ESize.sm}
+      >
+        Miscellaneous generation
+      </Typography>
+
+      <List sx={{ paddingLeft: ESize.xs }}>
+        <ListItem
+          sx={listItemStyle}
+          onClick={() => navigate('/scroll-incident')}
+        >
+          <ListItemText>Scroll incident</ListItemText>
+        </ListItem>
+      </List>
+      <Divider />
       <List>
         <ListItem sx={listItemStyle} onClick={() => navigate('/docs')}>
           <ListItemText>Documentation</ListItemText>

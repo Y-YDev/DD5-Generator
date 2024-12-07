@@ -1,5 +1,5 @@
 import readXlsxFile, { CellValue, Row } from 'read-excel-file/node';
-import { GeneratorUtils } from './generator.utils';
+import { GeneratorUtils } from '../../utils/generator.utils';
 
 export class ExcelUtils {
 	utils = new GeneratorUtils();

@@ -5,7 +5,7 @@ import { CoinGenerator } from './coin.generator';
 import { MagicObjectGenerator } from './magic-object.generator';
 import { RareObjectGenerator } from './rare-object.generator';
 import { HoardGenerator } from './hoard.generator';
-import { GeneratorUtils } from '../utils/generator.utils';
+import { GeneratorUtils } from '../../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
 
 export class TreasureGenerator {

@@ -1,14 +1,13 @@
 export class GeneratorUtils {
 	replaceDiceValue(inputString: string): string {
-		const diceRegex: RegExp = /\dd\d/g; // Regex to detect "XdY"
+		const diceRegex: RegExp = /\d+d\d+/g; // Regex to detect "XdY"
 
 		let match: RegExpExecArray | null;
 		let resString = inputString;
 		while ((match = diceRegex.exec(resString)) != null) {
 			const position = match.index;
-
 			resString =
-				resString.substring(0, position) + // Keep beginin
+				resString.substring(0, position) + // Keep beginning
 				this.generateDiceValue(match[0]) + // Replace the value by the dice roll in the string
 				resString.substring(position + match[0].length); // Keep end
 		}
@@ -16,21 +15,17 @@ export class GeneratorUtils {
 	}
 
 	generateDiceValue(inputDiceString: string): number | undefined {
-		// String must be XDY
-		if (inputDiceString.length !== 3) {
-			console.error('Input dice string not in right format');
+		const [rollNumber, diceFace] = inputDiceString.split('d').map(Number);
+
+		if (isNaN(rollNumber) || isNaN(diceFace)) {
+			console.error('Invalid dice number or face');
 			return undefined;
 		}
-
-		const rollNumber = Number(inputDiceString[0]);
-		const diceFace = Number(inputDiceString[2]);
-
-		let total: number = 0;
-		// Roll X time dice of Y face
-		for (let index = 0; index < rollNumber; index++) {
+		let total = 0;
+		for (let i = 0; i < rollNumber; i++) {
 			total += this.rollDice(diceFace);
 		}
-		console.debug(`Roll ${rollNumber}d${diceFace}: ${total}`);
+		console.debug(`Rolled ${rollNumber}d${diceFace}: ${total}`);
 		return total;
 	}
 

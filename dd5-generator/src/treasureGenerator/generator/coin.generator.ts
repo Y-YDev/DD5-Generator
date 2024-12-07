@@ -1,4 +1,4 @@
-import { GeneratorUtils } from '../utils/generator.utils';
+import { GeneratorUtils } from '../../utils/generator.utils';
 import { ExcelUtils } from '../utils/excel.utils';
 import { Row } from 'read-excel-file/node';
 import { COIN_FILE_PATH } from '../utils/file.const';
