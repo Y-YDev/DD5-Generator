@@ -65,7 +65,7 @@ export default function TreasureGenerationComponent(props: {
   return (
     <FlexBox takeRemainingSpace>
       <Typography variant="h5">{props.title}</Typography>
-      <FlexBox gap={0} padding={0}>
+      <FlexBox gap={1} padding={0}>
         <Typography variant="body2" fontStyle={'italic'}>
           No encounter level given mean random level between 0 and 20
         </Typography>
@@ -109,7 +109,7 @@ export default function TreasureGenerationComponent(props: {
                 }}
               />
             }
-            label="Add hoard bonus"
+            label="Add hoard bonus (Coin)"
           />
         )}
       </FlexBox>

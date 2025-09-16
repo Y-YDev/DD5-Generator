@@ -6,18 +6,28 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ESize } from '../../styles/size.enum';
+import {
+  PRIMARY_COLOR,
+  SECONDARY_BACKGROUND,
+  SECONDARY_COLOR,
+  SECONDARY_COLOR_LIGHT,
+} from '../../styles/theme';
 
 export default function SideMenu() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
-  const listItemStyle = useMemo(
-    () => ({
+  const listItemStyle = useCallback(
+    (selected: boolean, isSecondary = false) => ({
       cursor: 'pointer',
+      paddingLeft: isSecondary ? ESize.md : ESize.xs,
+      backgroundColor: selected ? SECONDARY_COLOR : 'transparent',
       '&:hover': {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: SECONDARY_COLOR_LIGHT,
       },
     }),
     []
@@ -33,16 +43,29 @@ export default function SideMenu() {
         flexDirection: 'column',
         '& .MuiDrawer-paper': {
           width: '300px',
+          bgcolor: SECONDARY_BACKGROUND,
         },
       }}
     >
-      <Typography variant="h5" padding={ESize.base}>
+      <Typography
+        variant="h5"
+        padding={ESize.base}
+        fontWeight={'bold'}
+        bgcolor={PRIMARY_COLOR}
+        color="white"
+        sx={{ fontFamily: '"UnifrakturCook", serif' }}
+      >
         DD5 Generator
       </Typography>
       <Divider />
       <List>
-        <ListItem sx={listItemStyle} onClick={() => navigate('/')}>
-          <ListItemText>Home</ListItemText>
+        <ListItem
+          sx={listItemStyle(currentPath === '/')}
+          onClick={() => navigate('/')}
+        >
+          <ListItemText>
+            <Typography fontWeight={'bold'}>Home</Typography>
+          </ListItemText>
         </ListItem>
       </List>
       <Divider />
@@ -55,21 +78,27 @@ export default function SideMenu() {
         Treasure generation
       </Typography>
 
-      <List sx={{ paddingLeft: ESize.xs }}>
+      <List>
         <ListItem
-          sx={listItemStyle}
+          sx={listItemStyle(currentPath === '/treasure-generation', true)}
           onClick={() => navigate('/treasure-generation')}
         >
           <ListItemText>Standard Generation</ListItemText>
         </ListItem>
         <ListItem
-          sx={listItemStyle}
+          sx={listItemStyle(
+            currentPath === '/treasure-generation/by-type/coin',
+            true
+          )}
           onClick={() => navigate('/treasure-generation/by-type/coin')}
         >
           <ListItemText>Generation by type</ListItemText>
         </ListItem>
         <ListItem
-          sx={listItemStyle}
+          sx={listItemStyle(
+            currentPath === '/treasure-generation/custom',
+            true
+          )}
           onClick={() => navigate('/treasure-generation/custom')}
         >
           <ListItemText>Custom generation</ListItemText>
@@ -85,9 +114,9 @@ export default function SideMenu() {
         Miscellaneous generation
       </Typography>
 
-      <List sx={{ paddingLeft: ESize.xs }}>
+      <List>
         <ListItem
-          sx={listItemStyle}
+          sx={listItemStyle(currentPath === '/scroll-incident', true)}
           onClick={() => navigate('/scroll-incident')}
         >
           <ListItemText>Scroll incident</ListItemText>
@@ -95,7 +124,10 @@ export default function SideMenu() {
       </List>
       <Divider />
       <List>
-        <ListItem sx={listItemStyle} onClick={() => navigate('/docs')}>
+        <ListItem
+          sx={listItemStyle(currentPath === '/docs')}
+          onClick={() => navigate('/docs')}
+        >
           <ListItemText>Documentation</ListItemText>
         </ListItem>
       </List>

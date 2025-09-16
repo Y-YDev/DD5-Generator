@@ -34,7 +34,7 @@ export default function TreasureGenRouter() {
           path="hoard"
           element={
             <TreasureGenerationComponent
-              title={'Hoard generation'}
+              title={'Hoard generation (Treasure)'}
               buttonLabel="Generate hoard"
               backendPath="hoard"
             />

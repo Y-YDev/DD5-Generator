@@ -29,10 +29,10 @@ export default function TreasureGenByTypePage() {
           navigate(tabPaths[newValue]);
         }}
       >
-        <Tab label="Coin" />
-        <Tab label="Rare object" />
-        <Tab label="Hoard" />
-        <Tab label="Magic object" />
+        <Tab label="Coin" sx={{ fontWeight: 'bold' }} />
+        <Tab label="Rare object" sx={{ fontWeight: 'bold' }} />
+        <Tab label="Hoard" sx={{ fontWeight: 'bold' }} />
+        <Tab label="Magic object" sx={{ fontWeight: 'bold' }} />
       </Tabs>
       <FlexBox padding={0} gap={0} takeRemainingSpace>
         <Outlet />

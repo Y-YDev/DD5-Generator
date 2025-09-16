@@ -1,6 +1,7 @@
 import { Box, BoxProps } from '@mui/material';
 import { ESize } from '../../styles/size.enum';
 import { useMemo } from 'react';
+import { BACKGROUND } from '../../styles/theme';
 
 export default function FlexBox(
   props: BoxProps & { takeRemainingSpace?: boolean }
@@ -19,6 +20,7 @@ export default function FlexBox(
 
   return (
     <Box
+      sx={{ bgcolor: BACKGROUND }}
       display={'flex'}
       gap={gap ?? ESize.base}
       padding={padding ?? ESize.base}

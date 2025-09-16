@@ -80,7 +80,7 @@ export default function CustomTreasureGenPage() {
             selectValues={[
               { label: 'Coin', value: ETreasureType.COIN },
               { label: 'Rare object', value: ETreasureType.RARE_OBJECT },
-              { label: 'Hoard', value: ETreasureType.HOARD },
+              { label: 'Hoard (Treasure)', value: ETreasureType.HOARD },
               { label: 'Magic object', value: ETreasureType.MAGIC_OBJECT },
             ]}
           />
