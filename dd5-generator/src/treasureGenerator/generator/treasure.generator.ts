@@ -1,5 +1,5 @@
 import { Row } from 'read-excel-file/node';
-import { ExcelUtils } from '../utils/excel.utils';
+import { ExcelUtils } from '../../utils/excel.utils';
 import { TREASURE_FILE_PATH } from '../utils/file.const';
 import { CoinGenerator } from './coin.generator';
 import { MagicObjectGenerator } from './magic-object.generator';

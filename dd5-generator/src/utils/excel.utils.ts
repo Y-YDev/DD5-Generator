@@ -1,5 +1,5 @@
 import readXlsxFile, { CellValue, Row } from 'read-excel-file/node';
-import { GeneratorUtils } from '../../utils/generator.utils';
+import { GeneratorUtils } from './generator.utils';
 
 export class ExcelUtils {
 	utils = new GeneratorUtils();
@@ -45,7 +45,7 @@ export class ExcelUtils {
 		return -1;
 	}
 
-	isInEncounterLevel(encounterLvl: number, encounterTitle: string) {
+	private isInEncounterLevel(encounterLvl: number, encounterTitle: string) {
 		const encounterElmt = encounterTitle.split(' ').filter(Boolean);
 
 		// 3 elements should be X,à,Y
@@ -65,7 +65,7 @@ export class ExcelUtils {
 		return minLvl <= encounterLvl && encounterLvl <= maxLvl;
 	}
 
-	isInDiceRange(diceRoll: number, diceRange: string) {
+	private isInDiceRange(diceRoll: number, diceRange: string) {
 		const rangeElmt = diceRange.split('-').filter(Boolean);
 
 		if (rangeElmt.length !== 2) {

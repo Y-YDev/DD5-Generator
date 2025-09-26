@@ -1,5 +1,5 @@
 import { Row } from 'read-excel-file/node';
-import { ExcelUtils } from '../utils/excel.utils';
+import { ExcelUtils } from '../../utils/excel.utils';
 import { RARE_OBJECT_FILE_PATH, RARE_OBJECT_NB_FILE_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';

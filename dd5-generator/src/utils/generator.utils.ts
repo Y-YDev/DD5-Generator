@@ -29,6 +29,11 @@ export class GeneratorUtils {
 		return total;
 	}
 
+	/**
+	 * Rolls a dice with the specified number of faces.
+	 * @param diceFace Number of face of the dice (e.g. 6 for a d6)
+	 * @returns The result of the dice roll (between 1 and diceFace)
+	 */
 	rollDice(diceFace: number) {
 		const roll = Math.floor(Math.random() * diceFace) + 1;
 		return roll;
@@ -46,5 +51,10 @@ export class GeneratorUtils {
 			resString = resString.substring(0, position) + resString.substring(position + 1 + match[0].length); // +1 for remove space after (XX)
 		}
 		return resString;
+	}
+
+	getRandomElementInArray<T>(array: T[]): T {
+		const randomIndex = Math.floor(Math.random() * array.length);
+		return array[randomIndex];
 	}
 }

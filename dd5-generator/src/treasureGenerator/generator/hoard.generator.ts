@@ -1,6 +1,6 @@
 import { Row } from 'read-excel-file';
 import { EHoardType, ETreasureType } from '../utils/enum';
-import { ExcelUtils } from '../utils/excel.utils';
+import { ExcelUtils } from '../../utils/excel.utils';
 import { HOARD_FILE_PATH } from '../utils/file.const';
 import { GeneratorUtils } from '../../utils/generator.utils';
 import { TreasureItemDto } from '../dto/treasureItem.dto';
