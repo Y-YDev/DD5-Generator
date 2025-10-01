@@ -44,6 +44,7 @@ Go to `http://localhost:3000/docs` to consult swagger documentation _(available 
 ### Next steps
 - Add Special feature of a magical object (standard one)
 - Add name generator part
+- Add madness generation (https://5e-drs.fr/folie/)
 
 ## Screenshots
 ![alt text](image.png)
