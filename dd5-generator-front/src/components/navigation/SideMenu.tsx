@@ -111,6 +111,24 @@ export default function SideMenu() {
         paddingTop={ESize.sm}
         paddingLeft={ESize.sm}
       >
+        Smart object generation
+      </Typography>
+
+      <List>
+        <ListItem
+          sx={listItemStyle(currentPath === '/smart-object', true)}
+          onClick={() => navigate('/smart-object')}
+        >
+          <ListItemText>Smart Object</ListItemText>
+        </ListItem>
+      </List>
+      <Divider />
+      <Typography
+        sx={{ textDecoration: 'underline' }}
+        variant="body2"
+        paddingTop={ESize.sm}
+        paddingLeft={ESize.sm}
+      >
         Miscellaneous generation
       </Typography>
 
