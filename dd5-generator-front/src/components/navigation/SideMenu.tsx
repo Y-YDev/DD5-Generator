@@ -121,6 +121,12 @@ export default function SideMenu() {
         >
           <ListItemText>Smart Object</ListItemText>
         </ListItem>
+        <ListItem
+          sx={listItemStyle(currentPath === '/mo-particularity', true)}
+          onClick={() => navigate('/mo-particularity')}
+        >
+          <ListItemText>Magic Object Particularity</ListItemText>
+        </ListItem>
       </List>
       <Divider />
       <Typography
@@ -138,6 +144,12 @@ export default function SideMenu() {
           onClick={() => navigate('/scroll-incident')}
         >
           <ListItemText>Scroll incident</ListItemText>
+        </ListItem>
+        <ListItem
+          sx={listItemStyle(currentPath === '/name-generation', true)}
+          onClick={() => navigate('/name-generation')}
+        >
+          <ListItemText>Name generation</ListItemText>
         </ListItem>
       </List>
       <Divider />

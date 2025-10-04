@@ -7,7 +7,7 @@ import MyButton from '../components/base-components/MyButton';
 import { EStatsType, ISmartObject } from '../interfaces/smartObject.interface';
 import { ESize } from '../styles/size.enum';
 
-export default function SmartObjectPage() {
+export default function SmartObjectGenPage() {
   const [generationData, setGenerationData] = useState<
     ISmartObject | undefined
   >(undefined);
@@ -66,7 +66,7 @@ export default function SmartObjectPage() {
             </Typography>
             <FlexBox
               padding={0}
-              paddingBottom={ESize.base}
+              paddingBottom={ESize.sm}
               gap={ESize.base}
               flexDirection="row"
             >
@@ -108,7 +108,7 @@ export default function SmartObjectPage() {
 
           <FlexBox padding={0} marginTop={ESize.base}>
             <Typography variant="h6">Potential Conflict</Typography>
-            <Typography variant="subtitle1" style={{ fontStyle: 'italic' }}>
+            <Typography variant="subtitle2" style={{ fontStyle: 'italic' }}>
               An intelligent object has free will, shaped by its personality and
               alignment. If its user acts in a manner contrary to the object's
               alignment or purpose, a conflict may arise. In this case, the
@@ -120,7 +120,7 @@ export default function SmartObjectPage() {
               <strong>Requirements: </strong>
               {generationData.conflict.requirements}
             </Typography>
-            <Typography variant="subtitle1" style={{ fontStyle: 'italic' }}>
+            <Typography variant="subtitle2" style={{ fontStyle: 'italic' }}>
               If its user refuses to obey the object's commands, the object may
               do:
             </Typography>
@@ -128,7 +128,7 @@ export default function SmartObjectPage() {
               <strong>Punishment: </strong>
               {generationData.conflict.punishment}
             </Typography>
-            <Typography variant="subtitle1" style={{ fontStyle: 'italic' }}>
+            <Typography variant="subtitle2" style={{ fontStyle: 'italic' }}>
               If a smart object attempts to take control of its user, the user
               must make a Charisma saving throw against the object's Charisma
               DD. If the saving throw fails, the user is charmed by the object

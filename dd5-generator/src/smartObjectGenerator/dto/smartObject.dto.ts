@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
 import { EStatsType } from '../utils/enum';
 
 export class SmartObjectConflictDto {
@@ -110,3 +110,5 @@ export class SmartObjectDto {
 	})
 	funFacts?: string;
 }
+
+export class MagicObjectParticularityDto extends PickType(SmartObjectDto, ['additionalParticularity', 'funFacts']) {}

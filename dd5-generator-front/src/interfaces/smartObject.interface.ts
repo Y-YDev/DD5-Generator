@@ -38,3 +38,8 @@ export interface ISmartObject {
 
   funFacts?: string;
 }
+
+export interface IMagicObjectParticularity {
+  additionalParticularity: string;
+  funFacts: string;
+}

@@ -1,27 +1,24 @@
+import { Row } from 'read-excel-file/types';
+import { NameGenerator } from 'src/miscellaneousGenerator/generator/name.generator';
+import { ExcelUtils } from 'src/utils/excel.utils';
 import { GeneratorUtils } from 'src/utils/generator.utils';
+import { DNDStatsDto, SmartObjectConflictDto, SmartObjectDto } from '../dto/smartObject.dto';
 import {
-	ANCESTRIES,
-	FAMILY,
-	GENDERS,
 	MAGIC_OBJECT_ADDITIONAL_PARTICULARITY,
 	MAGIC_OBJECT_FUN_FACTS,
-	NAME_GENERATOR_API_URL,
 	SMART_OBJECT_FILE_PATH,
 	SMART_OBJECT_PUNISHMENT,
 	SMART_OBJECT_REQUIREMENT,
 } from '../utils/const';
-import axios from 'axios';
-import { DNDStatsDto, SmartObjectConflictDto, SmartObjectDto } from '../dto/smartObject.dto';
 import { EStatsType } from '../utils/enum';
-import { ExcelUtils } from 'src/utils/excel.utils';
-import { Row } from 'read-excel-file/types';
 
 export class SmartObjectGenerator {
 	utils = new GeneratorUtils();
+	nameGenerator = new NameGenerator();
 	excelUtils = new ExcelUtils();
 
 	public async generateSmartObject(addParticularity = true): Promise<SmartObjectDto> {
-		const name = await this.generateRandomName();
+		const name = await this.nameGenerator.generateRandomName();
 		const stats = this.generateRandomStat();
 		const communication = await this.generateCommunicationMode();
 		const sense = await this.generateSense();
@@ -80,28 +77,6 @@ export class SmartObjectGenerator {
 		return stats;
 	}
 
-	private async generateRandomName(): Promise<string> {
-		const ancestry = this.utils.getRandomElementInArray(ANCESTRIES);
-		const gender = this.utils.getRandomElementInArray(GENDERS);
-		const family = this.utils.getRandomElementInArray(FAMILY);
-
-		// Call API with axios
-		try {
-			console.debug(`Fetching fantasy name with params: ancestry=${ancestry}, gender=${gender}, family=${family}`);
-			const response = await axios.get(NAME_GENERATOR_API_URL, {
-				params: {
-					ancestry: ancestry,
-					gender: gender,
-					family: family,
-				},
-			});
-			return response.data;
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : String(error);
-			throw new Error(`Failed to fetch fantasy names: ${errorMessage}`);
-		}
-	}
-
 	private async generateCommunicationMode(): Promise<string> {
 		const soCommunicationTable: Row[] = await this.excelUtils.readExcelFile(SMART_OBJECT_FILE_PATH, 1);
 		const diceRoll = this.utils.rollDice(100);
@@ -156,7 +131,7 @@ export class SmartObjectGenerator {
 		return { requirements, punishment, charmDifficulty: difficulty, charmTime: time };
 	}
 
-	private generateParticularity(): { additionalParticularity: string; funFacts: string } {
+	public generateParticularity(): { additionalParticularity: string; funFacts: string } {
 		const additionalParticularity = this.utils.getRandomElementInArray(MAGIC_OBJECT_ADDITIONAL_PARTICULARITY);
 		const funFacts = this.utils.getRandomElementInArray(MAGIC_OBJECT_FUN_FACTS);
 

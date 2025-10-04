@@ -1,7 +1,7 @@
 import { Controller, Get, ParseBoolPipe, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { SmartObjectGenerator } from './generator/smart-object.generator';
-import { SmartObjectDto } from './dto/smartObject.dto';
+import { MagicObjectParticularityDto, SmartObjectDto } from './dto/smartObject.dto';
 
 @ApiTags('Smart Object Generator')
 @Controller('/smart-object')
@@ -32,5 +32,21 @@ export class SmartObjectGeneratorController {
 		const smartObject = await this.smartObjectGenerator.generateSmartObject(addParticularity);
 		console.debug(`Generate smart object: ${JSON.stringify(smartObject)}`);
 		return smartObject;
+	}
+
+	@Get('/particularity')
+	@ApiOperation({
+		summary: 'Magic object particularity generation',
+		description: 'Generates a magic object particularity description.',
+	})
+	@ApiOkResponse({
+		description: 'The magic object particularity description',
+		type: MagicObjectParticularityDto,
+	})
+	async getMagicObjectParticularity(): Promise<MagicObjectParticularityDto> {
+		console.debug(`---------------------------------`);
+		const magicObjectParticularity = await this.smartObjectGenerator.generateParticularity();
+		console.debug(`Generate magic object particularity: ${JSON.stringify(magicObjectParticularity)}`);
+		return magicObjectParticularity;
 	}
 }
