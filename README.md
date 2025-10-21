@@ -43,6 +43,8 @@ Go to `http://localhost:3000/docs` to consult swagger documentation _(available 
 
 ### Next steps
 - Add madness generation (https://5e-drs.fr/folie/)
+- Add PNJ Generation
+- Add dungeon generator in project
 
 ## Screenshots
 ![alt text](image.png)
