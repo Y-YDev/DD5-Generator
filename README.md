@@ -7,7 +7,7 @@
 This application is a treasure generation tool for Dungeon and Dragon 5th edition.  
 It sets up a nestJs server that generates treasures on port 3000 that is used and displayed by a frontend on port 4000.
 
-Treasure generation is based on the following website: https://5e-drs.fr/ and on the **Dungeon master's Guide (FR version)**  
+Treasure generation is based on the following website: https://5e-drs.fr/ (https://2014.5e-drs.fr/) and on the **Dungeon master's Guide (FR version)**  
 Name generation is using the following API: https://fantasyname.lukewh.com/help 
 
 The file folder contains the generation tables used by the app (taken from the site and formatted)
