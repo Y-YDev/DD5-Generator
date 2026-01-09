@@ -33,8 +33,7 @@ export default function DungeonGenPage() {
         <Typography variant="h6">Parameters</Typography>
 
         <Typography variant="subtitle2">
-          - Number of steps (steps_nb): controls how many steps the digger
-          takes.
+          - Number of steps: controls how many steps the digger takes.
         </Typography>
         <Typography variant="subtitle2">
           - Steps before turning: how many steps the digger takes before
