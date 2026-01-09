@@ -7,3 +7,4 @@ export default function DocsPage() {
 
   return <SwaggerUI url={docsUrl} />;
 }
+ 

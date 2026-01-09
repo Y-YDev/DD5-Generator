@@ -6,6 +6,7 @@ import TreasureGenRouter from './routing/TreasureGenRouter';
 import DocsPage from './pages/DocsPage';
 import MiscellaneousGenRouter from './routing/MiscellaneousGenRouter';
 import SmartObjectRouter from './routing/SmartObjectRouter';
+import DungeonGenPage from './pages/DungeonGenPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           {SmartObjectRouter()}
           {MiscellaneousGenRouter()}
           <Route path="/docs" element={<DocsPage />} />
+          <Route path="/dungeon-digger" element={<DungeonGenPage />} />
         </Routes>
       </FlexBox>
     </FlexBox>

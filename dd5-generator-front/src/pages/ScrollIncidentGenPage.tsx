@@ -4,6 +4,7 @@ import api from '../api';
 import FlexBox from '../components/base-components/FlexBox';
 import MyButton from '../components/base-components/MyButton';
 import { BACKEND_URL } from '../interfaces/constants';
+import DungeonDigger from '../components/godot/DungeonDigger';
 
 export default function ScrollIncidentGenPage() {
   const [generationData, setGenerationData] = useState<string | undefined>(

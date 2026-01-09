@@ -153,6 +153,23 @@ export default function SideMenu() {
         </ListItem>
       </List>
       <Divider />
+      <Typography
+        sx={{ textDecoration: 'underline' }}
+        variant="body2"
+        paddingTop={ESize.sm}
+        paddingLeft={ESize.sm}
+      >
+        Dungeon generation
+      </Typography>
+      <List>
+        <ListItem
+          sx={listItemStyle(currentPath === '/dungeon-digger', true)}
+          onClick={() => navigate('/dungeon-digger')}
+        >
+          <ListItemText>Dungeon generator</ListItemText>
+        </ListItem>
+      </List>
+      <Divider />
       <List>
         <ListItem
           sx={listItemStyle(currentPath === '/docs')}
