@@ -49,5 +49,8 @@ Go to `http://localhost:3000/docs` to consult swagger documentation _(available 
 ## Screenshots
 ![alt text](image.png)
 ![alt text](image-2.png)
+<img width="1916" height="863" alt="image" src="https://github.com/user-attachments/assets/f15c9c82-fe07-41ae-8b91-d30d63d0835c" />
+<img width="1915" height="869" alt="image" src="https://github.com/user-attachments/assets/fa5d9d92-999f-4cf3-ac72-3cd721e4493f" />
+<img width="1916" height="863" alt="image" src="https://github.com/user-attachments/assets/2e030cc5-ec49-403a-bf34-f7a15fa017d5" />
 
 
